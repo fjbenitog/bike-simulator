@@ -1,7 +1,7 @@
 using Toybox.Application;
 using Toybox.WatchUi;
 
-class bikesimulatorApp extends Application.AppBase {
+class BikeSimulatorApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
@@ -17,7 +17,7 @@ class bikesimulatorApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [ new bikesimulatorView(), new bikesimulatorDelegate() ];
+        return [ new BikeSimulatorView(), new BikeSimulatorDelegate() ];
     }
 
 }

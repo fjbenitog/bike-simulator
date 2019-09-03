@@ -1,7 +1,10 @@
 <strings>
     <string id="AppName">bike-simulator</string>
 
-    <string id="prompt">Click the menu button</string>
+    <string id="prompt">Welcome to
+    Bike Indoor Simulator</string>
+    <string id="pressStart">Press Start</string>
+    <string id="tracksTitle">Tracks</string>
 
     <string id="menu_label_1">Item 1</string>
     <string id="menu_label_2">Item 2</string>
