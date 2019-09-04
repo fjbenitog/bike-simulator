@@ -22,15 +22,3 @@ class DigitPicker extends WatchUi.Picker {
         Picker.onUpdate(dc);
     }
 }
-
-class DigitPickerDelegate extends WatchUi.PickerDelegate {
-
-    function initialize() {
-        PickerDelegate.initialize();
-    }
-
-    function onCancel() {
-        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-    }
-    
-}
