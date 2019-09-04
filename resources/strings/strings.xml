@@ -1,11 +1,18 @@
 <strings>
-    <string id="AppName">bike-simulator</string>
+    <string id="AppName">Bike Simulator</string>
 
     <string id="prompt">Welcome to
     Bike Indoor Simulator</string>
     <string id="pressStart">Press Start</string>
     <string id="tracksTitle">Tracks</string>
 
-    <string id="menu_label_1">Item 1</string>
-    <string id="menu_label_2">Item 2</string>
+	<string id="mainTitle">Bike Indoor Simulator</string>
+    <string id="config">Configuration</string>
+    <string id="tracks">Tracks</string>
+    <string id="start">Start</string>
+    
+    <string id="gears">Gears</string>
+    <string id="power">Power Size</string>
+    
+    
 </strings>

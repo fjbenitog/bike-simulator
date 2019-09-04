@@ -26,7 +26,7 @@ class BikeSimulatorDelegate extends WatchUi.BehaviorDelegate {
    
     
     function startApp(){
-		WatchUi.pushView(new TrackPicker(), new TrackPickerDelegate(), WatchUi.SLIDE_LEFT);
+		WatchUi.pushView(new Rez.Menus.MainMenu(), new MainMenuDelegate(), WatchUi.SLIDE_LEFT);
 		return true;
     }
 

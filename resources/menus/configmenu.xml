@@ -1,0 +1,4 @@
+<menu id="ConfigMenu" title="@Strings.config">
+    <menu-item id="gears" label="@Strings.gears" />
+    <menu-item id="power" label="@Strings.power" />
+</menu>

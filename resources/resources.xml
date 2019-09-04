@@ -1,0 +1,8 @@
+<resources>
+    <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
+    <bitmap id="ConfirmIcon" filename="images/confirm_icon.png">
+    	<palette disableTransparency="false">
+            <color>00FF00</color>
+        </palette>
+    </bitmap>
+</resources>
