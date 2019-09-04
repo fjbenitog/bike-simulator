@@ -10,6 +10,8 @@ class ConfigMenuDelegate extends WatchUi.MenuInputDelegate {
     function onMenuItem(item) {
 		if (item == :gears) {
             WatchUi.pushView(new GearsPicker(), new GearsPickerDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        }else if (item == :power) {
+            WatchUi.pushView(new PowerPicker(), new PowerPickerDelegate(), WatchUi.SLIDE_IMMEDIATE);
         }
     }
 }

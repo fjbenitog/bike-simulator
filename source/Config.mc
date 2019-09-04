@@ -1,4 +1,6 @@
 module Config{
 
-	const GEAR_KEY = "gears";
+	const GEARS_KEY = "gears";
+	
+	const POWER_KEY = "power";
 }

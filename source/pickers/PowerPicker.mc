@@ -1,13 +1,13 @@
 using Toybox.Graphics;
 using Toybox.WatchUi;
 
-class GearsPicker extends DigitPicker {
+class PowerPicker extends DigitPicker {
 
 
     function initialize() {
-        var gears = Application.getApp().getProperty(Config.GEARS_KEY);
+        var gears = Application.getApp().getProperty(Config.POWER_KEY);
 
-        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.gears),1,20,1,gears);
+        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.power),1,100,1,gears);
     }
 
     function onUpdate(dc) {
@@ -17,7 +17,7 @@ class GearsPicker extends DigitPicker {
     }
 }
 
-class GearsPickerDelegate extends WatchUi.PickerDelegate {
+class PowerPickerDelegate extends WatchUi.PickerDelegate {
 
     function initialize() {
         PickerDelegate.initialize();
@@ -28,7 +28,7 @@ class GearsPickerDelegate extends WatchUi.PickerDelegate {
     }
     
     function onAccept(values) {
-    	Application.getApp().setProperty(Config.GEARS_KEY, values[0]);
+    	Application.getApp().setProperty(Config.POWER_KEY, values[0]);
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }
