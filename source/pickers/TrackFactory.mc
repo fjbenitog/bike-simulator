@@ -12,7 +12,7 @@ class TrackFactory extends WatchUi.PickerFactory{
  	
  	function getIndex(value) {
         for(var i = 0; i < tracks.size(); ++i) {
-        	if(tracks[i].name == value.name){
+        	if(tracks[i].name.equals(value)){
         		return i;
         	}
         }
@@ -28,6 +28,6 @@ class TrackFactory extends WatchUi.PickerFactory{
     }
 
     function getDrawable(index, selected) {
-        return new DrawableTrack(tracks[index],{});
+        return new DrawableTrack({:track => tracks[index]});
     }
 }

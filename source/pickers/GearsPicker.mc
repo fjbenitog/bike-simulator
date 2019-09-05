@@ -10,11 +10,6 @@ class GearsPicker extends DigitPicker {
         DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.gears),1,20,1,gears);
     }
 
-    function onUpdate(dc) {
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        dc.clear();
-        Picker.onUpdate(dc);
-    }
 }
 
 class GearsPickerDelegate extends WatchUi.PickerDelegate {

@@ -6,10 +6,14 @@ using Toybox.System;
 class DrawableTrack extends WatchUi.Drawable {
 
 	var track;
+	var drawableProfile;
 	
-	function initialize(track_,options) {
+	function initialize(options) {
         Drawable.initialize(options);
-        track = track_;
+        options.put(:scale, 3);
+        options.put(:x, 2);
+        track = options.get(:track);
+        drawableProfile = new DrawableTrackProfile(options);
     }
     
     function draw(dc) {
@@ -17,8 +21,7 @@ class DrawableTrack extends WatchUi.Drawable {
     	dc.drawText(dc.getWidth()/2, 10, Graphics.FONT_TINY, track.name, Graphics.TEXT_JUSTIFY_CENTER);
     	dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_BLACK);
     	System.println("Width:"+dc.getWidth()+", Height:"+dc.getHeight());
-    	for(var i = 0; i < track.profile.size(); ++i) {
-        	dc.fillRectangle(i, (dc.getHeight()/2)-track.profile[i]+10 , 1, track.profile[i]+10);
-        }
+    	drawableProfile.setY(dc.getHeight()- 20);
+    	drawableProfile.draw(dc);
     }
 }

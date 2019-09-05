@@ -10,11 +10,6 @@ class PowerPicker extends DigitPicker {
         DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.power),1,100,1,gears);
     }
 
-    function onUpdate(dc) {
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        dc.clear();
-        Picker.onUpdate(dc);
-    }
 }
 
 class PowerPickerDelegate extends WatchUi.PickerDelegate {

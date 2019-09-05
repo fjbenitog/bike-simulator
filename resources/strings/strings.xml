@@ -11,8 +11,10 @@
     <string id="tracks">Tracks</string>
     <string id="start">Start</string>
     
+    
     <string id="gears">Gears</string>
     <string id="power">Power Size</string>
+    <string id="level">Level</string>
     
     
 </strings>
