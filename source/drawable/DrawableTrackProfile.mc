@@ -60,5 +60,8 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 				}
         	}
 		}
+		
+		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.Graphics.COLOR_TRANSPARENT);
+		dc.drawText(dc.getWidth()/2, y, Graphics.FONT_XTINY, profile.size()+" Kms", Graphics.TEXT_JUSTIFY_CENTER);
 	}
 }
