@@ -9,14 +9,10 @@ using Toybox.Time.Gregorian;
 using Toybox.Activity;
 using Toybox.Attention;
 
-var session = null;
+const ACTIVITY_NANE = "Bike Indoor Simulator";
 var activityTime = "00:00:00"; 
 var activityDistance  = "0.00 Kms";
 var activitySpeed = "0 Kms/h";
-var activityRefreshTimer = null;
-var errorMessage = "";
-
-const ACTIVITY_NANE = "Bike Indoor Simulator";
 
 class ProfileTrackView extends WatchUi.View {
 
@@ -26,7 +22,6 @@ class ProfileTrackView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc) {
-    	activityRefreshTimer = new Timer.Timer();
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -45,9 +40,6 @@ class ProfileTrackView extends WatchUi.View {
         dc.drawText(dc.getWidth()/2, dc.getHeight()/4, Graphics.FONT_MEDIUM, activityTime, Graphics.TEXT_JUSTIFY_CENTER);
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_MEDIUM, activitySpeed, Graphics.TEXT_JUSTIFY_CENTER);
         dc.drawText(dc.getWidth()/2, 3 * dc.getHeight()/4, Graphics.FONT_MEDIUM, activityDistance, Graphics.TEXT_JUSTIFY_CENTER);
-        
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/4, Graphics.FONT_XTINY, errorMessage, Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     // Called when this View is removed from the screen. Save the
@@ -55,77 +47,57 @@ class ProfileTrackView extends WatchUi.View {
     // memory.
     function onHide() {
     }
-
+    
 }
 
-class ProfileTrackDelegate extends WatchUi.BehaviorDelegate {
+class ProfileTrackDelegate extends ScreenDelegate {
 
-
- 	function initialize() {
-        BehaviorDelegate.initialize();
+	function initialize(session_) {
+        ScreenDelegate.initialize(session_);
     }
-
-
-	function onMenu() {
-
-    }
-
-    function onKey(evt) {
-    }	
+    
+	function cleanValues(){
+		activityTime = "00:00:00"; 
+		activityDistance  = "0.00 Kms";
+		activitySpeed = "0 Kms/h";
+	}
     
     function calculateActivityValues(){
-    	caculateActivityTime();
-
-	    	var distance = Activity.getActivityInfo().elapsedDistance;
-	    	if(distance == null){ 
-	    		distance = 0;
-	    	}
-	    	System.println("Distance:"+distance);
-	    	activityDistance = Lang.format( "$1$ Kms",
-	    		[
-	        		(distance/1000).toFloat().format("%02.2f")
-	    		]
-			);
-
-	    	var speed = Activity.getActivityInfo().currentSpeed;
-	    	if(speed == null) {
-	    		speed = 0;
-	    	}
-	    	System.println("Speed:"+speed);
-	    	activitySpeed = Lang.format( "$1$ Kms/h",
-	    		[
-	        		((3600*speed)/1000).toNumber().format("%02d")
-	    		]
-			);
-
-		
-    	WatchUi.requestUpdate();
+    	calculateActivityTime();
+		calculateActivityDistance();
+	    calculateActivitySpeed();
     }
     
-    function onSelect() {
-		handleActivityRecording();
-		return true;
-	}
-	
-	function onBack() {
-		System.println("OnBack");
-		if(session!=null && session.isRecording()){
-			return true;
-		}else if(session!=null && !session.isRecording()){
-			session.discard();// discard the session
-    		session = null;                                      // set session control variable to null
-    		activityTime = "00:00:00"; 
-    		activityDistance  = "0.00 Kms";
-			activitySpeed = "0 Kms/h";
-    		WatchUi.requestUpdate();
-    		return true;
-		}
-	}
-    	
-    function caculateActivityTime(){
+    function calculateActivityTime(){
     	var milis = Activity.getActivityInfo().timerTime;
     	System.println("Timer:"+milis);
 		activityTime = toHMS(milis/1000);
+    }
+    
+    function calculateActivityDistance(){
+    	var distance = Activity.getActivityInfo().elapsedDistance;
+    	if(distance == null || distance<0){ 
+    		distance = 0;
+    	}
+    	System.println("Distance:"+distance);
+    	activityDistance = Lang.format( "$1$ Kms",
+    		[
+        		(distance/1000).toFloat().format("%02.2f")
+    		]
+		);
+    }
+    
+    function calculateActivitySpeed(){
+    	var speed = Activity.getActivityInfo().currentSpeed;
+    	if(speed == null || speed < 0) {
+    		speed = 0;
+    	}
+    	System.println("Speed:"+speed);
+    	activitySpeed = Lang.format( "$1$ Kms/h",
+    		[
+        		((3600*speed)/1000).toNumber().format("%02d")
+    		]
+		);
     }
     
     function toHMS(secs) {
@@ -134,59 +106,5 @@ class ProfileTrackDelegate extends WatchUi.BehaviorDelegate {
 		var sec = secs%60;
 		return hr.format("%02d")+":"+min.format("%02d")+":"+sec.format("%02d");
 	}
-	
-	function handleActivityRecording(){
-		if (Toybox has :ActivityRecording) {                          // check device for activity recording
-	       if (session == null) {
-				activityRefreshTimer.start(method(:calculateActivityValues),1000,true); 
-	           	session = ActivityRecording.createSession({          // set up recording session
-	                 :name		=> 	ACTIVITY_NANE,                              // set session name
-	                 :sport		=> 	ActivityRecording.SPORT_CYCLING,       // set sport type
-	                 :subSport	=>	ActivityRecording.SUB_SPORT_INDOOR_CYCLING // set sub sport type
-	           	});
-	           	session.start();
-	           	playStart();	                                              // call start session
-	       }
-	       else if ((session != null) && session.isRecording()) {
-	           	session.stop();  
-	           	activityRefreshTimer.stop();  
-	           	calculateActivityValues(); 	          
-	           	playStop();                                // stop the session
-	       }else if((session != null) && !session.isRecording()){
-	       		activityRefreshTimer.start(method(:calculateActivityValues),1000,true); 
-	       		session.start();
-	           	playStart();
-	       }
-	   }
-	}
-
-
-	
-	function playTone(tone){
-		if(Attention has :playTone){
-			Attention.playTone(tone);
-		}
-	}
-	
-	function vibrate(){
-		if (Attention has :vibrate) {
-			var vibeData =
-				[
-					new Attention.VibeProfile(50, 500)
-				];
-			Attention.vibrate(vibeData);
-		}	
-	}
-	
-	function playStart(){
-		playTone(Attention.TONE_START);
-		vibrate();
-	}
-	
-	function playStop(){
-		playTone(Attention.TONE_STOP);
-		vibrate();
-	}
-   
-    
 }
+
