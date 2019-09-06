@@ -14,6 +14,7 @@ var activityTime = "00:00:00";
 var activityDistance  = "0.00 Kms";
 var activitySpeed = "0 Kms/h";
 var activityRefreshTimer = null;
+var errorMessage = "";
 
 const ACTIVITY_NANE = "Bike Indoor Simulator";
 
@@ -44,6 +45,9 @@ class ProfileTrackView extends WatchUi.View {
         dc.drawText(dc.getWidth()/2, dc.getHeight()/4, Graphics.FONT_MEDIUM, activityTime, Graphics.TEXT_JUSTIFY_CENTER);
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_MEDIUM, activitySpeed, Graphics.TEXT_JUSTIFY_CENTER);
         dc.drawText(dc.getWidth()/2, 3 * dc.getHeight()/4, Graphics.FONT_MEDIUM, activityDistance, Graphics.TEXT_JUSTIFY_CENTER);
+        
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(dc.getWidth()/2, dc.getHeight()/4, Graphics.FONT_XTINY, errorMessage, Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     // Called when this View is removed from the screen. Save the
@@ -71,20 +75,30 @@ class ProfileTrackDelegate extends WatchUi.BehaviorDelegate {
     
     function calculateActivityValues(){
     	caculateActivityTime();
-    	var distance = Activity.getActivityInfo().elapsedDistance;
-    	System.println("Distance:"+distance);
-    	activityDistance = Lang.format( "$1$ Kms",
-    		[
-        		(distance/1000).format("%02.2f")
-    		]
-		);
-    	var speed = Activity.getActivityInfo().currentSpeed;
-    	System.println("Speed:"+speed);
-    	activitySpeed = Lang.format( "$1$ Kms/h",
-    		[
-        		((3600*speed)/1000).format("%02d")
-    		]
-		);
+
+	    	var distance = Activity.getActivityInfo().elapsedDistance;
+	    	if(distance == null){ 
+	    		distance = 0;
+	    	}
+	    	System.println("Distance:"+distance);
+	    	activityDistance = Lang.format( "$1$ Kms",
+	    		[
+	        		(distance/1000).toFloat().format("%02.2f")
+	    		]
+			);
+
+	    	var speed = Activity.getActivityInfo().currentSpeed;
+	    	if(speed == null) {
+	    		speed = 0;
+	    	}
+	    	System.println("Speed:"+speed);
+	    	activitySpeed = Lang.format( "$1$ Kms/h",
+	    		[
+	        		((3600*speed)/1000).toNumber().format("%02d")
+	    		]
+			);
+
+		
     	WatchUi.requestUpdate();
     }
     
@@ -107,22 +121,19 @@ class ProfileTrackDelegate extends WatchUi.BehaviorDelegate {
     		return true;
 		}
 	}
-    
+    	
     function caculateActivityTime(){
     	var milis = Activity.getActivityInfo().timerTime;
     	System.println("Timer:"+milis);
-    	var activityMoment = new Time.Moment(milis/1000);
-
-		var activityGregorian = Gregorian.info(activityMoment,Time.FORMAT_MEDIUM);
-		activityTime = Lang.format(
-    		"$1$:$2$:$3$",
-    		[
-        		activityGregorian.hour.format("%02d"),
-        		activityGregorian.min.format("%02d"),
-        		activityGregorian.sec.format("%02d"),
-    		]
-		);
+		activityTime = toHMS(milis/1000);
     }
+    
+    function toHMS(secs) {
+		var hr = secs/3600;
+		var min = (secs-(hr*3600))/60;
+		var sec = secs%60;
+		return hr.format("%02d")+":"+min.format("%02d")+":"+sec.format("%02d");
+	}
 	
 	function handleActivityRecording(){
 		if (Toybox has :ActivityRecording) {                          // check device for activity recording
