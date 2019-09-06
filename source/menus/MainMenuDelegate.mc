@@ -1,4 +1,4 @@
- using Toybox.WatchUi;
+using Toybox.WatchUi;
 using Toybox.System;
 
 class MainMenuDelegate extends WatchUi.MenuInputDelegate {
@@ -13,5 +13,9 @@ class MainMenuDelegate extends WatchUi.MenuInputDelegate {
         } else if (item == :tracks) {
             WatchUi.pushView(new TrackPicker(), new TrackPickerDelegate(), WatchUi.SLIDE_IMMEDIATE);
         }
+        else if (item == :start) {
+            WatchUi.pushView(new ProfileTrackView(), new ProfileTrackDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        }
+        
     }
 }
