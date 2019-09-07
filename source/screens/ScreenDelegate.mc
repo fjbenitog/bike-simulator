@@ -6,12 +6,67 @@ using Toybox.Timer;
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
 	var session;
+	var index;
 	var activityRefreshTimer;
 
-	function initialize(session_) {
+	function initialize(session_, index_) {
         BehaviorDelegate.initialize();
         session = session_;
+        index = index_;
+        refreshValues();
         activityRefreshTimer = new Timer.Timer();
+        if(session!= null && session.isRecording()){
+        	activityRefreshTimer.start(method(:refreshValues),1000,true);
+        }
+    }
+    
+    function onNextPage() {
+        index = (index + 1) % 2;
+        activityRefreshTimer.stop();
+        WatchUi.switchToView(getView(index), getDelegate(index), WatchUi.SLIDE_LEFT);
+    }
+
+    function onPreviousPage() {
+        index = index - 1;
+        if (index < 0) {
+            index = 1;
+        }
+        index = index % 2;
+        activityRefreshTimer.stop();
+        WatchUi.switchToView(getView(index), getDelegate(index), WatchUi.SLIDE_RIGHT);
+    }
+    
+    function onKey(evt) {
+        var key = evt.getKey();
+        if (WatchUi.KEY_DOWN == key) {
+            onNextPage();
+        } else if (WatchUi.KEY_UP == key) {
+            onPreviousPage();
+        }
+    }
+
+    function getView(index) {
+        var view;
+
+        if (0 == index) {
+            view = new ProfileTrackView();
+        } else{
+            view = new DataFieldsView();
+        }
+
+        return view;
+    }
+
+    function getDelegate(index) {
+        var delegate;
+
+        if (0 == index) {
+            delegate = new ProfileTrackDelegate(session,index);
+        } else{
+            delegate = new DataFieldsDelegate(session,index);
+        }
+
+        return delegate;
     }
     
     function onSelect() {
@@ -30,6 +85,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     		WatchUi.requestUpdate();
     		return true;                                     // set session control variable to null
     	}
+    	return false;
     }
     	
     function refreshValues(){
