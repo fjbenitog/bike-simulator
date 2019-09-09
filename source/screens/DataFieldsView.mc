@@ -1,8 +1,5 @@
 using Toybox.WatchUi;
 using Toybox.Graphics;
-using Toybox.Lang;
-using Toybox.System;
-using Toybox.Activity;
 using ActivityValues;
 
 class DataFieldsView extends WatchUi.View {

@@ -12,21 +12,15 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	var index;
 	var activityRefreshTimer;
 
-	function initialize(session_, index_) {
+	function initialize(index_) {
         BehaviorDelegate.initialize();
-        session = session_;
         index = index_;
-        refreshValues();
         activityRefreshTimer = new Timer.Timer();
-        if(session!= null && session.isRecording()){
-        	activityRefreshTimer.start(method(:refreshValues),1000,true);
-        }
     }
     
     function onNextPage() {
         index = (index + 1) % 2;
-        activityRefreshTimer.stop();
-        WatchUi.switchToView(getView(index), getDelegate(index), WatchUi.SLIDE_LEFT);
+        WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_LEFT);
     }
 
     function onPreviousPage() {
@@ -35,8 +29,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
             index = 1;
         }
         index = index % 2;
-        activityRefreshTimer.stop();
-        WatchUi.switchToView(getView(index), getDelegate(index), WatchUi.SLIDE_RIGHT);
+        WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_RIGHT);
     }
     
     function onKey(evt) {
@@ -60,53 +53,31 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         return view;
     }
 
-    function getDelegate(index) {
-        var delegate;
-
-        if (0 == index) {
-            delegate = new ProfileTrackDelegate(session,index);
-        } else{
-            delegate = new DataFieldsDelegate(session,index);
-        }
-
-        return delegate;
-    }
-    
     function onSelect() {
 		handleActivityRecording();
 		return true;
 	}
 	
 	function onBack() {
-		System.println("OnBack");
 		if(session!=null && session.isRecording()){
 			return true;
 		}else if(session!=null && !session.isRecording()){
 			session.discard();// discard the session
-			cleanValues();
     		session = null; 
-    		WatchUi.requestUpdate();
+    		cleanValues();
     		return true;                                     // set session control variable to null
     	}
     	return false;
     }
     	
     function refreshValues(){
-    	calculateActivityValues();
+    	ActivityValues.calculateValues();
     	WatchUi.requestUpdate();
     }
     
-    function calculateActivityValues(){
-        calculateActivityTime();
-		calculateActivityDistance();
-	    calculateActivitySpeed();
-    }
-    
-    function cleanValues(){
-	    ActivityValues.activityTime = new ActivityValues.ActivityTime(0,0,0);
-		ActivityValues.activityDistance = 0;
-		ActivityValues.activitySpeed = 0;
-    
+    private function cleanValues(){
+    	ActivityValues.cleanValues();
+    	WatchUi.requestUpdate();
     }
     
     function handleActivityRecording(){
@@ -133,36 +104,6 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	   }
 	}
 	
-	function calculateActivityTime(){
-    	var milis = Activity.getActivityInfo().timerTime;
-    	System.println("Timer:"+milis);
-		ActivityValues.activityTime = toHMS(milis/1000);
-    }
-    
-    function calculateActivityDistance(){
-    	var distance = Activity.getActivityInfo().elapsedDistance;
-    	if(distance == null || distance<0){ 
-    		distance = 0;
-    	}
-    	System.println("Distance:"+distance);
-    	ActivityValues.activityDistance = distance/1000;
-    }
-    
-    function calculateActivitySpeed(){
-    	var speed = Activity.getActivityInfo().currentSpeed;
-    	if(speed == null || speed < 0) {
-    		speed = 0;
-    	}
-    	System.println("Speed:"+speed);
-    	ActivityValues.activitySpeed = (3600*speed)/1000;
-    }
-    
-    function toHMS(secs) {
-		var hr = secs/3600;
-		var min = (secs-(hr*3600))/60;
-		var sec = secs%60;
-		return new ActivityValues.ActivityTime(hr,min,sec);
-	}
     
     function playTone(tone){
 		if(Attention has :playTone){
@@ -174,7 +115,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 		if (Attention has :vibrate) {
 			var vibeData =
 				[
-					new Attention.VibeProfile(50, 500)
+					new Attention.VibeProfile(50, 250)
 				];
 			Attention.vibrate(vibeData);
 		}	
