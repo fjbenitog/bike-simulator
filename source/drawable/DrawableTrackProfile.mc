@@ -32,17 +32,22 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	}
 	
 	function draw(dc) {
-		var width = dc.getWidth();
+		var width = dc.getWidth()-1;
 		var distance = profile.size();
+		var polygon = [];
 		
 		if(width/distance>=1){
 			var rate = (width/distance).toNumber();
 			var previous = 10;
+
 			for(var i = 0; i < profile.size(); ++i) {
 				previous = previous+profile[i];
-//				System.println("i:"+i+",previous:"+previous+", rate:"+rate);
-        		dc.fillRectangle(x + rate*i,y - (previous/scale) , rate, previous/scale);
+				polygon.add([x + rate*i, y - (previous/scale)]);
         	}
+        	polygon.add([x + rate*(profile.size()-1), y ]);
+        	polygon.add([x , y]);
+
+        	
 		}else{
 			var rate = (distance/width).toNumber();
 			var previous = 10;
@@ -51,16 +56,31 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 			for(var i = 0; i < profile.size(); ++i) {
 				acc+=profile[i];
 				var module_ = (i+1) % rate;
-				if(module_ == 0){
+				if(module_ == 0 && count < width){
 					count++;
 					previous = previous+acc;
-//					System.println("i:"+i+",previous:"+previous+", rate:"+rate+ ", acc:"+acc+",count:"+count);
-        			dc.fillRectangle(x + count,y - (previous/scale) , 1, previous/scale);
+					polygon.add([x + count, y - (previous/scale)]);
         			acc = 0;
 				}
         	}
+        	polygon.add([x + count, y ]);
+        	polygon.add([x , y]);
 		}
 		
+    	dc.fillPolygon(polygon);
+    	dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.Graphics.COLOR_TRANSPARENT);
+    	for(var i = 0; i < polygon.size()-1; ++i) {
+    		dc.drawLine(polygon[i][0], polygon[i][1], polygon[i+1][0], polygon[i+1][1]);
+    	}
+    	dc.drawLine(polygon[polygon.size()-1][0], polygon[polygon.size()-1][1], polygon[0][0], polygon[0][1]);
+    	var realWidth = polygon[polygon.size()-2][0]-polygon[polygon.size()-1][0];
+    	System.println("realWidth:"+realWidth);
+    	dc.drawLine(x,y,x,y+3);
+    	dc.drawLine(realWidth/4,y,realWidth/4,y+3);
+    	dc.drawLine(realWidth/2,y,realWidth/2,y+3);
+    	dc.drawLine(3*realWidth/4,y,3*realWidth/4,y+3);
+    	dc.drawLine(realWidth,y,realWidth,y+3);
+	
 		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.Graphics.COLOR_TRANSPARENT);
 		dc.drawText(dc.getWidth()/2, y, Graphics.FONT_XTINY, profile.size()+" Kms", Graphics.TEXT_JUSTIFY_CENTER);
 	}

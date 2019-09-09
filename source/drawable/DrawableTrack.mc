@@ -11,7 +11,7 @@ class DrawableTrack extends WatchUi.Drawable {
 	function initialize(options) {
         Drawable.initialize(options);
         options.put(:scale, 3);
-        options.put(:x, 2);
+//        options.put(:x, 2);
         track = options.get(:track);
         drawableProfile = new DrawableTrackProfile(options);
     }
