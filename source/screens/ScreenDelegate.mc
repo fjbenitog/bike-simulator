@@ -2,9 +2,12 @@ using Toybox.WatchUi;
 using Toybox.Attention;
 using Toybox.ActivityRecording;
 using Toybox.Timer;
+using ActivityValues;
 
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
+	private const ACTIVITY_NANE = "Bike Indoor Simulator";
+	
 	var session;
 	var index;
 	var activityRefreshTimer;
@@ -94,9 +97,17 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     function calculateActivityValues(){
+        calculateActivityTime();
+		calculateActivityDistance();
+	    calculateActivitySpeed();
     }
     
-    function cleanValues(){}
+    function cleanValues(){
+	    ActivityValues.activityTime = new ActivityValues.ActivityTime(0,0,0);
+		ActivityValues.activityDistance = 0;
+		ActivityValues.activitySpeed = 0;
+    
+    }
     
     function handleActivityRecording(){
 		if (Toybox has :ActivityRecording) {                          // check device for activity recording
@@ -120,6 +131,37 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	           	playStart();
 	       }
 	   }
+	}
+	
+	function calculateActivityTime(){
+    	var milis = Activity.getActivityInfo().timerTime;
+    	System.println("Timer:"+milis);
+		ActivityValues.activityTime = toHMS(milis/1000);
+    }
+    
+    function calculateActivityDistance(){
+    	var distance = Activity.getActivityInfo().elapsedDistance;
+    	if(distance == null || distance<0){ 
+    		distance = 0;
+    	}
+    	System.println("Distance:"+distance);
+    	ActivityValues.activityDistance = distance/1000;
+    }
+    
+    function calculateActivitySpeed(){
+    	var speed = Activity.getActivityInfo().currentSpeed;
+    	if(speed == null || speed < 0) {
+    		speed = 0;
+    	}
+    	System.println("Speed:"+speed);
+    	ActivityValues.activitySpeed = (3600*speed)/1000;
+    }
+    
+    function toHMS(secs) {
+		var hr = secs/3600;
+		var min = (secs-(hr*3600))/60;
+		var sec = secs%60;
+		return new ActivityValues.ActivityTime(hr,min,sec);
 	}
     
     function playTone(tone){
