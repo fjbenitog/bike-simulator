@@ -2,9 +2,13 @@ class Track{
 
 	var name;
 	var profile;
+	var drawPoints;
+	var maxPoint;
 	
-	function initialize(name_,profile_,options) {
+	function initialize(name_,profile_,drawPoints_,maxPoint_,options) {
         name = name_;
         profile = profile_;
+        drawPoints = drawPoints_;
+        maxPoint = maxPoint_;
     }
 }

@@ -5,12 +5,12 @@ using Toybox.System;
 
 class ProfileTrackView  extends WatchUi.View {
 
-	var drawableTrackProfile;
+	var index;
 	
     function initialize() {
         View.initialize();
-        drawableTrackProfile = new DrawableTrackProfile({:track => DataTracks.Tracks[0]});
-        
+        var trackKey = Application.getApp().getProperty(Config.TRACKS_KEY);
+        index = getIndex(DataTracks.Tracks,trackKey);
     }
 
     // Load your resources here
@@ -27,9 +27,24 @@ class ProfileTrackView  extends WatchUi.View {
     function onUpdate(dc) {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
+        var drawableTrackProfile  = new DrawableTrackProfile({
+        	:track 	=> DataTracks.Tracks[index],
+        	:width 	=> 187, 
+        	:height => 118,
+        	:y 		=> dc.getHeight()-50,
+        	:x 		=> 20
+        	});
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
-        drawableTrackProfile.setY(dc.getHeight()-20);
         drawableTrackProfile.draw(dc);
+    }
+    
+    function getIndex(tracks,value) {
+        for(var i = 0; i < tracks.size(); ++i) {
+        	if(tracks[i].name.equals(value)){
+        		return i;
+        	}
+        }
+        return 0;
     }
 }
 

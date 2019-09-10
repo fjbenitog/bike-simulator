@@ -25,9 +25,9 @@ class DataFieldsView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
         
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/4, Graphics.FONT_MEDIUM, ActivityValues.formatTime(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_MEDIUM, ActivityValues.formatSpeed(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(dc.getWidth()/2, 3 * dc.getHeight()/4, Graphics.FONT_MEDIUM, ActivityValues.formatDistance(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(dc.getWidth()/2, dc.getHeight()/4, Graphics.FONT_SYSTEM_NUMBER_MILD, ActivityValues.formatTime(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_SYSTEM_NUMBER_MILD, ActivityValues.formatSpeed(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(dc.getWidth()/2, 3 * dc.getHeight()/4, Graphics.FONT_SYSTEM_NUMBER_MILD, ActivityValues.formatDistance(), Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     // Called when this View is removed from the screen. Save the

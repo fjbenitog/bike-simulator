@@ -14,7 +14,7 @@ class MainMenuDelegate extends WatchUi.MenuInputDelegate {
             WatchUi.pushView(new TrackPicker(), new TrackPickerDelegate(), WatchUi.SLIDE_IMMEDIATE);
         }
         else if (item == :start) {
-            WatchUi.pushView(new DataFieldsView(), new ScreenDelegate(1), WatchUi.SLIDE_IMMEDIATE);
+            WatchUi.pushView(new ProfileTrackView(), new ScreenDelegate(0), WatchUi.SLIDE_IMMEDIATE);
         }
         
     }
