@@ -18,7 +18,6 @@ class DrawableTrack extends WatchUi.Drawable {
     function draw(dc) {
     	dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
     	dc.drawText(dc.getWidth()/2, 10, Graphics.FONT_TINY, track.name, Graphics.TEXT_JUSTIFY_CENTER);
-    	dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
     	System.println("Width:"+dc.getWidth()+", Height:"+dc.getHeight());
     	drawableProfile.setY(dc.getHeight()- 20);
     	drawableProfile.draw(dc);

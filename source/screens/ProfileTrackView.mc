@@ -29,10 +29,10 @@ class ProfileTrackView  extends WatchUi.View {
         View.onUpdate(dc);
         var drawableTrackProfile  = new DrawableTrackProfile({
         	:track 	=> DataTracks.Tracks[index],
-        	:width 	=> 187, 
+        	:width 	=> 175, 
         	:height => 118,
         	:y 		=> dc.getHeight()-50,
-        	:x 		=> 20
+        	:x 		=> 22
         	});
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
         drawableTrackProfile.draw(dc);

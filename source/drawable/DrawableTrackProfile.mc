@@ -41,59 +41,49 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	
 	function draw(dc) {
 		if(width == 0){
-			width = dc.getWidth();
+			width = dc.getWidth() - 1;
 		}
 		if(height == 0){
 			height = y;
 		}
 		var distance = drawPoints.size();
 		var polygon = [];
+		var pethWidth = 3;
+		var rate = (width.toDouble()  - pethWidth) / distance;
+		var scale = height.toDouble() / (maxPoint +base);
+		System.println("Rate:"+rate+", scale:"+scale+",distance:"+distance);
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
+		dc.setPenWidth(pethWidth);
+		for(var i = 0; i < drawPoints.size(); ++i) {
+			var xPoint = (i * rate).toNumber() + pethWidth;
+			var yPoint = ((drawPoints[i] + base) * scale).toNumber();
+			
+			polygon.add([x + xPoint, y - yPoint]);
 		
-		if(width/distance>=1){
-			var rate = width.toDouble() / distance;
-			var scale = height.toDouble() / (maxPoint +base);
-			System.println("Rate:"+rate+", scale:"+scale);
-			for(var i = 0; i < drawPoints.size(); ++i) {
-				var xPoint = (i * rate).toNumber();
-				var yPoint = ((drawPoints[i] + base) * scale).toNumber();
-				
-				polygon.add([x + xPoint, y - yPoint]);
-        	}
-        	polygon.add([x + ( (drawPoints.size() -1) * rate).toNumber(), y]);
-        	polygon.add([x , y]);
+			if(i>0){
+				dc.drawLine(polygon[i-1][0], polygon[i-1][1], polygon[i][0], polygon[i][1]);
+			}
 
-        	
-		}else{
-//			var rate = (distance/width).toNumber();
-//			var previous = 10;
-//			var acc = 0;
-//			var count = -1;
-//			var scale = height / (maxPoint +base);
-//			for(var i = 0; i < profile.size(); ++i) {
-//				acc+=profile[i];
-//				var module_ = (i+1) % rate;
-//				if(module_ == 0 && count < width){
-//					count++;
-//					previous = previous+acc;
-//					polygon.add([x + count, y - (previous/scale)]);
-//        			acc = 0;
-//				}
-//        	}
-//        	polygon.add([x + count, y ]);
-//        	polygon.add([x , y]);
-		}
-		
-    	dc.fillPolygon(polygon);
-    	dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
-    	for(var i = 0; i < polygon.size()-1; ++i) {
-    		dc.drawLine(polygon[i][0], polygon[i][1], polygon[i+1][0], polygon[i+1][1]);
     	}
-    	dc.drawLine(polygon[polygon.size()-1][0], polygon[polygon.size()-1][1], polygon[0][0], polygon[0][1]);
+
+    	polygon.add([x + ( (drawPoints.size() -1) * rate).toNumber() + pethWidth, y]);
+    	dc.drawLine(polygon[polygon.size()-2][0] - 1, polygon[polygon.size()-2][1], polygon[polygon.size()-1][0] - 1, polygon[polygon.size()-1][1]);
+    	polygon.add([x + pethWidth, y]);
+    	dc.drawLine(polygon[polygon.size()-2][0] - 1, polygon[polygon.size()-2][1] -1, polygon[polygon.size()-1][0] - 1, polygon[polygon.size()-2][1] -1);
+    	dc.drawLine(polygon[polygon.size()-1][0], polygon[polygon.size()-1][1] - 1, polygon[0][0], polygon[0][1] - 1);
+    	
+    	dc.setPenWidth(1);
+    	dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
+    	dc.fillPolygon(polygon);
+
+
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
+
     	
     	var realWidth = polygon[polygon.size()-2][0]-polygon[polygon.size()-1][0];
-    	dc.drawLine(x+realWidth/4,y,x+realWidth/4,y+3);
-    	dc.drawLine(x+realWidth/2,y,x+realWidth/2,y+3);
-    	dc.drawLine(x+3*realWidth/4,y,x+3*realWidth/4,y+3);
+    	dc.drawLine(x+realWidth/4,y+1,x+realWidth/4,y+4);
+    	dc.drawLine(x+realWidth/2,y+1,x+realWidth/2,y+4);
+    	dc.drawLine(x+3*realWidth/4,y+1,x+3*realWidth/4,y+4);
 	
 		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.Graphics.COLOR_TRANSPARENT);
 		dc.drawText(x + width/2, y, Graphics.FONT_XTINY, drawPoints.size()+" Kms", Graphics.TEXT_JUSTIFY_CENTER);
