@@ -3,10 +3,6 @@ using Toybox.Activity;
 using Toybox.System;
 
 module ActivityValues {
-
-	var activityTime = new ActivityTime(0,0,0);
-	var activityDistance = 0;
-	var activitySpeed = 0;
 	
 	class ActivityTime {
 	
@@ -22,28 +18,6 @@ module ActivityValues {
 		
 	}
 	
-	function formatTime(){
-		return activityTime.hours.format("%02d")+":"+
-		activityTime.minutes.format("%02d")+
-		":"+activityTime.seconds.format("%02d");
-	}
-	
-	function formatDistance(){
-		return  Lang.format( "$1$ Kms",
-    		[
-        		activityDistance.format("%02.2f")
-    		]
-		);
-	}
-	
-	function formatSpeed(){
-		return Lang.format( "$1$ Kms/h",
-    		[
-        		activitySpeed.format("%02d")
-    		]
-		);
-	}
-	
 	function toHMS(secs) {
 		var hr = secs/3600;
 		var min = (secs-(hr*3600))/60;
@@ -54,7 +28,10 @@ module ActivityValues {
 	function calculateTime(){
     	var milis = Activity.getActivityInfo().timerTime;
     	System.println("Timer:"+milis);
-		activityTime = ActivityValues.toHMS(milis/1000);
+		var activityTime = ActivityValues.toHMS(milis/1000);
+		return activityTime.hours.format("%02d")+":"+
+			activityTime.minutes.format("%02d")+
+			":"+activityTime.seconds.format("%02d");
     }
     
     function calculateDistance(){
@@ -63,7 +40,12 @@ module ActivityValues {
     		distance = 0;
     	}
     	System.println("Distance:"+distance);
-    	activityDistance = distance/1000;
+    	var activityDistance = distance/1000;
+    	return  Lang.format( "$1$",
+    		[
+        		activityDistance.format("%02.2f")
+    		]
+		);
     }
     
     function calculateSpeed(){
@@ -72,21 +54,24 @@ module ActivityValues {
     		speed = 0;
     	}
     	System.println("Speed:"+speed);
-    	activitySpeed = (3600*speed)/1000;
+    	var activitySpeed = (3600*speed)/1000;
+    	return Lang.format( "$1$",
+    		[
+        		activitySpeed.format("%02d")
+    		]
+		);
     }
     
-    function calculateValues(){
-        calculateTime();
-		calculateDistance();
-	    calculateSpeed();
+    function calculateHeartRate(){
+    	var heartRate = Activity.getActivityInfo().currentHeartRate;
+    	if(heartRate == null || heartRate < 0) {
+    		heartRate = 0;
+    	}
+    	System.println("Heart Rate:"+heartRate);
+    	return heartRate.toString();
     }
     
-    function cleanValues(){
-	    activityTime = new ActivityTime(0,0,0);
-		activityDistance = 0;
-		activitySpeed = 0;
     
-    }
 }
 
 

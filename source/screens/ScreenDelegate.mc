@@ -64,19 +64,14 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 		}else if(session!=null && !session.isRecording()){
 			session.discard();// discard the session
     		session = null; 
-    		cleanValues();
+    		refreshValues();
     		return true;                                     // set session control variable to null
     	}
     	return false;
     }
     	
-    function refreshValues(){
-    	ActivityValues.calculateValues();
-    	WatchUi.requestUpdate();
-    }
     
-    private function cleanValues(){
-    	ActivityValues.cleanValues();
+    function refreshValues(){
     	WatchUi.requestUpdate();
     }
     
@@ -101,6 +96,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	       		session.start();
 	           	playStart();
 	       }
+	       refreshValues();
 	   }
 	}
 	

@@ -9,5 +9,5 @@ module DataTracks{
 						4,4,4,4,10,13,23,34,43,53,60,65,75,79,75,65 ,60,53,43 ,34,23 ,13 ,10,4 ,4];
 	var maxPoint2 	= 79;
 						
-	var Tracks = [new Track("Covatilla",profile1,drawPoints1,maxPoint1,{}),new Track("Track 2",profile2,drawPoints2,maxPoint2,{})];
+	var Tracks = [new Track("Covatilla",profile1,drawPoints1,maxPoint1),new Track("Track 2",profile2,drawPoints2,maxPoint2)];
 }	

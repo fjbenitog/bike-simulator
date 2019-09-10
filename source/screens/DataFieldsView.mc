@@ -22,12 +22,17 @@ class DataFieldsView extends WatchUi.View {
     function onUpdate(dc) {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-
-        dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
-        
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/4, Graphics.FONT_SYSTEM_NUMBER_MILD, ActivityValues.formatTime(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_SYSTEM_NUMBER_MILD, ActivityValues.formatSpeed(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(dc.getWidth()/2, 3 * dc.getHeight()/4, Graphics.FONT_SYSTEM_NUMBER_MILD, ActivityValues.formatDistance(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
+		dc.clear();
+		var fields = new DrawableDataFields({:dataFields => 
+		[
+			["TIME" 	, :calculateTime],
+			["SPEED"	, :calculateSpeed],
+			["DIST"		, :calculateDistance],
+			["HR"		, :calculateHeartRate]
+		]
+		});
+		fields.draw(dc);
     }
 
     // Called when this View is removed from the screen. Save the
