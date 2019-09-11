@@ -5,7 +5,8 @@ using Toybox.Timer;
 using ActivityValues;
 using Toybox.Sensor;
 
-protected var startingActivity = false;
+var startingActivity = false;
+var stoppingActivity = false;
 
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
@@ -54,7 +55,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         }
     }
 
-    function getView(index) {
+    private function getView(index) {
         var view;
 
         if (0 == index) {
@@ -88,7 +89,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
     }
     	
-    function release(){
+    private function release(){
     	activityRefreshTimer.stop();
     	if(Sensor has :unregisterSensorDataListener){
 			Sensor.unregisterSensorDataListener();
@@ -99,7 +100,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	WatchUi.requestUpdate();
     }
     
-    function handleActivityRecording(){
+    private function handleActivityRecording(){
 		if (Toybox has :ActivityRecording) {                          // check device for activity recording
 	       if (session == null) {
 	           	session = ActivityRecording.createSession({          // set up recording session
@@ -107,36 +108,49 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	                 :sport		=> 	ActivityRecording.SPORT_CYCLING,       // set sport type
 	                 :subSport	=>	ActivityRecording.SUB_SPORT_INDOOR_CYCLING // set sub sport type
 	           	});
-	           	startingActivity = true;
-	           	session.start();
-	           	playStart();	
-	           	var startTimer = new Timer.Timer();
-	           	startTimer.start(method(:cleanActivityValues),750,false);                                              // call start session
+	           	startingTimer();
 	       }
 	       else if ((session != null) && session.isRecording()) {
-	           	session.stop();  
-	           	playStop();                                // stop the session
+	       		stoppingTimer();
 	       }else if((session != null) && !session.isRecording()){ 
-	       		session.start();
-	           	playStart();
+	       		startingTimer();
 	       }
 	       refreshValues();
 	   }
 	}
 	
+	private function startingTimer(){
+		startingActivity = true;
+		fireTimer();
+	    session.start();
+	    playStart();
+	}
+	
+	private function stoppingTimer(){
+		stoppingActivity = true;
+		fireTimer();
+       	session.stop();  
+       	playStop(); 
+	}
+	
+	private function fireTimer(){
+		var timer = new Timer.Timer();
+	    timer.start(method(:cleanActivityValues),750,false);
+	}
+	
 	function cleanActivityValues(){
 		startingActivity = false;
-		System.println("Reset Activity Values");
+		stoppingActivity = false;
 		refreshValues();
 	}
     
-    function playTone(tone){
+    private function playingTone(tone){
 		if(Attention has :playTone){
 			Attention.playTone(tone);
 		}
 	}
 	
-	function vibrate(){
+	private function vibrating(){
 		if (Attention has :vibrate) {
 			var vibeData =
 				[
@@ -146,13 +160,13 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 		}	
 	}
 	
-	function playStart(){
-		playTone(Attention.TONE_START);
-		vibrate();
+	private function playStart(){
+		playingTone(Attention.TONE_START);
+		vibrating();
 	}
 	
-	function playStop(){
-		playTone(Attention.TONE_STOP);
-		vibrate();
+	private function playStop(){
+		playingTone(Attention.TONE_STOP);
+		vibrating();
 	}
 }

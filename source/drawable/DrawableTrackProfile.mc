@@ -51,7 +51,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		var pethWidth = 3;
 		var rate = (width.toDouble()  - pethWidth) / distance;
 		var scale = height.toDouble() / (maxPoint +base);
-		System.println("Rate:"+rate+", scale:"+scale+",distance:"+distance);
+//		System.println("Rate:"+rate+", scale:"+scale+",distance:"+distance);
 		
 		var currentDistance = ActivityValues.calculateDistance().toNumber();
 		//Draw border and populate polygon for profile

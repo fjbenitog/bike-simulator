@@ -20,24 +20,39 @@ class BaseView extends WatchUi.View {
 
     // Update the view
     function onUpdate(dc) {
+    	drawStartingIcon(dc);
+    	drawStoppingIcon(dc);
+    }
+    
+    private function drawStartingIcon(dc){
     	if(startingActivity){
-    		dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-    		dc.fillPolygon(
-    		[
-    			[dc.getWidth()/4, dc.getHeight()/4],
-    			[3*dc.getWidth()/4, dc.getHeight()/2],
-    			[dc.getWidth()/4, 3*dc.getHeight()/4],
-    		]);
-    		dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
-    		dc.fillPolygon(
-    		[
-    			[dc.getWidth()/4 + 5, dc.getHeight()/4 + 8],
-    			[3*dc.getWidth()/4 - 10, dc.getHeight()/2],
-    			[dc.getWidth()/4 + 5, 3*dc.getHeight()/4 - 8],
-    		]);
-    		
-    	}
+			dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+			dc.fillPolygon(
+			[
+				[dc.getWidth()/4, dc.getHeight()/4],
+				[3*dc.getWidth()/4, dc.getHeight()/2],
+				[dc.getWidth()/4, 3*dc.getHeight()/4],
+			]);
+			dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+			dc.fillPolygon(
+			[
+				[dc.getWidth()/4 + 5, dc.getHeight()/4 + 8],
+				[3*dc.getWidth()/4 - 10, dc.getHeight()/2],
+				[dc.getWidth()/4 + 5, 3*dc.getHeight()/4 - 8],
+			]);
 		
+		}
+    
+    }
+    
+    private function drawStoppingIcon(dc){
+    	if(stoppingActivity){
+			dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+			dc.fillRectangle(dc.getWidth()/4, dc.getHeight()/4, dc.getWidth()/2, dc.getHeight()/2);
+			dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+			dc.fillRectangle(dc.getWidth()/4 + 5, dc.getHeight()/4 + 5, dc.getWidth()/2 - 10, dc.getHeight()/2 -10);
+		}
+    
     }
 
     // Called when this View is removed from the screen. Save the

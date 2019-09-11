@@ -27,7 +27,6 @@ module ActivityValues {
 	
 	function calculateTime(){
     	var milis = Activity.getActivityInfo().timerTime;
-    	System.println("Timer:"+milis);
 		var activityTime = ActivityValues.toHMS(milis/1000);
 		return activityTime.hours.format("%02d")+":"+
 			activityTime.minutes.format("%02d")+
@@ -39,7 +38,6 @@ module ActivityValues {
     	if(distance == null || distance<0){ 
     		distance = 0;
     	}
-    	System.println("Distance:"+distance);
     	var activityDistance = distance/1000;
 //    	var activityDistance = distance/10;
     	return  Lang.format( "$1$",
@@ -51,7 +49,6 @@ module ActivityValues {
     
     function calculateSpeed(){
     	var speed = Activity.getActivityInfo().currentSpeed;
-    	System.println("Speed:"+speed);
     	if(speed == null || speed < 0) {
     		return "";
     	}
@@ -65,7 +62,6 @@ module ActivityValues {
     
     function calculateAvgSpeed(){
     	var avgSpeed = Activity.getActivityInfo().averageSpeed;
-    	System.println("Avg Speed:"+avgSpeed);
     	if(avgSpeed == null || avgSpeed < 0) {
     		return "";
     	}
@@ -83,7 +79,6 @@ module ActivityValues {
     	if(heartRate == null || heartRate < 0) {
     		heartRate = "";
     	}
-    	System.println("Heart Rate:"+heartRate);
     	return heartRate.toString();
     }
     
@@ -92,7 +87,6 @@ module ActivityValues {
     	if(cadence == null || cadence < 0) {
     		cadence = "";
     	}
-    	System.println("Cadence:"+cadence);
     	return cadence.toString();
     }
     
