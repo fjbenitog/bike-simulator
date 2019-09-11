@@ -7,7 +7,7 @@ using Toybox.Lang;
 class DataField extends WatchUi.Drawable{
 
 	var name;
-	private var value;
+	var value;
 	
 	function initialize(options){
 		Drawable.initialize(options);

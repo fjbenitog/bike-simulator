@@ -1,7 +1,29 @@
 <strings>
 
+	<string id="AppName">BIS</string>
     <string id="prompt">Bienvenido a
     Bike Indoor Simulator</string>
     <string id="pressStart">Pulsa Start</string>
+
+
+    <string id="tracksTitle">Etapas</string>
+
+	<string id="mainTitle">Bike Indoor Simulator</string>
+    <string id="config">Configuracion</string>
+    <string id="tracks">Etapas</string>
+    <string id="start">Empezar</string>
+    
+    
+    <string id="gears">Marchas</string>
+    <string id="power">Tamaño Potencia</string>
+    <string id="level">Nivel</string>
+    
+    <string id="distance">DISTANCIA</string>
+    <string id="heartRate">FC</string>
+    <string id="speed">VELOCIDAD</string>
+    <string id="cadence">CADENCIA</string>
+    <string id="time">TIEMPO</string>
+    <string id="percentage">PORCENTAJE</string>
+    <string id="avgSpeed">VELOCIDAD M</string>
 
 </strings>
