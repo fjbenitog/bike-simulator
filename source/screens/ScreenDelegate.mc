@@ -3,6 +3,7 @@ using Toybox.Attention;
 using Toybox.ActivityRecording;
 using Toybox.Timer;
 using ActivityValues;
+using Toybox.Sensor;
 
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
@@ -16,7 +17,10 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         BehaviorDelegate.initialize();
         index = index_;
         activityRefreshTimer = new Timer.Timer();
+        activityRefreshTimer.start(method(:refreshValues),1000,true); 
+        Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE]);
     }
+    
     
     function onNextPage() {
         index = (index + 1) % 2;
@@ -63,13 +67,22 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 			return true;
 		}else if(session!=null && !session.isRecording()){
 			session.discard();// discard the session
-    		session = null; 
+    		session = null;
     		refreshValues();
-    		return true;                                     // set session control variable to null
+    		return true;                  
+    	}else{  	
+    		release();
+    		return false;
     	}
-    	return false;
+
     }
     	
+    function release(){
+    	activityRefreshTimer.stop();
+    	if(Sensor has :unregisterSensorDataListener){
+			Sensor.unregisterSensorDataListener();
+		}
+    }
     
     function refreshValues(){
     	WatchUi.requestUpdate();
@@ -83,16 +96,13 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	                 :sport		=> 	ActivityRecording.SPORT_CYCLING,       // set sport type
 	                 :subSport	=>	ActivityRecording.SUB_SPORT_INDOOR_CYCLING // set sub sport type
 	           	});
-	           	activityRefreshTimer.start(method(:refreshValues),1000,true); 
 	           	session.start();
 	           	playStart();	                                              // call start session
 	       }
 	       else if ((session != null) && session.isRecording()) {
 	           	session.stop();  
-	           	playStop(); 
-	           	activityRefreshTimer.stop();                                // stop the session
-	       }else if((session != null) && !session.isRecording()){
-	       		activityRefreshTimer.start(method(:refreshValues),1000,true); 
+	           	playStop();                                // stop the session
+	       }else if((session != null) && !session.isRecording()){ 
 	       		session.start();
 	           	playStart();
 	       }

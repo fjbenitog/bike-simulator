@@ -17,11 +17,13 @@ class DrawableDataFields extends WatchUi.Drawable {
 	
 	function draw(dc) {
 		dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+		dc.setPenWidth(2);
 		var height = dc.getHeight()/3;
 		var width = dc.getWidth()/2;
 		dc.drawLine(0, height, dc.getWidth(), height);
 		dc.drawLine(0, 2*height, dc.getWidth(), 2*height);
 		dc.drawLine(width, height, width, 2*height);
+		dc.setPenWidth(1);
 		
 		dataFields[0].setSize(dc.getWidth(), height);
 		dataFields[0].draw(dc);
