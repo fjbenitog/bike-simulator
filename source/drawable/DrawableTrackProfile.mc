@@ -46,19 +46,27 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		if(height == 0){
 			height = y;
 		}
+		//Calculate scales to redimension Profile
 		var distance = drawPoints.size();
-		var polygon = [];
 		var pethWidth = 3;
 		var rate = (width.toDouble()  - pethWidth) / distance;
 		var scale = height.toDouble() / (maxPoint +base);
 		System.println("Rate:"+rate+", scale:"+scale+",distance:"+distance);
+		
+		var currentDistance = ActivityValues.calculateDistance().toNumber();
+		//Draw border and populate polygon for profile
+		var polygon = [];
+		var currentPolygon = [];
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
 		dc.setPenWidth(pethWidth);
-		for(var i = 0; i < drawPoints.size(); ++i) {
+		for(var i = 0; i < distance; ++i) {
 			var xPoint = (i * rate).toNumber() + pethWidth;
 			var yPoint = ((drawPoints[i] + base) * scale).toNumber();
 			
 			polygon.add([x + xPoint, y - yPoint]);
+			if(currentDistance > i){ 
+				currentPolygon.add([x + xPoint, y - yPoint]);
+			}
 		
 			if(i>0){
 				dc.drawLine(polygon[i-1][0], polygon[i-1][1], polygon[i][0], polygon[i][1]);
@@ -66,26 +74,37 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 
     	}
 
-    	polygon.add([x + ( (drawPoints.size() -1) * rate).toNumber() + pethWidth, y]);
-    	dc.drawLine(polygon[polygon.size()-2][0] - 1, polygon[polygon.size()-2][1], polygon[polygon.size()-1][0] - 1, polygon[polygon.size()-1][1]);
-    	polygon.add([x + pethWidth, y]);
-    	dc.drawLine(polygon[polygon.size()-2][0] - 1, polygon[polygon.size()-2][1] -1, polygon[polygon.size()-1][0] - 1, polygon[polygon.size()-2][1] -1);
-    	dc.drawLine(polygon[polygon.size()-1][0], polygon[polygon.size()-1][1] - 1, polygon[0][0], polygon[0][1] - 1);
+	    var lastPoint = polygon[polygon.size() - 1];
+	    var firstPoint = polygon[0];
+	    
+    	polygon.add([lastPoint[0] , y]);
+    	dc.drawLine(lastPoint[0] - 1, lastPoint[1], lastPoint[0] - 1, y);   	
+    	polygon.add([firstPoint[0], y]);
     	
+    	if(currentPolygon.size()>0){
+ 			var currentLastPoint = currentPolygon[currentPolygon.size() - 1][0];
+	    	currentPolygon.add([currentLastPoint, y]);
+	    	currentPolygon.add([x + pethWidth, y]);
+    	}
+    	
+    	dc.drawLine(lastPoint[0] - 1, y - 1, firstPoint[0] - 1, y -1);
+    	dc.drawLine(firstPoint[0], y - 1, firstPoint[0], firstPoint[1] - 1);
+    	
+    	//Draw Fill Profile
     	dc.setPenWidth(1);
     	dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
     	dc.fillPolygon(polygon);
+    	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+    	dc.fillPolygon(currentPolygon);
 
-
+    	//Draw metric lines
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
-
-    	
     	var realWidth = polygon[polygon.size()-2][0]-polygon[polygon.size()-1][0];
     	dc.drawLine(x+realWidth/4,y+1,x+realWidth/4,y+4);
     	dc.drawLine(x+realWidth/2,y+1,x+realWidth/2,y+4);
     	dc.drawLine(x+3*realWidth/4,y+1,x+3*realWidth/4,y+4);
 	
 		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.Graphics.COLOR_TRANSPARENT);
-		dc.drawText(x + width/2, y, Graphics.FONT_XTINY, drawPoints.size()+" Kms", Graphics.TEXT_JUSTIFY_CENTER);
+		dc.drawText(x + width/2, y, Graphics.FONT_XTINY, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
 	}
 }
