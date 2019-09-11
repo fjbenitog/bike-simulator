@@ -5,6 +5,8 @@ using Toybox.Timer;
 using ActivityValues;
 using Toybox.Sensor;
 
+protected var startingActivity = false;
+
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
 	private const ACTIVITY_NANE = "Bike Indoor Simulator";
@@ -105,8 +107,11 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	                 :sport		=> 	ActivityRecording.SPORT_CYCLING,       // set sport type
 	                 :subSport	=>	ActivityRecording.SUB_SPORT_INDOOR_CYCLING // set sub sport type
 	           	});
+	           	startingActivity = true;
 	           	session.start();
-	           	playStart();	                                              // call start session
+	           	playStart();	
+	           	var startTimer = new Timer.Timer();
+	           	startTimer.start(method(:cleanActivityValues),750,false);                                              // call start session
 	       }
 	       else if ((session != null) && session.isRecording()) {
 	           	session.stop();  
@@ -119,6 +124,11 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	   }
 	}
 	
+	function cleanActivityValues(){
+		startingActivity = false;
+		System.println("Reset Activity Values");
+		refreshValues();
+	}
     
     function playTone(tone){
 		if(Attention has :playTone){

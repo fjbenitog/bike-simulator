@@ -3,12 +3,12 @@ using Toybox.Graphics;
 using Toybox.Lang;
 using Toybox.System;
 
-class ProfileTrackView  extends WatchUi.View {
+class ProfileTrackView  extends BaseView {
 
 	var index;
 	
     function initialize() {
-        View.initialize();
+        BaseView.initialize();
         var trackKey = Application.getApp().getProperty(Config.TRACKS_KEY);
         index = getIndex(DataTracks.Tracks,trackKey);
     }
@@ -36,6 +36,7 @@ class ProfileTrackView  extends WatchUi.View {
         	});
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
         drawableTrackProfile.draw(dc);
+        BaseView.onUpdate(dc);
     }
     
     function getIndex(tracks,value) {
@@ -45,12 +46,5 @@ class ProfileTrackView  extends WatchUi.View {
         	}
         }
         return 0;
-    }
-}
-
-class ProfileTrackDelegate extends ScreenDelegate {
-
-	function initialize(session_, index) {
-        ScreenDelegate.initialize(session_, index);
     }
 }

@@ -2,12 +2,12 @@ using Toybox.WatchUi;
 using Toybox.Graphics;
 using ActivityValues;
 
-class DataFieldsView extends WatchUi.View {
+class DataFieldsView extends BaseView {
 
 	var dataFields;
 	
     function initialize(fields) {
-        View.initialize();
+        BaseView.initialize();
         dataFields = new DrawableDataFields({:dataFields => fields});
     }
 
@@ -24,10 +24,10 @@ class DataFieldsView extends WatchUi.View {
     // Update the view
     function onUpdate(dc) {
         // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
 		dc.clear();
 		dataFields.draw(dc);
+		BaseView.onUpdate(dc);
     }
 
     // Called when this View is removed from the screen. Save the
@@ -38,12 +38,4 @@ class DataFieldsView extends WatchUi.View {
     
 }
 
-class DataFieldsDelegate extends ScreenDelegate {
-
-	function initialize(session_, index) {
-        ScreenDelegate.initialize(session_, index);
-    }
-    
-	
-}
 
