@@ -9,8 +9,10 @@ class ProfileTrackView  extends BaseView {
 	
     function initialize() {
         BaseView.initialize();
-        var trackKey = Application.getApp().getProperty(Config.TRACKS_KEY);
-        index = getIndex(DataTracks.Tracks,trackKey);
+        index = Application.getApp().getProperty(Config.TRACKS_KEY);
+        if(index == null){
+        	index = 0;
+    	}
     }
 
     // Load your resources here
@@ -39,12 +41,5 @@ class ProfileTrackView  extends BaseView {
         BaseView.onUpdate(dc);
     }
     
-    function getIndex(tracks,value) {
-        for(var i = 0; i < tracks.size(); ++i) {
-        	if(tracks[i].name.equals(value)){
-        		return i;
-        	}
-        }
-        return 0;
-    }
+    
 }

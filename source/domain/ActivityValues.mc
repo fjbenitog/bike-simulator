@@ -38,8 +38,8 @@ module ActivityValues {
     	if(distance == null || distance<0){ 
     		distance = 0;
     	}
-    	var activityDistance = distance/1000;
-//    	var activityDistance = distance/10;
+//    	var activityDistance = distance/1000;
+    	var activityDistance = distance/10;
     	return  Lang.format( "$1$",
     		[
         		activityDistance.format("%02.2f")
@@ -91,7 +91,13 @@ module ActivityValues {
     }
     
     function calculatePercentage(){
-    	return "";
+    	var distance = calculateDistance().toNumber();
+    	var profile = DataTracks.getActiveTrack().profile;
+    	if(distance <=0 || distance>profile.size()-1){
+    		return "";
+    	}else{
+    		return profile[distance].toString();
+		}
     }
     
     

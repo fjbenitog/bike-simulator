@@ -39,7 +39,7 @@ class TrackPickerDelegate extends WatchUi.PickerDelegate {
     
     function onAccept(values) {
     	System.println(values);
-    	Application.getApp().setProperty(Config.TRACKS_KEY, values[0].name);
+    	Application.getApp().setProperty(Config.TRACKS_KEY, DataTracks.getIndex(values[0].name));
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }

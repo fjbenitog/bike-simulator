@@ -1,3 +1,5 @@
+using Toybox.Application;
+
 module DataTracks{
 
 	var profile1 	= [4,5,0,5 ,4 ,5 ,2 ,3 ,6 ,4 ,6	,3 ,10,11,9	,10,7 ,5 ,10 ,4];
@@ -10,4 +12,21 @@ module DataTracks{
 	var maxPoint2 	= 79;
 						
 	var Tracks = [new Track("Covatilla",profile1,drawPoints1,maxPoint1),new Track("Track 2",profile2,drawPoints2,maxPoint2)];
+	
+	function getIndex(value) {
+        for(var i = 0; i < Tracks.size(); ++i) {
+        	if(Tracks[i].name.equals(value)){
+        		return i;
+        	}
+        }
+        return 0;
+    }
+    
+    function getActiveTrack(){
+    	var indexTrack = Application.getApp().getProperty(Config.TRACKS_KEY);
+    	if(indexTrack ==null){
+    		indexTrack = 0;
+		}
+    	return Tracks[indexTrack];
+    }
 }	
