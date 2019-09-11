@@ -4,8 +4,11 @@ using ActivityValues;
 
 class DataFieldsView extends WatchUi.View {
 
-    function initialize() {
+	var dataFields;
+	
+    function initialize(fields) {
         View.initialize();
+        dataFields = new DrawableDataFields({:dataFields => fields});
     }
 
     // Load your resources here
@@ -24,15 +27,7 @@ class DataFieldsView extends WatchUi.View {
         View.onUpdate(dc);
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
 		dc.clear();
-		var fields = new DrawableDataFields({:dataFields => 
-		[
-			["TIME" 	, :calculateTime],
-			["SPEED"	, :calculateSpeed],
-			["DIST"		, :calculateDistance],
-			["HR"		, :calculateHeartRate]
-		]
-		});
-		fields.draw(dc);
+		dataFields.draw(dc);
     }
 
     // Called when this View is removed from the screen. Save the

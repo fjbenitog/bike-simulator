@@ -9,6 +9,8 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
 	private const ACTIVITY_NANE = "Bike Indoor Simulator";
 	
+	private const numSreens = 3;
+	
 	var session;
 	var index;
 	var activityRefreshTimer;
@@ -18,21 +20,26 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         index = index_;
         activityRefreshTimer = new Timer.Timer();
         activityRefreshTimer.start(method(:refreshValues),1000,true); 
-        Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE]);
+        Sensor.setEnabledSensors(
+        	[
+        		Sensor.SENSOR_HEARTRATE,
+        		Sensor.SENSOR_BIKESPEED,
+        		Sensor.SENSOR_BIKECADENCE
+        	]);
     }
     
     
     function onNextPage() {
-        index = (index + 1) % 2;
+        index = (index + 1) % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_LEFT);
     }
 
     function onPreviousPage() {
         index = index - 1;
         if (index < 0) {
-            index = 1;
+            index = numSreens-1;
         }
-        index = index % 2;
+        index = index % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_RIGHT);
     }
     
@@ -50,8 +57,10 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
         if (0 == index) {
             view = new ProfileTrackView();
-        } else{
-            view = new DataFieldsView();
+        } else if(1 == index){
+            view = new DataFieldsView1();
+        }else {
+        	view = new DataFieldsView2();
         }
 
         return view;
