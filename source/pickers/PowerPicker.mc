@@ -5,9 +5,7 @@ class PowerPicker extends DigitPicker {
 
 
     function initialize() {
-        var gears = Application.getApp().getProperty(Config.POWER_KEY);
-
-        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.power),1,100,1,gears);
+        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.power),1,100,1,Properties.power());
     }
 
 }
@@ -23,7 +21,7 @@ class PowerPickerDelegate extends WatchUi.PickerDelegate {
     }
     
     function onAccept(values) {
-    	Application.getApp().setProperty(Config.POWER_KEY, values[0]);
+    	Properties.storePower(values[0]);
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }

@@ -23,10 +23,6 @@ module DataTracks{
     }
     
     function getActiveTrack(){
-    	var indexTrack = Application.getApp().getProperty(Config.TRACKS_KEY);
-    	if(indexTrack ==null){
-    		indexTrack = 0;
-		}
-    	return Tracks[indexTrack];
+    	return Tracks[Properties.activeTrack()];
     }
 }	

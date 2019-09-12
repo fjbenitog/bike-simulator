@@ -5,14 +5,11 @@ using Toybox.System;
 
 class ProfileTrackView  extends BaseView {
 
-	var index;
+	var activeTrack;
 	
     function initialize() {
         BaseView.initialize();
-        index = Application.getApp().getProperty(Config.TRACKS_KEY);
-        if(index == null){
-        	index = 0;
-    	}
+        activeTrack = DataTracks.getActiveTrack();
     }
 
     // Load your resources here
@@ -30,7 +27,7 @@ class ProfileTrackView  extends BaseView {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
         var drawableTrackProfile  = new DrawableTrackProfile({
-        	:track 	=> DataTracks.Tracks[index],
+        	:track 	=> activeTrack,
         	:width 	=> 175, 
         	:height => 118,
         	:y 		=> dc.getHeight()-50,

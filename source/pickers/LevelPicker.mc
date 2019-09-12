@@ -5,9 +5,7 @@ class LevelPicker extends DigitPicker {
 
 
     function initialize() {
-        var level = Application.getApp().getProperty(Config.LEVEL_KEY);
-
-        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.level),1,10,1,level);
+        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.level),1,10,1,Properties.level());
     }
 
     function onUpdate(dc) {
@@ -28,7 +26,7 @@ class LevelPickerDelegate extends WatchUi.PickerDelegate {
     }
     
     function onAccept(values) {
-    	Application.getApp().setProperty(Config.LEVEL_KEY, values[0]);
+    	Properties.storeLevel(values[0]);
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }

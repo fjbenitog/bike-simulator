@@ -11,13 +11,7 @@ class TrackPicker extends WatchUi.Picker {
 		var factory = new TrackFactory(DataTracks.Tracks);
 		var confirm = new WatchUi.Bitmap({:rezId=>Rez.Drawables.ConfirmIcon, :locX => WatchUi.LAYOUT_HALIGN_CENTER, :locY => WatchUi.LAYOUT_VALIGN_CENTER});
 		
-		var value = Application.getApp().getProperty(Config.TRACKS_KEY);
-		var defaults = null;
-        if(value != null) {
-            defaults = [ factory.getIndex(value) ];
-        }
-		
-		Picker.initialize({:title=>title, :pattern=>[factory],:confirm=>confirm,:defaults=>defaults});
+		Picker.initialize({:title=>title, :pattern=>[factory],:confirm=>confirm,:defaults => [Properties.activeTrack()]});
 	}
 	
 	function onUpdate(dc) {
@@ -38,8 +32,7 @@ class TrackPickerDelegate extends WatchUi.PickerDelegate {
     }
     
     function onAccept(values) {
-    	System.println(values);
-    	Application.getApp().setProperty(Config.TRACKS_KEY, DataTracks.getIndex(values[0].name));
+    	Properties.storeActiveTrack(DataTracks.getIndex(values[0].name));
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }

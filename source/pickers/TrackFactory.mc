@@ -10,15 +10,6 @@ class TrackFactory extends WatchUi.PickerFactory{
  		tracks = tracks_;
  	}
  	
- 	function getIndex(value) {
-        for(var i = 0; i < tracks.size(); ++i) {
-        	if(tracks[i].name.equals(value)){
-        		return i;
-        	}
-        }
-        return 0;
-    }
- 	
     function getSize() {
         return tracks.size();
     }
