@@ -5,7 +5,7 @@ class LevelPicker extends DigitPicker {
 
 
     function initialize() {
-        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.level),1,10,1,Properties.level());
+        DigitPicker.initialize(WatchUi.loadResource(Rez.Strings.level),1,5,1,Properties.level());
     }
 
     function onUpdate(dc) {
