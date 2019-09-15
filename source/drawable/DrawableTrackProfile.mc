@@ -53,7 +53,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		var scale = height.toDouble() / (maxPoint +base);
 //		System.println("Rate:"+rate+", scale:"+scale+",distance:"+distance);
 		
-		var currentDistance = ActivityValues.calculateDistance().toNumber();
+		var currentDistance = ActivityValues.calculateDistance().toFloat();
 		//Draw border and populate polygon for profile
 		var polygon = [];
 		var currentPolygon = [];
@@ -99,6 +99,10 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	if(currentPolygon.size() > 0){
 	    	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 	    	dc.fillPolygon(currentPolygon);
+	    	dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
+	    	dc.fillCircle(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 2);
+	    	dc.drawLine(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 
+	    	currentPolygon[currentPolygon.size()-3][0],y);
 	    }
 
     	//Draw metric lines
@@ -107,6 +111,8 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	dc.drawLine(x+realWidth/4,y+1,x+realWidth/4,y+4);
     	dc.drawLine(x+realWidth/2,y+1,x+realWidth/2,y+4);
     	dc.drawLine(x+3*realWidth/4,y+1,x+3*realWidth/4,y+4);
+    	
+
 	
 		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.Graphics.COLOR_TRANSPARENT);
 		dc.drawText(x + width/2, y, Graphics.FONT_XTINY, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);

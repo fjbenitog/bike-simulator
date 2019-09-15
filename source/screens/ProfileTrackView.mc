@@ -3,13 +3,16 @@ using Toybox.Graphics;
 using Toybox.Lang;
 using Toybox.System;
 
+
 class ProfileTrackView  extends BaseView {
 
 	var activeTrack;
+	var calculator;
 	
     function initialize() {
         BaseView.initialize();
         activeTrack = DataTracks.getActiveTrack();
+        calculator = new Simulator.Calculator(Properties.gears(), Properties.power(), Properties.level());
     }
 
     // Load your resources here
@@ -35,6 +38,17 @@ class ProfileTrackView  extends BaseView {
         	});
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
         drawableTrackProfile.draw(dc);
+        if(ActivityValues.calculateDistance().toFloat()>0){
+	        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+	        var message = "Power: $1$ - Max Gear: $2$";
+	        var currentPercentage = ActivityValues.calculatePercentage();
+	        var numericPercentage = 0;
+	        if(!currentPercentage.equals("")) {
+	        	numericPercentage = currentPercentage.toNumber();
+	        }
+	        var result = calculator.calculate(numericPercentage);
+	        dc.drawText(dc.getWidth()/2, 30, Graphics.FONT_XTINY, Lang.format(message, [result.power, result.gear]), Graphics.TEXT_JUSTIFY_CENTER);
+        }
         BaseView.onUpdate(dc);
     }
     
