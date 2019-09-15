@@ -79,7 +79,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 		if(session!=null && session.isRecording()){
 			return true;
 		}else if(session!=null && !session.isRecording()){
-			discard();
+			pushStopMenu();
     		return true;                  
     	}
     	return false;

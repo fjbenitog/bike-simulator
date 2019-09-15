@@ -91,12 +91,12 @@ module ActivityValues {
     }
     
     function calculatePercentage(){
-    	var distance = calculateDistance().toNumber();
+    	var distance = calculateDistance().toFloat();
     	var profile = DataTracks.getActiveTrack().profile;
     	if(distance <=0 || distance>profile.size()-1){
     		return "";
     	}else{
-    		return profile[distance].toString();
+    		return profile[distance.toNumber()].toString();
 		}
     }
     
