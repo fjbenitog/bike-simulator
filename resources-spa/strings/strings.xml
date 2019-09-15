@@ -25,5 +25,9 @@
     <string id="time">TIEMPO</string>
     <string id="percentage">PORCENTAJE</string>
     <string id="avgSpeed">VELOCIDAD M</string>
+    
+    <string id="continu">Continuar</string>
+    <string id="save">Guardar</string>
+    <string id="discard">Descartart</string>
 
 </strings>

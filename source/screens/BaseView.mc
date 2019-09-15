@@ -4,12 +4,16 @@ using ActivityValues;
 
 class BaseView extends WatchUi.View {
 	
+	var heartIcon;
+	
     function initialize() {
         View.initialize();
     }
 
     // Load your resources here
     function onLayout(dc) {
+    	heartIcon = new WatchUi.Bitmap({:rezId=>Rez.Drawables.HeartIcon, :locX => WatchUi.LAYOUT_HALIGN_CENTER, :locY => WatchUi.LAYOUT_VALIGN_CENTER});
+        
     }
 
     // Called when this View is brought to the foreground. Restore

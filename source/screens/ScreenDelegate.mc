@@ -4,6 +4,7 @@ using Toybox.ActivityRecording;
 using Toybox.Timer;
 using ActivityValues;
 using Toybox.Sensor;
+using Toybox.Lang;
 
 var startingActivity = false;
 var stoppingActivity = false;
@@ -78,18 +79,26 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 		if(session!=null && session.isRecording()){
 			return true;
 		}else if(session!=null && !session.isRecording()){
-			session.discard();// discard the session
-    		session = null;
-    		refreshValues();
+			discard();
     		return true;                  
-    	}else{  	
-    		release();
-    		return false;
     	}
+    	return false;
 
     }
+    
+    function discard(){
+    	session.discard();// discard the session
+    	session = null;
+    	release();
+    }
+    
+    function save(){
+    	session.save();// save the session
+    	session = null;
+    	release();
+    }
     	
-    private function release(){
+    function release(){
     	activityRefreshTimer.stop();
     	if(Sensor has :unregisterSensorDataListener){
 			Sensor.unregisterSensorDataListener();
@@ -100,7 +109,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	WatchUi.requestUpdate();
     }
     
-    private function handleActivityRecording(){
+    function handleActivityRecording(){
 		if (Toybox has :ActivityRecording) {                          // check device for activity recording
 	       if (session == null) {
 	           	session = ActivityRecording.createSession({          // set up recording session
@@ -129,6 +138,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	private function stoppingTimer(){
 		stoppingActivity = true;
 		fireTimer();
+		fireStopMenu();
        	session.stop();  
        	playStop(); 
 	}
@@ -138,10 +148,22 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	    timer.start(method(:cleanActivityValues),750,false);
 	}
 	
+	private function fireStopMenu(){
+		var timer = new Timer.Timer();
+	    timer.start(method(:pushStopMenu),1500,false);
+	}
+	
 	function cleanActivityValues(){
 		startingActivity = false;
 		stoppingActivity = false;
 		refreshValues();
+	}
+	
+	function pushStopMenu(){
+		var stopMenu = new Rez.Menus.StopMenu();
+		var title = Lang.format(WatchUi.loadResource(Rez.Strings.stopTitle),[ActivityValues.calculateTime(),ActivityValues.calculateDistance()]);
+		stopMenu.setTitle(title);
+		 WatchUi.pushView(stopMenu, new StopMenuDelegate(self), WatchUi.SLIDE_IMMEDIATE);
 	}
     
     private function playingTone(tone){

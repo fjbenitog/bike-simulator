@@ -24,4 +24,11 @@
     <string id="percentage">PERCENTAGE</string>
     <string id="avgSpeed">AVG SPEED</string>
     
+    <string id="continu">Continue</string>
+    <string id="save">Save</string>
+    <string id="discard">Discard</string>
+    
+    <string id="stopTitle">$1$
+    $2$</string>
+    
 </strings>

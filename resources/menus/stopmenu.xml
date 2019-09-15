@@ -1,0 +1,5 @@
+<menu id="StopMenu">
+	    <menu-item id="continu" label="@Strings.continu" />
+	    <menu-item id="save" label="@Strings.save" />
+	    <menu-item id="discard" label="@Strings.discard" />
+</menu>
