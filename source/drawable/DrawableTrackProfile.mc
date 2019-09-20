@@ -12,6 +12,8 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	var y = 0;
 	var width;
 	var height;
+	var padding = 0;
+	var font = Graphics.FONT_XTINY;
 
 	function initialize(options) {
 	    Drawable.initialize(options);
@@ -32,6 +34,14 @@ class DrawableTrackProfile extends WatchUi.Drawable {
         var height_ = options.get(:height);
         if(height_ != null) {
             height = height_;
+        }
+        var padding_ = options.get(:padding);
+        if(padding_ != null) {
+            padding = padding_;
+        }
+        var font_ = options.get(:font);
+        if(font_ != null) {
+            font = font_;
         }
 	}
 	
@@ -97,12 +107,16 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     		dc.fillPolygon(polygon);
 		}
     	if(currentPolygon.size() > 0){
+    		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
+	    	dc.drawLine(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 
+	    		currentPolygon[currentPolygon.size()-3][0],y);
 	    	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 	    	dc.fillPolygon(currentPolygon);
 	    	dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
+	    	dc.fillCircle(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 3);
+	    	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 	    	dc.fillCircle(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 2);
-	    	dc.drawLine(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 
-	    	currentPolygon[currentPolygon.size()-3][0],y);
+
 	    }
 
     	//Draw metric lines
@@ -115,6 +129,6 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 
 	
 		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.Graphics.COLOR_TRANSPARENT);
-		dc.drawText(x + width/2, y, Graphics.FONT_XTINY, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
+		dc.drawText(x + width/2, y + padding, font, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
 	}
 }
