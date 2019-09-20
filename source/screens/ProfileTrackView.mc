@@ -3,7 +3,6 @@ using Toybox.Graphics;
 using Toybox.Lang;
 using Toybox.System;
 
-
 class ProfileTrackView  extends BaseView {
 
 	var activeTrack;
@@ -30,26 +29,58 @@ class ProfileTrackView  extends BaseView {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
         var drawableTrackProfile  = new DrawableTrackProfile({
-        	:track 	=> activeTrack,
-        	:width 	=> 175, 
-        	:height => 118,
-        	:y 		=> dc.getHeight()-50,
-        	:x 		=> 22
+        	:track 		=> activeTrack,
+        	:width 		=> dc.getWidth() - 38, 
+        	:height 	=> dc.getHeight()/2 - 10,
+        	:y 			=> 3 * dc.getHeight()/4 ,
+        	:x 			=> 22,
+        	:padding	=> 10,
+        	:font		=> Graphics.FONT_SYSTEM_TINY
         	});
+        	
+    	drawFields(dc);
+//        if(ActivityValues.calculateDistance().toFloat()>0){
+//	        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+//	        var message = "Power: $1$ - Max Gear: $2$";
+//	        var currentPercentage = ActivityValues.calculatePercentage();
+//	        var numericPercentage = 0;
+//	        if(!currentPercentage.equals("")) {
+//	        	numericPercentage = currentPercentage.toNumber();
+//	        }
+//	        var result = calculator.calculate(numericPercentage);
+//	        dc.drawText(dc.getWidth()/2, 30, Graphics.FONT_XTINY, Lang.format(message, [result.power, result.gear]), Graphics.TEXT_JUSTIFY_CENTER);
+//        }
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
         drawableTrackProfile.draw(dc);
-        if(ActivityValues.calculateDistance().toFloat()>0){
-	        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-	        var message = "Power: $1$ - Max Gear: $2$";
-	        var currentPercentage = ActivityValues.calculatePercentage();
-	        var numericPercentage = 0;
-	        if(!currentPercentage.equals("")) {
-	        	numericPercentage = currentPercentage.toNumber();
-	        }
-	        var result = calculator.calculate(numericPercentage);
-	        dc.drawText(dc.getWidth()/2, 30, Graphics.FONT_XTINY, Lang.format(message, [result.power, result.gear]), Graphics.TEXT_JUSTIFY_CENTER);
-        }
+        
         BaseView.onUpdate(dc);
+    }
+    
+    private function drawFields(dc){
+    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+    	dc.setPenWidth(2);
+    	dc.drawLine(0, dc.getHeight()/4, dc.getWidth(), dc.getHeight()/4);
+    	dc.drawLine(dc.getWidth()/2, 0, dc.getWidth()/2, dc.getHeight()/4);
+		dc.setPenWidth(1);
+		dc.drawText(dc.getWidth()/2 - 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY), 
+			Graphics.FONT_SYSTEM_XTINY, "POWER", Graphics.TEXT_JUSTIFY_RIGHT);
+		dc.drawText(dc.getWidth()/2 + 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY), 
+			Graphics.FONT_SYSTEM_XTINY, "MAX GEAR", Graphics.TEXT_JUSTIFY_LEFT);
+			
+		if(ActivityValues.calculateDistance().toFloat()>0){
+			
+			var currentPercentage = ActivityValues.calculatePercentage();
+		    var numericPercentage = 0;
+		    if(!currentPercentage.equals("")) {
+	    		numericPercentage = currentPercentage.toNumber();
+		    }
+		    var result = calculator.calculate(numericPercentage);
+		    
+		    dc.drawText(dc.getWidth()/2 - 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY)  - Graphics.getFontHeight(Graphics.FONT_NUMBER_MILD), 
+				Graphics.FONT_NUMBER_MILD, result.power, Graphics.TEXT_JUSTIFY_RIGHT);
+			dc.drawText(dc.getWidth()/2 + 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY)  - Graphics.getFontHeight(Graphics.FONT_NUMBER_MILD), 
+			Graphics.FONT_NUMBER_MILD, result.gear, Graphics.TEXT_JUSTIFY_LEFT);
+		}
     }
     
     
