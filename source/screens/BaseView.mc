@@ -4,15 +4,12 @@ using ActivityValues;
 
 class BaseView extends WatchUi.View {
 	
-	var heartIcon;
-	
     function initialize() {
         View.initialize();
     }
 
     // Load your resources here
     function onLayout(dc) {
-    	heartIcon = new WatchUi.Bitmap({:rezId=>Rez.Drawables.HeartIcon, :locX => WatchUi.LAYOUT_HALIGN_CENTER, :locY => WatchUi.LAYOUT_VALIGN_CENTER});
         
     }
 
@@ -29,7 +26,7 @@ class BaseView extends WatchUi.View {
     }
     
     private function drawStartingIcon(dc){
-    	if(startingActivity){
+    	if(startingActivity > 0){
 			dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
 			dc.fillPolygon(
 			[
@@ -44,17 +41,22 @@ class BaseView extends WatchUi.View {
 				[3*dc.getWidth()/4 - 10, dc.getHeight()/2],
 				[dc.getWidth()/4 + 5, 3*dc.getHeight()/4 - 8],
 			]);
-		
+			startingActivity = startingActivity - 1;
+		}else if(startingActivity < 0){
+			startingActivity = 0;
 		}
     
     }
     
     private function drawStoppingIcon(dc){
-    	if(stoppingActivity){
+    	if(stoppingActivity>0){
 			dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
 			dc.fillRectangle(dc.getWidth()/4, dc.getHeight()/4, dc.getWidth()/2, dc.getHeight()/2);
 			dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 			dc.fillRectangle(dc.getWidth()/4 + 5, dc.getHeight()/4 + 5, dc.getWidth()/2 - 10, dc.getHeight()/2 -10);
+			stoppingActivity = stoppingActivity - 1;
+		}else if(stoppingActivity < 0){
+			stoppingActivity = 0;
 		}
     
     }

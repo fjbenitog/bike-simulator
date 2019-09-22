@@ -39,17 +39,7 @@ class ProfileTrackView  extends BaseView {
         	});
         	
     	drawFields(dc);
-//        if(ActivityValues.calculateDistance().toFloat()>0){
-//	        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-//	        var message = "Power: $1$ - Max Gear: $2$";
-//	        var currentPercentage = ActivityValues.calculatePercentage();
-//	        var numericPercentage = 0;
-//	        if(!currentPercentage.equals("")) {
-//	        	numericPercentage = currentPercentage.toNumber();
-//	        }
-//	        var result = calculator.calculate(numericPercentage);
-//	        dc.drawText(dc.getWidth()/2, 30, Graphics.FONT_XTINY, Lang.format(message, [result.power, result.gear]), Graphics.TEXT_JUSTIFY_CENTER);
-//        }
+
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
         drawableTrackProfile.draw(dc);
         
@@ -69,12 +59,7 @@ class ProfileTrackView  extends BaseView {
 			
 		if(ActivityValues.calculateDistance().toFloat()>0){
 			
-			var currentPercentage = ActivityValues.calculatePercentage();
-		    var numericPercentage = 0;
-		    if(!currentPercentage.equals("")) {
-	    		numericPercentage = currentPercentage.toNumber();
-		    }
-		    var result = calculator.calculate(numericPercentage);
+		    var result = ActivityValues.calculateSimulatorValues();
 		    
 		    dc.drawText(dc.getWidth()/2 - 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY)  - Graphics.getFontHeight(Graphics.FONT_NUMBER_MILD), 
 				Graphics.FONT_NUMBER_MILD, result.power, Graphics.TEXT_JUSTIFY_RIGHT);

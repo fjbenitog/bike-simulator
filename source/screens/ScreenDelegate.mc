@@ -6,8 +6,8 @@ using ActivityValues;
 using Toybox.Sensor;
 using Toybox.Lang;
 
-var startingActivity = false;
-var stoppingActivity = false;
+var startingActivity = 0;
+var stoppingActivity = 0;
 
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
@@ -18,7 +18,8 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	var session;
 	var index;
 	var activityRefreshTimer;
-
+	var lastKm = 0;
+	
 	function initialize(index_) {
         BehaviorDelegate.initialize();
         index = index_;
@@ -106,7 +107,23 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     function refreshValues(){
+		checkAlert();
     	WatchUi.requestUpdate();
+    }
+    
+    private function checkAlert(){
+        var currentKm = ActivityValues.calculateDistance().toNumber();
+    	if(currentKm - lastKm == 1){
+    		playingTone(Attention.TONE_INTERVAL_ALERT);
+    		lastKm = currentKm;
+    		var timer = new Timer.Timer();
+	    	timer.start(method(:removeAlertView),2000,false);
+	    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    	}
+    }
+    
+    function removeAlertView(){
+    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
     
     function handleActivityRecording(){
@@ -129,24 +146,18 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	}
 	
 	private function startingTimer(){
-		startingActivity = true;
-		fireTimer();
+		startingActivity = 2;
 	    session.start();
 	    playStart();
 	}
 	
 	private function stoppingTimer(){
-		stoppingActivity = true;
-		fireTimer();
+		stoppingActivity = 2;
 		fireStopMenu();
        	session.stop();  
        	playStop(); 
 	}
 	
-	private function fireTimer(){
-		var timer = new Timer.Timer();
-	    timer.start(method(:cleanActivityValues),750,false);
-	}
 	
 	private function fireStopMenu(){
 		var timer = new Timer.Timer();

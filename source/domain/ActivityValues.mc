@@ -3,6 +3,8 @@ using Toybox.Activity;
 using Toybox.System;
 
 module ActivityValues {
+
+	var simulator = new Simulator.Calculator(Properties.gears(), Properties.power(), Properties.level());
 	
 	class ActivityTime {
 	
@@ -38,8 +40,8 @@ module ActivityValues {
     	if(distance == null || distance<0){ 
     		distance = 0;
     	}
-    	var activityDistance = distance/1000;
-//    	var activityDistance = distance/10;
+//    	var activityDistance = distance/1000;
+    	var activityDistance = distance/50;
     	return  Lang.format( "$1$",
     		[
         		activityDistance.format("%02.2f")
@@ -98,6 +100,15 @@ module ActivityValues {
     	}else{
     		return profile[distance.toNumber()].toString();
 		}
+    }
+    
+    function calculateSimulatorValues(){
+		var currentPercentage = ActivityValues.calculatePercentage();
+	    var numericPercentage = 0;
+	    if(!currentPercentage.equals("")) {
+    		numericPercentage = currentPercentage.toNumber();
+	    }
+	    return simulator.calculate(numericPercentage);
     }
     
     
