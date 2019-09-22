@@ -194,12 +194,17 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	}
 	
 	private function playStart(){
-		playingTone(Attention.TONE_START);
+		if(Attention has :TONE_START){
+			playingTone(Attention.TONE_START);
+		}
 		vibrating();
+	
 	}
 	
 	private function playStop(){
-		playingTone(Attention.TONE_STOP);
+		if(Attention has :TONE_STOP){
+			playingTone(Attention.TONE_STOP);
+		}
 		vibrating();
 	}
 }
