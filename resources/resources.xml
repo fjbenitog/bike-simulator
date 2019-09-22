@@ -5,4 +5,9 @@
             <color>00FF00</color>
         </palette>
     </bitmap>
+    <bitmap id="HeartIcon" filename="images/heart_icon.png">
+    	<palette disableTransparency="false">
+            <color>FFFFFF</color>
+        </palette>
+    </bitmap>
 </resources>

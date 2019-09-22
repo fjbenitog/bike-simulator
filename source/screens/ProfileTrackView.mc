@@ -39,7 +39,6 @@ class ProfileTrackView  extends BaseView {
         	});
         	
     	drawFields(dc);
-
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
         drawableTrackProfile.draw(dc);
         
@@ -58,7 +57,6 @@ class ProfileTrackView  extends BaseView {
 			Graphics.FONT_SYSTEM_XTINY, "MAX GEAR", Graphics.TEXT_JUSTIFY_LEFT);
 			
 		if(ActivityValues.calculateDistance().toFloat()>0){
-			
 		    var result = ActivityValues.calculateSimulatorValues();
 		    
 		    dc.drawText(dc.getWidth()/2 - 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY)  - Graphics.getFontHeight(Graphics.FONT_NUMBER_MILD), 
