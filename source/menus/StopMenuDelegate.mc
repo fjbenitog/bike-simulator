@@ -13,18 +13,20 @@ class StopMenuDelegate extends WatchUi.MenuInputDelegate {
 
     function onMenuItem(item) {
 		if (item == :discard) {
-            savingProgress("Descartando");
+            savingProgress(WatchUi.loadResource(Rez.Strings.discarding));
             screenDelegate.discard();
         }else if(item == :continu){
         	screenDelegate.handleActivityRecording();
         }else if(item == :save){
-        	savingProgress("Guardando");
+        	savingProgress(WatchUi.loadResource(Rez.Strings.saving));
         	screenDelegate.save();
         }
         
     }
     
     function savingProgress(message){
+        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     	var progressBar = new WatchUi.ProgressBar(
             message,
             null
@@ -32,16 +34,14 @@ class StopMenuDelegate extends WatchUi.MenuInputDelegate {
         WatchUi.pushView(
             progressBar,
             null,
-            WatchUi.SLIDE_DOWN
+            WatchUi.SLIDE_IMMEDIATE
         );
         
         var timer = new Timer.Timer();
-	    timer.start(method(:backMainMenu),1000,false);
+	    timer.start(method(:backMainMenu),5000,false);
     }
     
     function backMainMenu(){
-    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }

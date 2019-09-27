@@ -1,6 +1,6 @@
 <strings>
     <string id="AppName">Bike Simulator</string>
-    <string id="version">V. 1.0.2.snapshot</string>
+    <string id="version">V. 1.0.3.snapshot</string>
 
     <string id="prompt">Welcome to
     Bike Indoor Simulator</string>
@@ -39,5 +39,8 @@ $2$</string>
 	<string id="percentageUnit">%</string>
 	<string id="trackLabel">Track</string>
 	<string id="trackUnit"></string>
+	
+	<string id="saving">Saving</string>
+	<string id="discarding">Discarding</string>
     
 </strings>

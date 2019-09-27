@@ -125,6 +125,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	WatchUi.requestUpdate();
     }
     
+    
     private function checkAlert(){
         var currentKm = ActivityValues.calculateDistance().toNumber();
     	if(currentKm - lastKm == 1){
