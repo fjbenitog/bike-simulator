@@ -35,31 +35,44 @@ module ActivityValues {
 			":"+activityTime.seconds.format("%02d");
     }
     
-    function calculateDistance(){
-    	var distance = Activity.getActivityInfo().elapsedDistance;
+    function distance(){
+        var distance = Activity.getActivityInfo().elapsedDistance;
     	if(distance == null || distance<0){ 
     		distance = 0;
     	}
-    	var activityDistance = distance/1000;
-    	//var activityDistance = distance/10;
+//    	return distance/1000;
+    	return distance/250;
+    }
+    
+    function calculateDistance(){
+    	var activityDistance = distance();
     	return  Lang.format( "$1$",
     		[
-        		activityDistance.format("%02.2f")
+        		distance().format("%02.2f")
     		]
 		);
     }
     
-    function calculateSpeed(){
-    	var speed = Activity.getActivityInfo().currentSpeed;
+    function speed(){
+    	 var speed = Activity.getActivityInfo().currentSpeed;
     	if(speed == null || speed < 0) {
-    		return "";
+    		return 0;
+    	}else{
+    		return (3600*speed)/1000;
     	}
-    	var activitySpeed = (3600*speed)/1000;
-    	return Lang.format( "$1$",
-    		[
-        		activitySpeed.format("%02d")
-    		]
-		);
+    }
+    
+    function calculateSpeed(){
+    	var speed = speed();
+    	if(speed==0){
+    		return "";
+		}else{
+    		return Lang.format( "$1$",
+	    		[
+	        		speed().format("%02d")
+	    		]
+			);
+		}
     }
     
     function calculateAvgSpeed(){
@@ -91,14 +104,21 @@ module ActivityValues {
     	}
     	return cadence.toString();
     }
-    
-    function calculatePercentage(){
+    function percentage(){
     	var distance = calculateDistance().toFloat();
     	var profile = DataTracks.getActiveTrack().profile;
     	if(distance <=0 || distance>profile.size()-1){
+    		return 0;
+    	}else{
+    		return profile[distance.toNumber()];
+		}
+    }
+    function calculatePercentage(){
+    	var percentage = percentage();
+    	if(percentage == 0){
     		return "";
     	}else{
-    		return profile[distance.toNumber()].toString();
+    		return percentage.toString();
 		}
     }
     

@@ -26,12 +26,14 @@ module Simulator{
 		}
 		
 		function calculate(percentage){
-			if(percentage<0){
-				return new Result(1,gears);
-			}
+//			if(percentage<0){
+//				return new Result(1,gears);
+//			}
 			var power = percentage + level;
 			if(power > powerSize){
 				return new Result(powerSize,gears - (power - powerSize));
+			}else if(power<1){
+				return new Result(1,gears);
 			}else{
 				return new Result(power,gears);
 			}
@@ -100,6 +102,16 @@ module Simulator{
 	}
 	
 	(:test)
+	function level5PercentageMinus1(logger){
+		var gears = 8;
+		var powerSize = 10;
+		var level = 5;
+		var percentage = -1;
+		var result = new Result(4,8);
+		return checkCalculator(logger,gears,powerSize,level,percentage, result);
+	}
+	
+	(:test)
 	function level5Percentage0(logger){
 		var gears = 8;
 		var powerSize = 10;
@@ -147,6 +159,16 @@ module Simulator{
 		var level = 5;
 		var percentage = 12;
 		var result = new Result(10,1);
+		return checkCalculator(logger,gears,powerSize,level,percentage, result);
+	}
+	
+	(:test)
+	function level3PercentageMinus2(logger){
+		var gears = 8;
+		var powerSize = 10;
+		var level = 5;
+		var percentage = -2;
+		var result = new Result(3,8);
 		return checkCalculator(logger,gears,powerSize,level,percentage, result);
 	}
 	

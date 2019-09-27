@@ -52,9 +52,9 @@ class ProfileTrackView  extends BaseView {
     	dc.drawLine(dc.getWidth()/2, 0, dc.getWidth()/2, dc.getHeight()/4);
 		dc.setPenWidth(1);
 		dc.drawText(dc.getWidth()/2 - 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY), 
-			Graphics.FONT_SYSTEM_XTINY, "POWER", Graphics.TEXT_JUSTIFY_RIGHT);
+			Graphics.FONT_SYSTEM_XTINY, WatchUi.loadResource(Rez.Strings.powerLabel).toUpper(), Graphics.TEXT_JUSTIFY_RIGHT);
 		dc.drawText(dc.getWidth()/2 + 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY), 
-			Graphics.FONT_SYSTEM_XTINY, "MAX GEAR", Graphics.TEXT_JUSTIFY_LEFT);
+			Graphics.FONT_SYSTEM_XTINY, WatchUi.loadResource(Rez.Strings.maxGear).toUpper(), Graphics.TEXT_JUSTIFY_LEFT);
 			
 		if(ActivityValues.calculateDistance().toFloat()>0){
 		    var result = ActivityValues.calculateSimulatorValues();

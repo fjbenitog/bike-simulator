@@ -12,6 +12,9 @@ var stoppingActivity = 0;
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
 	private const ACTIVITY_NANE = "Bike Indoor Simulator";
+	private const LEVEL_FIELD_ID = 0;
+	private const TRACK_FIELD_ID = 1;
+	private const PERCENTAGE_FIELD_ID = 2;
 	
 	private const numSreens = 3;
 	
@@ -19,6 +22,9 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	var index;
 	var activityRefreshTimer;
 	var lastKm = 0;
+	var levelField;
+   	var trackField;
+   	var percentageField;
 	
 	function initialize(index_) {
         BehaviorDelegate.initialize();
@@ -29,7 +35,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         	[
         		Sensor.SENSOR_HEARTRATE,
         		Sensor.SENSOR_BIKESPEED,
-        		Sensor.SENSOR_BIKECADENCE
+        		Sensor.SENSOR_BIKECADENCE,
         	]);
     }
     
@@ -88,15 +94,20 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     function discard(){
-    	session.discard();// discard the session
+    	var result = session.discard();// discard the session
     	session = null;
     	release();
+    	return result;
     }
     
     function save(){
-    	session.save();// save the session
+		var level = Properties.level().format("%u");
+		levelField.setData(level);
+		trackField.setData(DataTracks.getActiveTrack().name);
+    	var result = session.save();// save the session
     	session = null;
     	release();
+    	return result;
     }
     	
     function release(){
@@ -108,6 +119,9 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     
     function refreshValues(){
 		checkAlert();
+		if(percentageField!=null){
+			percentageField.setData(ActivityValues.percentage());
+		}
     	WatchUi.requestUpdate();
     }
     
@@ -134,7 +148,13 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	                 :sport		=> 	ActivityRecording.SPORT_CYCLING,       // set sport type
 	                 :subSport	=>	ActivityRecording.SUB_SPORT_INDOOR_CYCLING // set sub sport type
 	           	});
-	           	startingTimer();
+    		levelField = session.createField("level",LEVEL_FIELD_ID,FitContributor.DATA_TYPE_STRING,
+    				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"",:count => 2 });	
+       		trackField = session.createField("track",TRACK_FIELD_ID,FitContributor.DATA_TYPE_STRING, 
+       				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"",:count => 24 });
+       		percentageField = session.createField("percentage",PERCENTAGE_FIELD_ID,FitContributor.DATA_TYPE_SINT32, 
+       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"%" });
+          	startingTimer();
 	       }
 	       else if ((session != null) && session.isRecording()) {
 	       		stoppingTimer();

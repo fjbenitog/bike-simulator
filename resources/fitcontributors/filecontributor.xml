@@ -1,0 +1,12 @@
+<fitContributions>
+        <fitField id="0" displayInChart="false" sortOrder = "0" precision="0"
+         dataLabel="@Strings.levelLabel"
+        unitLabel="@Strings.levelUnit" />
+        <fitField id="1" displayInChart="false" sortOrder = "1" precision="0"
+         dataLabel="@Strings.trackLabel"
+        unitLabel="@Strings.trackUnit" />
+        <fitField id="2" displayInChart="true" sortOrder = "2" precision="0"
+        chartTitle="@Strings.percentage" dataLabel="@Strings.percentage"
+        unitLabel="@Strings.percentageUnit" fillColor="#FFA500" />
+        
+</fitContributions>

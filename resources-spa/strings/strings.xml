@@ -15,7 +15,9 @@
     
     
     <string id="gears">Marchas</string>
+    <string id="maxGear">Max Mar.</string>
     <string id="power">Tamaño Potencia</string>
+    <string id="powerLabel">Potencia</string>
     <string id="level">Nivel</string>
     
     <string id="distance">DISTANCIA</string>
@@ -29,5 +31,10 @@
     <string id="continu">Continuar</string>
     <string id="save">Guardar</string>
     <string id="discard">Descartar</string>
+    
+    <string id="levelLabel">Nivel</string>
+	<string id="levelUnit"></string>
+	<string id="trackLabel">Etapa</string>
+	<string id="trackUnit"></string>
 
 </strings>

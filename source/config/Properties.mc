@@ -22,6 +22,7 @@ module Properties{
 		}
 	}
 	
+	
 	function storeActiveTrack(activeTrack){
     	Application.getApp().setProperty(Config.TRACKS_KEY, activeTrack);
 	}

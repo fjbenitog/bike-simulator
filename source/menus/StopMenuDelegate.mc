@@ -1,5 +1,6 @@
 using Toybox.WatchUi;
 using Toybox.System;
+using Toybox.Timer;
 
 class StopMenuDelegate extends WatchUi.MenuInputDelegate {
 
@@ -12,16 +13,35 @@ class StopMenuDelegate extends WatchUi.MenuInputDelegate {
 
     function onMenuItem(item) {
 		if (item == :discard) {
-		    screenDelegate.discard();
-		
-            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            savingProgress("Descartando");
+            screenDelegate.discard();
         }else if(item == :continu){
         	screenDelegate.handleActivityRecording();
         }else if(item == :save){
+        	savingProgress("Guardando");
         	screenDelegate.save();
-		
-            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         }
         
+    }
+    
+    function savingProgress(message){
+    	var progressBar = new WatchUi.ProgressBar(
+            message,
+            null
+        );
+        WatchUi.pushView(
+            progressBar,
+            null,
+            WatchUi.SLIDE_DOWN
+        );
+        
+        var timer = new Timer.Timer();
+	    timer.start(method(:backMainMenu),1000,false);
+    }
+    
+    function backMainMenu(){
+    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }

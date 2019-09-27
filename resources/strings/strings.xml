@@ -1,5 +1,6 @@
 <strings>
     <string id="AppName">Bike Simulator</string>
+    <string id="version">V. 1.0.2.snapshot</string>
 
     <string id="prompt">Welcome to
     Bike Indoor Simulator</string>
@@ -13,7 +14,9 @@
     
     
     <string id="gears">Gears</string>
+    <string id="maxGear">Max Gear</string>
     <string id="power">Power Size</string>
+    <string id="powerLabel">Power</string>
     <string id="level">Level</string>
     
     <string id="distance">DISTANCE</string>
@@ -30,5 +33,11 @@
     
     <string id="stopTitle">$1$
 $2$</string>
+
+	<string id="levelLabel">Level</string>
+	<string id="levelUnit"></string>
+	<string id="percentageUnit">%</string>
+	<string id="trackLabel">Track</string>
+	<string id="trackUnit"></string>
     
 </strings>
