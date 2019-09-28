@@ -104,14 +104,16 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	dc.setPenWidth(1);
     	if(polygon.size() > 0){
 			dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
-    		dc.fillPolygon(polygon);
+			new PolygonDrawable({:polygon => polygon}).draw(dc);
+//    		dc.fillPolygon(polygon);
 		}
     	if(currentPolygon.size() > 0){
     		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
 	    	dc.drawLine(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 
 	    		currentPolygon[currentPolygon.size()-3][0],y);
 	    	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-	    	dc.fillPolygon(currentPolygon);
+	    	new PolygonDrawable({:polygon => currentPolygon}).draw(dc);
+//	    	dc.fillPolygon(currentPolygon);
 	    	dc.setColor(Graphics.COLOR_BLUE, Graphics.Graphics.COLOR_TRANSPARENT);
 	    	dc.fillCircle(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 3);
 	    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);

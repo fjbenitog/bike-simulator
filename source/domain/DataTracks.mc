@@ -11,11 +11,18 @@ module DataTracks{
 						0,1,6,5,1,0,2,7,7,7,8,-5,-6,-7,-5,-4,-1,-5,-1,-1,-1,-1,-1,-2,-3,
 						2,2,2,1,1,3,1,0,0,0,1,-1
 						];
+	var profile5	=	[2,0,6,7,7,5,6,6,5,7,2,4,4,-10,-7,-7,-6,-9,-7,-6,-7,-6,0,1,1,1,0,0,2,1,0,
+						0,1,6,5,1,0,2,3,4,5,7,7,7,8,-5,-6,-7,-5,-4,-1,-5,-1,-1,-1,-1,-1,-2,-3,
+						2,2,2,1,1,3,1,0,0,0,1,-1,0,0,1,1,-1,
+						0,0,2,2,2,1,0,0,5,0,-3,3,-2,5,5,6,-6,-5,-5,2,-3,3,0,10,7,-7,2,4,3,2,5,5,2,5,6,7,6,6,6,7,5,-5,
+						-7,-6,-6,-6,-7,1,2,3,2,1
+						];					
 						
 	var Tracks = [	new Track("La Covatilla",profile1),
 					new Track("Hard",profile2),
 					new Track("Medium",profile3),
-					new Track("Morcuera - Canencia",profile4)
+					new Track("Morcuera - Canencia",profile4),
+					new Track("Long",profile5)
 				 ];
 	
 	function getIndex(value) {
