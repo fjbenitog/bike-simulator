@@ -109,9 +109,12 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	release();
     	return result;
     }
-    	
+    
+
+
     function release(){
     	activityRefreshTimer.stop();
+    	WatchUi.requestUpdate();
     	if(Sensor has :unregisterSensorDataListener){
 			Sensor.unregisterSensorDataListener();
 		}
