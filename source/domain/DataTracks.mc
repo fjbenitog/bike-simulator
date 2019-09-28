@@ -12,10 +12,10 @@ module DataTracks{
 						2,2,2,1,1,3,1,0,0,0,1,-1
 						];
 						
-	var Tracks = [	new Track("Covatilla",profile1),
-					new Track("Track 2",profile2),
+	var Tracks = [	new Track("La Covatilla",profile1),
+					new Track("Hard",profile2),
 					new Track("Medium",profile3),
-					new Track("Madrid 1",profile4)
+					new Track("Morcuera - Canencia",profile4)
 				 ];
 	
 	function getIndex(value) {

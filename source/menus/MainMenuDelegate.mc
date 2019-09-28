@@ -11,7 +11,8 @@ class MainMenuDelegate extends WatchUi.MenuInputDelegate {
 		if (item == :config) {
             WatchUi.pushView(new Rez.Menus.ConfigMenu(), new ConfigMenuDelegate(), WatchUi.SLIDE_LEFT);
         } else if (item == :tracks) {
-            WatchUi.pushView(new TrackPicker(), new TrackPickerDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        	var ownPickerDelegate = new TrackPickerDelegate(new TrackFactory(DataTracks.Tracks),Properties.activeTrack());
+            WatchUi.pushView(new OwnPicker(ownPickerDelegate), ownPickerDelegate, WatchUi.SLIDE_IMMEDIATE);
         }
         else if (item == :start) {
             WatchUi.pushView(new ProfileTrackView(), new ScreenDelegate(0), WatchUi.SLIDE_IMMEDIATE);

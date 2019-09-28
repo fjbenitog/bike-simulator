@@ -40,7 +40,7 @@ class StopMenuDelegate extends WatchUi.MenuInputDelegate {
         );
         
         var timer = new Timer.Timer();
-	    timer.start(method(:backMainMenu),5000,false);
+	    timer.start(method(:backMainMenu),3000,false);
     }
     
     function backMainMenu(){

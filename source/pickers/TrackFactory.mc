@@ -1,5 +1,6 @@
 using Toybox.Graphics;
 using Toybox.WatchUi;
+using Toybox.System;
 
 class TrackFactory extends WatchUi.PickerFactory{
 
@@ -19,6 +20,17 @@ class TrackFactory extends WatchUi.PickerFactory{
     }
 
     function getDrawable(index, selected) {
-        return new DrawableTrack({:track => tracks[index]});
+    	var settings = System.getDeviceSettings(); 
+    	var options = 	{
+    					:track 		=> getValue(index),
+    					:width 		=> settings.screenWidth - 44, 
+			        	:height 	=> settings.screenHeight/2 - 55,
+			        	:y 			=> 3 * settings.screenHeight/4 ,
+			        	:x 			=> 22,
+			        	:padding	=> 8,
+			        	:font		=> Graphics.FONT_SYSTEM_TINY
+    					};
+    	var drawableTrack = new DrawableTrack(options);
+        return drawableTrack;
     }
 }
