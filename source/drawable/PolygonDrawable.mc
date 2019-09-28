@@ -5,7 +5,7 @@ using Toybox.System;
 class PolygonDrawable extends WatchUi.Drawable {
 
 	private var polygon;
-	private var maxSize = 64;
+	private var maxSize = 50;
 	
 	function initialize(options){
         Drawable.initialize(options);
@@ -22,17 +22,22 @@ class PolygonDrawable extends WatchUi.Drawable {
     			var y = polygon.slice(-1, null)[0][1];
     			
     			var processedPoints = 0;
-    			var interval = maxSize - 2;
     			
     			while(processedPoints<cleanPolygon.size()){
-    				var finalInterval = processedPoints+interval;
+    				var finalInterval = processedPoints+maxSize;
+    				var initialInterval = processedPoints -1 ;
     				if(finalInterval>cleanPolygon.size()){
     					finalInterval = cleanPolygon.size();
     				}
-    				var mainPoints = cleanPolygon.slice(processedPoints,finalInterval);
+    				if(initialInterval<0){
+    				
+    					initialInterval = 0;
+    				}
+    				var mainPoints = cleanPolygon.slice(initialInterval,finalInterval);
     				processedPoints = finalInterval;
     				var lastPoint = mainPoints.slice(-1, null)[0];
     				var firstPoint = mainPoints.slice(0, 1)[0];
+    				
     				mainPoints.add([lastPoint[0],y]);
     				mainPoints.add([firstPoint[0],y]);
     				dc.fillPolygon(mainPoints);
