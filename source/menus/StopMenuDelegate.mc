@@ -13,21 +13,22 @@ class StopMenuDelegate extends WatchUi.MenuInputDelegate {
 
     function onMenuItem(item) {
 		if (item == :discard) {
-            savingProgress(WatchUi.loadResource(Rez.Strings.discarding));
+			WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
            	screenDelegate.discard();
+            savingProgress(WatchUi.loadResource(Rez.Strings.discarding));
         }else if(item == :continu){
         	screenDelegate.handleActivityRecording();
         	return true;
         }else if(item == :save){
-        	savingProgress(WatchUi.loadResource(Rez.Strings.saving));
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         	screenDelegate.save();
-        	
+        	savingProgress(WatchUi.loadResource(Rez.Strings.saving));
         }
+        return false;
         
     }
     
     function savingProgress(message){
-    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     	var progressBar = new WatchUi.ProgressBar(
             message,
