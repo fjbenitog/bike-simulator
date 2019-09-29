@@ -41,7 +41,7 @@ module ActivityValues {
     		distance = 0;
     	}
     	return distance/1000;
-//    	return distance/250;
+    	return distance/10;
     }
     
     function calculateDistance(){

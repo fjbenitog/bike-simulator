@@ -7,11 +7,21 @@ class ProfileTrackView  extends BaseView {
 
 	var activeTrack;
 	var calculator;
+	var drawableTrackProfile;
 	
     function initialize() {
         BaseView.initialize();
         activeTrack = DataTracks.getActiveTrack();
         calculator = new Simulator.Calculator(Properties.gears(), Properties.power(), Properties.level());
+        drawableTrackProfile  = new DrawableTrackProfile({
+        	:track 		=> activeTrack,
+        	:width 		=> System.getDeviceSettings().screenWidth - 38, 
+        	:height 	=> System.getDeviceSettings().screenHeight/2 - 10,
+        	:y 			=> 3 * System.getDeviceSettings().screenHeight/4 ,
+        	:x 			=> 22,
+        	:padding	=> 10,
+        	:font		=> Graphics.FONT_SYSTEM_TINY
+        	});
     }
 
     // Load your resources here
@@ -28,15 +38,6 @@ class ProfileTrackView  extends BaseView {
     function onUpdate(dc) {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-        var drawableTrackProfile  = new DrawableTrackProfile({
-        	:track 		=> activeTrack,
-        	:width 		=> dc.getWidth() - 38, 
-        	:height 	=> dc.getHeight()/2 - 10,
-        	:y 			=> 3 * dc.getHeight()/4 ,
-        	:x 			=> 22,
-        	:padding	=> 10,
-        	:font		=> Graphics.FONT_SYSTEM_TINY
-        	});
         	
     	drawFields(dc);
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
@@ -63,7 +64,15 @@ class ProfileTrackView  extends BaseView {
 				Graphics.FONT_NUMBER_MILD, result.power, Graphics.TEXT_JUSTIFY_RIGHT);
 			dc.drawText(dc.getWidth()/2 + 10, dc.getHeight()/4 - Graphics.getFontHeight(Graphics.FONT_SYSTEM_XTINY)  - Graphics.getFontHeight(Graphics.FONT_NUMBER_MILD), 
 			Graphics.FONT_NUMBER_MILD, result.gear, Graphics.TEXT_JUSTIFY_LEFT);
+			
+			dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
+			dc.drawText(dc.getWidth()/2, dc.getHeight() - 15 , Graphics.FONT_TINY, ActivityValues.percentage() + "%", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+	
 		}
+    }
+    
+    function onHide() {
+    	zoom = false;
     }
     
     

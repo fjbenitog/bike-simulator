@@ -14,6 +14,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	var height;
 	var padding = 0;
 	var font = Graphics.FONT_XTINY;
+	var polygonDrawable = new PolygonDrawable();
 
 	function initialize(options) {
 	    Drawable.initialize(options);
@@ -50,6 +51,30 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	}
 	
 	function draw(dc) {
+		var currentDistance = ActivityValues.calculateDistance().toFloat();
+		var totalDistance =  drawPoints.size();
+		var virtualdrawPoints = drawPoints;
+		if(zoom){
+			var zoomDistance = 5;
+			var startPoint = currentDistance - zoomDistance;
+			var endPoint = currentDistance + zoomDistance;
+			if(startPoint<0){
+				startPoint = 0;
+				endPoint = 2 * zoomDistance;
+			}else{
+				currentDistance = zoomDistance;
+			}
+			if(endPoint > drawPoints.size()){
+				currentDistance = zoomDistance + (endPoint - drawPoints.size());
+				endPoint = drawPoints.size();
+				startPoint = drawPoints.size() - 2*zoomDistance;
+				
+			}
+			
+			
+			virtualdrawPoints = drawPoints.slice(startPoint, endPoint);
+		}
+		
 		if(width == 0){
 			width = dc.getWidth() - 1;
 		}
@@ -57,13 +82,13 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 			height = y;
 		}
 		//Calculate scales to redimension Profile
-		var distance = drawPoints.size();
+		var distance = virtualdrawPoints.size();
 		var pethWidth = 3;
 		var rate = (width.toDouble()  - pethWidth) / distance;
 		var scale = height.toDouble() / (maxPoint +base);
 //		System.println("Rate:"+rate+", scale:"+scale+",distance:"+distance);
 		
-		var currentDistance = ActivityValues.calculateDistance().toFloat();
+
 		//Draw border and populate polygon for profile
 		var polygon = [];
 		var currentPolygon = [];
@@ -71,10 +96,10 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		dc.setPenWidth(pethWidth);
 		for(var i = 0; i < distance; ++i) {
 			var xPoint = (i * rate).toNumber() + pethWidth;
-			var yPoint = ((drawPoints[i] + base) * scale).toNumber();
+			var yPoint = ((virtualdrawPoints[i] + base) * scale).toNumber();
 			
 			polygon.add([x + xPoint, y - yPoint]);
-			if(currentDistance > i){ 
+			if(currentDistance > i && currentDistance < 70){ 
 				currentPolygon.add([x + xPoint, y - yPoint]);
 			}
 		
@@ -104,33 +129,35 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	dc.setPenWidth(1);
     	if(polygon.size() > 0){
 			dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
-			new PolygonDrawable({:polygon => polygon}).draw(dc);
-//    		dc.fillPolygon(polygon);
+			polygonDrawable.draw(dc,polygon);
 		}
     	if(currentPolygon.size() > 0){
     		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
 	    	dc.drawLine(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 
 	    		currentPolygon[currentPolygon.size()-3][0],y);
 	    	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-	    	new PolygonDrawable({:polygon => currentPolygon}).draw(dc);
-//	    	dc.fillPolygon(currentPolygon);
+	    	polygonDrawable.draw(dc,currentPolygon);
 	    	dc.setColor(Graphics.COLOR_BLUE, Graphics.Graphics.COLOR_TRANSPARENT);
 	    	dc.fillCircle(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 3);
 	    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 	    	dc.fillCircle(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 2);
 
 	    }
-
-    	//Draw metric lines
-		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
+	    //Draw metric lines
+	    dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
     	var realWidth = polygon[polygon.size()-2][0]-polygon[polygon.size()-1][0];
     	dc.drawLine(x+realWidth/4,y+1,x+realWidth/4,y+4);
     	dc.drawLine(x+realWidth/2,y+1,x+realWidth/2,y+4);
     	dc.drawLine(x+3*realWidth/4,y+1,x+3*realWidth/4,y+4);
     	
-
-	
-		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.Graphics.COLOR_TRANSPARENT);
-		dc.drawText(x + width/2, y + padding, font, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
+		if(!zoom){
+	    	dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_TRANSPARENT);
+			dc.drawText(x + width/2, y + padding, font, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
+    	}else{
+    		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_TRANSPARENT);
+			dc.drawText(x + width/2, y + padding, Graphics.FONT_SYSTEM_XTINY, "Zoom [" + ActivityValues.calculateDistance() + "/" +totalDistance + " Kms ]", Graphics.TEXT_JUSTIFY_CENTER);
+    	}
+    	
+    	
 	}
 }

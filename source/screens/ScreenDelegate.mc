@@ -8,6 +8,7 @@ using Toybox.Lang;
 
 var startingActivity = 0;
 var stoppingActivity = 0;
+var zoom = false;
 
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
@@ -91,6 +92,15 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	}
     	return false;
 
+    }
+    
+    function onMenu() {
+    	if(index == 0){
+    		zoom = !zoom;
+    		WatchUi.requestUpdate();
+    		return true;
+    	}
+    	return false;
     }
     
     function discard(){

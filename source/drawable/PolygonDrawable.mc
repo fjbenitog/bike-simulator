@@ -2,17 +2,12 @@ using Toybox.Graphics;
 using Toybox.WatchUi;
 using Toybox.System;
 
-class PolygonDrawable extends WatchUi.Drawable {
+class PolygonDrawable {
 
-	private var polygon;
-	private var maxSize = 50;
-	
-	function initialize(options){
-        Drawable.initialize(options);
-        polygon = options.get(:polygon);
-    }
+
+	private var maxSize = 60;
     
-    function draw(dc) {
+    function draw(dc,polygon) {
     	if(polygon !=null){
     		if(polygon.size() <= maxSize){
     			dc.fillPolygon(polygon);
