@@ -44,6 +44,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     function onNextPage() {
         index = (index + 1) % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_LEFT);
+        zoom = false;
     }
 
     function onPreviousPage() {
@@ -53,6 +54,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         }
         index = index % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_RIGHT);
+        zoom = false;
     }
     
     function onKey(evt) {
@@ -100,7 +102,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     		WatchUi.requestUpdate();
     		return true;
     	}
-    	return false;
+    	return BehaviorDelegate.onMenu();
     }
     
     function discard(){
@@ -131,7 +133,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     function refreshValues(){
-		checkAlert();
+		checkAlert();	
 		if(percentageField!=null){
 			percentageField.setData(ActivityValues.percentage());
 		}
@@ -140,14 +142,19 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     
     
     private function checkAlert(){
-        var currentKm = ActivityValues.calculateDistance().toNumber();
-    	if(currentKm - lastKm == 1){
-    		playingTone(Attention.TONE_INTERVAL_ALERT);
-    		lastKm = currentKm;
-    		var timer = new Timer.Timer();
-	    	timer.start(method(:removeAlertView),2000,false);
-	    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
-    	}
+    	var timer = null;
+    	try {
+	    	var currentKm = ActivityValues.distance().toLong();
+		    	if(currentKm - lastKm == 1){
+		    		playingTone(Attention.TONE_INTERVAL_ALERT);
+		    		lastKm = currentKm;
+		    		var timer = new Timer.Timer();
+			    	timer.start(method(:removeAlertView),2000,false);
+			    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
+		    	}
+		} catch (e instanceof Lang.Exception) {
+    		System.println(e.getErrorMessage());
+		}
     }
     
     function removeAlertView(){

@@ -5,7 +5,7 @@ using Toybox.System;
 class PolygonDrawable {
 
 
-	private var maxSize = 60;
+	private var maxSize = 50;
     
     function draw(dc,polygon) {
     	if(polygon !=null){

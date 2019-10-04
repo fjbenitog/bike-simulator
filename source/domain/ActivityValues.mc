@@ -41,7 +41,7 @@ module ActivityValues {
     		distance = 0;
     	}
     	return distance/1000;
-    	return distance/10;
+//    	return distance/100;
     }
     
     function calculateDistance(){
@@ -114,12 +114,7 @@ module ActivityValues {
 		}
     }
     function calculatePercentage(){
-    	var percentage = percentage();
-    	if(percentage == 0){
-    		return "";
-    	}else{
-    		return percentage.toString();
-		}
+    	return percentage().toString();
     }
     
     function calculateSimulatorValues(){

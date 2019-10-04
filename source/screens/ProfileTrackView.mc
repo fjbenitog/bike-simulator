@@ -70,10 +70,7 @@ class ProfileTrackView  extends BaseView {
 	
 		}
     }
-    
-    function onHide() {
-    	zoom = false;
-    }
+
     
     
 }
