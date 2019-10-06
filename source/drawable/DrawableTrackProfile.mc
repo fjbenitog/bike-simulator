@@ -108,7 +108,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
 		dc.setPenWidth(pethWidth);
 		for(var i = 0; i < virtualdrawPoints.size(); ++i) {
-			var xPoint = x + (i * rate).toNumber() + pethWidth;
+			var xPoint = x + (i * rate).toNumber() + pethWidth + 1;
 			var yPoint = y - ((virtualdrawPoints[i] + base) * scale).toNumber();
 			if(i < currentDistance ){ 
 				currentPolygon.add([xPoint, yPoint]);
@@ -129,19 +129,20 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	
 	private function closePolygonAndDrawLines(polygon,dc){
 		if(polygon.size() > 0){
+			dc.setPenWidth(1);
 	    	var lastPoint = polygon[polygon.size() - 1];
 	    	var firstPoint = polygon[0];
 	    	polygon.add([lastPoint[0] , y]);
 	    	polygon.add([firstPoint[0], y]);
 	    	dc.drawLine(lastPoint[0], lastPoint[1], lastPoint[0], y);
 	    	dc.drawLine(lastPoint[0], y, firstPoint[0], y);
+	    	dc.setPenWidth(2);
 	    	dc.drawLine(firstPoint[0], y, firstPoint[0], firstPoint[1]);
- 	
+ 			dc.setPenWidth(1);
     	}
 	}
 	
 	private function fillPolygon(polygon,color,dc){
-	    dc.setPenWidth(1);
     	if(polygon.size() > 0){
 			dc.setColor(color, Graphics.COLOR_TRANSPARENT);
 			polygonDrawable.draw(dc,polygon);
