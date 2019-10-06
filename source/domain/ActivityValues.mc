@@ -35,13 +35,20 @@ module ActivityValues {
 			":"+activityTime.seconds.format("%02d");
     }
     
+    function calculateShortTime(){
+    	var milis = Activity.getActivityInfo().timerTime;
+		var activityTime = ActivityValues.toHMS(milis/1000);
+		return activityTime.hours.format("%02d")+":"+
+			activityTime.minutes.format("%02d");
+    }
+    
     function distance(){
         var distance = Activity.getActivityInfo().elapsedDistance;
     	if(distance == null || distance<0){ 
     		distance = 0;
     	}
-    	return distance/1000;
-//    	return distance/100;
+//    	return distance/1000;
+    	return distance/100;
     }
     
     function calculateDistance(){

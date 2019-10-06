@@ -1,43 +1,23 @@
 using Toybox.WatchUi;
-using Toybox.Attention;
-using Toybox.ActivityRecording;
-using Toybox.Timer;
-using ActivityValues;
-using Toybox.Sensor;
-using Toybox.Lang;
+using SoundAndVibration as SV;
+using Activity;
 
-var startingActivity = 0;
-var stoppingActivity = 0;
+
 var zoom = false;
 
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
-
-	private const ACTIVITY_NANE = "Bike Indoor Simulator";
-	private const LEVEL_FIELD_ID = 0;
-	private const TRACK_FIELD_ID = 1;
-	private const PERCENTAGE_FIELD_ID = 2;
 	
 	private const numSreens = 3;
 	
-	var session;
 	var index;
-	var activityRefreshTimer;
-	var lastKm = 0;
-	var levelField;
-   	var trackField;
-   	var percentageField;
+
+
+	var record;
 	
 	function initialize(index_) {
         BehaviorDelegate.initialize();
         index = index_;
-        activityRefreshTimer = new Timer.Timer();
-        activityRefreshTimer.start(method(:refreshValues),1000,true); 
-        Sensor.setEnabledSensors(
-        	[
-        		Sensor.SENSOR_HEARTRATE,
-        		Sensor.SENSOR_BIKESPEED,
-        		Sensor.SENSOR_BIKECADENCE,
-        	]);
+        record = new Activity.Record();
     }
     
     
@@ -81,18 +61,17 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onSelect() {
-		handleActivityRecording();
+		record.handle();
 		return true;
 	}
 	
 	function onBack() {
-		if(session!=null && session.isRecording()){
+		if(record.isRecording()){
 			return true;
-		}else if(session!=null && !session.isRecording()){
-			pushStopMenu();
+		}else{
+			record.pushStopMenu();
     		return true;                  
     	}
-    	return false;
 
     }
     
@@ -105,147 +84,5 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	return BehaviorDelegate.onMenu();
     }
     
-    function discard(){
-    	var result = session.discard();// discard the session
-    	session = null;
-    	release();
-    	return result;
-    }
     
-    function save(){
-		var level = Properties.level().format("%u");
-		levelField.setData(level);
-		trackField.setData(DataTracks.getActiveTrack().name);
-    	var result = session.save();// save the session
-    	session = null;
-    	release();
-    	return result;
-    }
-    
-
-
-    function release(){
-    	activityRefreshTimer.stop();
-    	WatchUi.requestUpdate();
-    	if(Sensor has :unregisterSensorDataListener){
-			Sensor.unregisterSensorDataListener();
-		}
-    }
-    
-    function refreshValues(){
-		checkAlert();	
-		if(percentageField!=null){
-			percentageField.setData(ActivityValues.percentage());
-		}
-    	WatchUi.requestUpdate();
-    }
-    
-    
-    private function checkAlert(){
-    	var timer = null;
-    	try {
-	    	var currentKm = ActivityValues.distance().toLong();
-		    	if(currentKm - lastKm == 1){
-		    		playingTone(Attention.TONE_INTERVAL_ALERT);
-		    		lastKm = currentKm;
-		    		var timer = new Timer.Timer();
-			    	timer.start(method(:removeAlertView),2000,false);
-			    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
-		    	}
-		} catch (e instanceof Lang.Exception) {
-    		System.println(e.getErrorMessage());
-		}
-    }
-    
-    function removeAlertView(){
-    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-    }
-    
-    function handleActivityRecording(){
-		if (Toybox has :ActivityRecording) {                          // check device for activity recording
-	       if (session == null) {
-	           	session = ActivityRecording.createSession({          // set up recording session
-	                 :name		=> 	ACTIVITY_NANE,                              // set session name
-	                 :sport		=> 	ActivityRecording.SPORT_CYCLING,       // set sport type
-	                 :subSport	=>	ActivityRecording.SUB_SPORT_INDOOR_CYCLING // set sub sport type
-	           	});
-    		levelField = session.createField("level",LEVEL_FIELD_ID,FitContributor.DATA_TYPE_STRING,
-    				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"",:count => 2 });	
-       		trackField = session.createField("track",TRACK_FIELD_ID,FitContributor.DATA_TYPE_STRING, 
-       				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"",:count => 24 });
-       		percentageField = session.createField("percentage",PERCENTAGE_FIELD_ID,FitContributor.DATA_TYPE_SINT32, 
-       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"%" });
-          	startingTimer();
-	       }
-	       else if ((session != null) && session.isRecording()) {
-	       		stoppingTimer();
-	       }else if((session != null) && !session.isRecording()){ 
-	       		startingTimer();
-	       }
-	       refreshValues();
-	   }
-	}
-	
-	private function startingTimer(){
-		startingActivity = 2;
-	    session.start();
-	    playStart();
-	}
-	
-	private function stoppingTimer(){
-		stoppingActivity = 2;
-		fireStopMenu();
-       	session.stop();  
-       	playStop(); 
-	}
-	
-	
-	private function fireStopMenu(){
-		var timer = new Timer.Timer();
-	    timer.start(method(:pushStopMenu),1500,false);
-	}
-	
-	function cleanActivityValues(){
-		startingActivity = false;
-		stoppingActivity = false;
-		refreshValues();
-	}
-	
-	function pushStopMenu(){
-		var stopMenu = new Rez.Menus.StopMenu();
-		var title = Lang.format(WatchUi.loadResource(Rez.Strings.stopTitle),[ActivityValues.calculateTime(),ActivityValues.calculateDistance()]);
-		stopMenu.setTitle(title);
-		 WatchUi.pushView(stopMenu, new StopMenuDelegate(self), WatchUi.SLIDE_IMMEDIATE);
-	}
-    
-    private function playingTone(tone){
-		if(Attention has :playTone){
-			Attention.playTone(tone);
-		}
-	}
-	
-	private function vibrating(){
-		if (Attention has :vibrate) {
-			var vibeData =
-				[
-					new Attention.VibeProfile(50, 250)
-				];
-			Attention.vibrate(vibeData);
-		}	
-	}
-	
-	private function playStart(){
-		if(Attention has :TONE_START){
-			playingTone(Attention.TONE_START);
-		}
-		vibrating();
-	
-	}
-	
-	private function playStop(){
-		if(Attention has :TONE_STOP){
-			playingTone(Attention.TONE_STOP);
-		}
-		vibrating();
-	}
 }

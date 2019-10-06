@@ -4,24 +4,24 @@ using Toybox.Timer;
 
 class StopMenuDelegate extends WatchUi.MenuInputDelegate {
 
-	var screenDelegate;
+	var record;
 	
-    function initialize(screenDelegate_) {
+    function initialize(record_) {
         MenuInputDelegate.initialize();
-        screenDelegate = screenDelegate_;
+        record = record_;
     }
 
     function onMenuItem(item) {
 		if (item == :discard) {
 			WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-           	screenDelegate.discard();
+           	record.discard();
             savingProgress(WatchUi.loadResource(Rez.Strings.discarding));
         }else if(item == :continu){
-        	screenDelegate.handleActivityRecording();
+        	record.handle();
         	return true;
         }else if(item == :save){
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-        	screenDelegate.save();
+        	record.save();
         	savingProgress(WatchUi.loadResource(Rez.Strings.saving));
         }
         return false;
