@@ -3,20 +3,18 @@ using SoundAndVibration as SV;
 using Activity;
 
 
-var zoom = false;
-
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	
 	private const numSreens = 3;
 	
 	var index;
-
-
 	var record;
+	var currentView;
 	
-	function initialize(index_) {
+	function initialize(index_, currentView_) {
         BehaviorDelegate.initialize();
         index = index_;
+        currentView = currentView_;
         record = new Activity.Record();
     }
     
@@ -24,7 +22,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     function onNextPage() {
         index = (index + 1) % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_LEFT);
-        zoom = false;
+        resetZoom();
     }
 
     function onPreviousPage() {
@@ -34,7 +32,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         }
         index = index % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_RIGHT);
-        zoom = false;
+        resetZoom();
     }
     
     function onKey(evt) {
@@ -56,7 +54,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         }else {
         	view = new DataFieldsView2();
         }
-
+		currentView = view;
         return view;
     }
 
@@ -76,12 +74,30 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     function onMenu() {
-    	if(index == 0){
-    		zoom = !zoom;
+    	if(changeZoom()){
+    		return true;
+    	}else{
+    		return BehaviorDelegate.onMenu();
+    	}
+    }
+    
+    private function changeZoom(){
+    	if(currentView has :changeZoom){
+    		currentView.changeZoom();
     		WatchUi.requestUpdate();
     		return true;
     	}
-    	return BehaviorDelegate.onMenu();
+    	return false;
+
+    }
+    
+    private function resetZoom(){
+    	if(currentView has :resetZoom){
+    		currentView.resetZoom();
+    		return true;
+    	}else{
+    		return false;
+    	}
     }
     
     

@@ -15,6 +15,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	var padding = 0;
 	var font = Graphics.FONT_XTINY;
 	var polygonDrawable = new PolygonDrawable();
+	var zoom = false;
 
 	function initialize(options) {
 	    Drawable.initialize(options);
@@ -160,5 +161,13 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	}
     	
     	
+	}
+	
+	function changeZoom(){
+		zoom = !zoom;
+	}
+	
+	function resetZoom(){
+		zoom = false;
 	}
 }

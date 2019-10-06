@@ -71,6 +71,12 @@ class ProfileTrackView  extends BaseView {
 		}
     }
 
+   	function changeZoom(){
+   		drawableTrackProfile.changeZoom();
+	}
     
+    function resetZoom(){
+		drawableTrackProfile.resetZoom();
+	}
     
 }

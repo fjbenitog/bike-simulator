@@ -13,7 +13,7 @@ module Activity{
 		var levelField;
 	   	var trackField;
 	   	var percentageField;
-	   	var lastKm = 0;
+	   	var activityAlert = new ActivityAlert();
 	   	
 	   	private const LEVEL_FIELD_ID = 0;
 		private const TRACK_FIELD_ID = 1;
@@ -47,9 +47,9 @@ module Activity{
 	       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"%" });
 	          	startingTimer();
 		       }
-		       else if ((session != null) && session.isRecording()) {
+		       else if (isRecording()) {
 		       		stoppingTimer();
-		       }else if((session != null) && !session.isRecording()){ 
+		       }else if(!isRecording()){ 
 		       		startingTimer();
 		       }
 		       refreshValues();
@@ -85,32 +85,13 @@ module Activity{
 	    }
 	    
 	    function refreshValues(){
-			checkAlert();	
+			activityAlert.checkAlert();	
 			if(percentageField!=null){
 				percentageField.setData(ActivityValues.percentage());
 			}
 	    	WatchUi.requestUpdate();
     	}
     	
-	    private function checkAlert(){
-	    	var timer = null;
-	    	try {
-		    	var currentKm = ActivityValues.distance().toLong();
-			    	if(currentKm - lastKm == 1){
-			    		SV.playAlert();
-			    		lastKm = currentKm;
-			    		var timer = new Timer.Timer();
-				    	timer.start(method(:removeAlertView),2000,false);
-				    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
-			    	}
-			} catch (e instanceof Lang.Exception) {
-	    		System.println(e.getErrorMessage());
-			}
-	    }
-	    
-	    function removeAlertView(){
-	    	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-	    }
 	    
 		 private function startingTimer(){
 			starting = 2;
@@ -129,7 +110,6 @@ module Activity{
 			var timer = new Timer.Timer();
 		    timer.start(method(:pushStopMenu),1500,false);
 		}
-		
 		
 		function pushStopMenu(){
 			var stopMenu = new Rez.Menus.StopMenu();

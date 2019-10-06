@@ -5,6 +5,7 @@ using ActivityValues;
 
 class BaseView extends WatchUi.View {
 	
+	
     function initialize() {
         View.initialize();
     }
@@ -78,6 +79,7 @@ class BaseView extends WatchUi.View {
 			return val1;
 		}
     }
+    
     
 }
 
