@@ -47,8 +47,8 @@ module ActivityValues {
     	if(distance == null || distance<0){ 
     		distance = 0;
     	}
-//    	return distance/1000;
-    	return distance/100;
+    	return distance/1000;
+//    	return distance/10;
     }
     
     function calculateDistance(){

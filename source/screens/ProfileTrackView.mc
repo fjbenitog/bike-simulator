@@ -6,13 +6,11 @@ using Toybox.System;
 class ProfileTrackView  extends BaseView {
 
 	var activeTrack;
-	var calculator;
 	var drawableTrackProfile;
 	
     function initialize() {
         BaseView.initialize();
         activeTrack = DataTracks.getActiveTrack();
-        calculator = new Simulator.Calculator(Properties.gears(), Properties.power(), Properties.level());
         drawableTrackProfile  = new DrawableTrackProfile({
         	:track 		=> activeTrack,
         	:width 		=> System.getDeviceSettings().screenWidth - 38, 
