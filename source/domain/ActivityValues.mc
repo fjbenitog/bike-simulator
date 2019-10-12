@@ -125,12 +125,7 @@ module ActivityValues {
     }
     
     function calculateSimulatorValues(){
-		var currentPercentage = ActivityValues.calculatePercentage();
-	    var numericPercentage = 0;
-	    if(!currentPercentage.equals("")) {
-    		numericPercentage = currentPercentage.toNumber();
-	    }
-	    return simulator.calculate(numericPercentage);
+	    return simulator.calculate(percentage());
     }
     
     

@@ -26,9 +26,6 @@ module Simulator{
 		}
 		
 		function calculate(percentage){
-//			if(percentage<0){
-//				return new Result(1,gears);
-//			}
 			var power = percentage + level;
 			if(power > powerSize){
 				return new Result(powerSize,gears - (power - powerSize));

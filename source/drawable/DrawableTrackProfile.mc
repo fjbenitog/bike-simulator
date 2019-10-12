@@ -90,11 +90,13 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	}else{
     		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_TRANSPARENT);
 			dc.drawText(x + width/2, y + padding, font, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
-	    	var realWidth = polygon[polygon.size()-2][0]-polygon[polygon.size()-1][0];
-	    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-	    	dc.drawLine(x+realWidth/4,y+1,x+realWidth/4,y+4);
-	    	dc.drawLine(x+realWidth/2,y+1,x+realWidth/2,y+4);
-	    	dc.drawLine(x+3*realWidth/4,y+1,x+3*realWidth/4,y+4);
+			if(polygon.size() > 1){
+		    	var realWidth = polygon[polygon.size()-2][0]-polygon[polygon.size()-1][0];
+		    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		    	dc.drawLine(x+realWidth/4,y+1,x+realWidth/4,y+4);
+		    	dc.drawLine(x+realWidth/2,y+1,x+realWidth/2,y+4);
+		    	dc.drawLine(x+3*realWidth/4,y+1,x+3*realWidth/4,y+4);
+	    	}
     	}
     	
     	
@@ -151,7 +153,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	}
 	
 	private function drawCursor(currentPolygon,dc){
-    	if(currentPolygon.size() > 0){
+    	if(currentPolygon.size() > 2){
 	    	dc.setColor(Graphics.COLOR_BLUE, Graphics.Graphics.COLOR_TRANSPARENT);
 	    	dc.fillCircle(currentPolygon[currentPolygon.size()-3][0], currentPolygon[currentPolygon.size()-3][1], 3);
 	    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
