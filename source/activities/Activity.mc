@@ -13,7 +13,7 @@ module Activity{
 		var levelField;
 	   	var trackField;
 	   	var percentageField;
-	   	var activityAlert = new ActivityAlert();
+	   	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
 	   	
 	   	var lapNumber = 0;
 	   	var lastDistance = 0;
@@ -44,13 +44,13 @@ module Activity{
 		                 :sport		=> 	ActivityRecording.SPORT_CYCLING,       // set sport type
 		                 :subSport	=>	ActivityRecording.SUB_SPORT_INDOOR_CYCLING // set sub sport type
 		           	});
-	    		levelField = session.createField("level",LEVEL_FIELD_ID,FitContributor.DATA_TYPE_STRING,
-	    				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"",:count => 2 });	
-	       		trackField = session.createField("track",TRACK_FIELD_ID,FitContributor.DATA_TYPE_STRING, 
-	       				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"",:count => 24 });
-	       		percentageField = session.createField("percentage",PERCENTAGE_FIELD_ID,FitContributor.DATA_TYPE_SINT32, 
-	       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"%" });
-	          	startingTimer();
+		    		levelField = session.createField("level",LEVEL_FIELD_ID,FitContributor.DATA_TYPE_STRING,
+		    				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"Level", :count=>2 });	
+		       		trackField = session.createField("track",TRACK_FIELD_ID,FitContributor.DATA_TYPE_STRING, 
+		       				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"Track",:count=>32});
+		       		percentageField = session.createField("percentage",PERCENTAGE_FIELD_ID,FitContributor.DATA_TYPE_SINT32, 
+		       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"%" });
+		          	startingTimer();
 		       }
 		       else if (isRecording()) {
 		       		stoppingTimer();

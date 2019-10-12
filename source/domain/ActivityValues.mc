@@ -5,7 +5,7 @@ using Toybox.System;
 module ActivityValues {
 
 	var simulator = new Simulator.Calculator(Properties.gears(), Properties.power(), Properties.level());
-	
+
 	class ActivityTime {
 	
 		var hours;
@@ -43,7 +43,7 @@ module ActivityValues {
     }
     
     function calculateShortTime(){
-    	var milis = Activity.getActivityInfo().timerTime;
+    	var milis = time();
 		var activityTime = ActivityValues.toHMS(milis/1000);
 		return activityTime.hours.format("%02d")+":"+
 			activityTime.minutes.format("%02d");
@@ -58,7 +58,7 @@ module ActivityValues {
     }
     
     function distance(){
-    	return meterDistance()/1000;
+    	return meterDistance()/100;
     }
     
     function printDistance(distance){

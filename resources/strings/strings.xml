@@ -35,10 +35,8 @@
 $2$</string>
 
 	<string id="levelLabel">Level</string>
-	<string id="levelUnit"></string>
 	<string id="percentageUnit">%</string>
 	<string id="trackLabel">Track</string>
-	<string id="trackUnit"></string>
 	
 	<string id="saving">Saving</string>
 	<string id="discarding">Discarding</string>

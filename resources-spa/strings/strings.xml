@@ -33,9 +33,7 @@
     <string id="discard">Descartar</string>
     
     <string id="levelLabel">Nivel</string>
-	<string id="levelUnit"></string>
 	<string id="trackLabel">Etapa</string>
-	<string id="trackUnit"></string>
 	
 	<string id="saving">Guardando</string>
 	<string id="discarding">Descartando</string>
