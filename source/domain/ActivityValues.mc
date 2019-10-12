@@ -27,12 +27,19 @@ module ActivityValues {
 		return new ActivityTime(hr,min,sec);
 	}
 	
-	function calculateTime(){
-    	var milis = Activity.getActivityInfo().timerTime;
-		var activityTime = ActivityValues.toHMS(milis/1000);
+	function time(){
+		return Activity.getActivityInfo().timerTime;
+	}
+	
+	function printTime(time){
+		var activityTime = ActivityValues.toHMS(time/1000);
 		return activityTime.hours.format("%02d")+":"+
 			activityTime.minutes.format("%02d")+
 			":"+activityTime.seconds.format("%02d");
+	}
+	
+	function calculateTime(){
+		return printTime(time());
     }
     
     function calculateShortTime(){
@@ -42,35 +49,40 @@ module ActivityValues {
 			activityTime.minutes.format("%02d");
     }
     
-    function distance(){
-        var distance = Activity.getActivityInfo().elapsedDistance;
+    function meterDistance(){
+    	var distance = Activity.getActivityInfo().elapsedDistance;
     	if(distance == null || distance<0){ 
     		distance = 0;
     	}
-    	return distance/1000;
-//    	return distance/10;
+    	return distance;
     }
     
-    function calculateDistance(){
-    	var activityDistance = distance();
+    function distance(){
+    	return meterDistance()/1000;
+    }
+    
+    function printDistance(distance){
     	return  Lang.format( "$1$",
     		[
-        		distance().format("%02.2f")
+        		distance.format("%02.2f")
     		]
 		);
     }
     
+    function calculateDistance(){
+    	return printDistance(distance());
+    }
+    
     function speed(){
-    	 var speed = Activity.getActivityInfo().currentSpeed;
+    	var speed = Activity.getActivityInfo().currentSpeed;
     	if(speed == null || speed < 0) {
     		return 0;
     	}else{
     		return (3600*speed)/1000;
-    	}
+		}
     }
     
-    function calculateSpeed(){
-    	var speed = speed();
+    function printSpeed(speed){
     	if(speed==0){
     		return "";
 		}else{
@@ -80,6 +92,10 @@ module ActivityValues {
 	    		]
 			);
 		}
+    }
+    
+    function calculateSpeed(){
+    	return printSpeed(speed());
     }
     
     function calculateAvgSpeed(){

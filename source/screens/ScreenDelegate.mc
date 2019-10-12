@@ -68,6 +68,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 			return false;
 		}
 		else if(record.isRecording()){
+			record.lap();
 			return true;
 		}
 		else{

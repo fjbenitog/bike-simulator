@@ -7,6 +7,10 @@ using SoundAndVibration as SV;
 class ActivityAlert {
 
 	private var lastKm = 0;
+	
+	function removeAlertView(){
+		WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+	}
 
     function checkAlert(){
     	var currentKm = ActivityValues.distance().toLong();
@@ -19,10 +23,16 @@ class ActivityAlert {
     	}
 
 	}
-
-	function removeAlertView(){
-		WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+	
+	
+	function lapAlert(lap,speedLap,distanceLap){
+		SV.playLap();
+		var timer = new Timer.Timer();
+    	timer.start(method(:removeAlertView),2000,false);
+    	WatchUi.pushView(new LapView(lap,speedLap,distanceLap), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
 	}
+
+
 }
 
 class AlertDelegate extends WatchUi.BehaviorDelegate {

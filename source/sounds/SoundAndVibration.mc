@@ -51,8 +51,19 @@ module SoundAndVibration{
 	
 	function playAlert(){
 		try{
-			if(Attention has :TONE_INTERVAL_ALERT){
-				playingTone(Attention.TONE_INTERVAL_ALERT);
+			if(Attention has :TONE_DISTANCE_ALERT){
+				playingTone(Attention.TONE_DISTANCE_ALERT);
+			}
+			vibrating();
+		} catch (e instanceof Lang.Exception) {
+				WatchUi.requestUpdate();
+		}
+	}
+	
+	function playLap(){
+		try{
+			if(Attention has :TONE_LAP){
+				playingTone(Attention.TONE_LAP);
 			}
 			vibrating();
 		} catch (e instanceof Lang.Exception) {

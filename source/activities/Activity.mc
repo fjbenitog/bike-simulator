@@ -15,6 +15,11 @@ module Activity{
 	   	var percentageField;
 	   	var activityAlert = new ActivityAlert();
 	   	
+	   	var lapNumber = 0;
+	   	var lastDistance = 0;
+	   	var lastTime = 0;
+	   	var stopTimer = null;
+	   	
 	   	private const LEVEL_FIELD_ID = 0;
 		private const TRACK_FIELD_ID = 1;
 		private const PERCENTAGE_FIELD_ID = 2;
@@ -32,7 +37,7 @@ module Activity{
 		}
 		
 		function handle(){
-			if (Toybox has :ActivityRecording) {                          // check device for activity recording
+			if (Toybox has :ActivityRecording ) {                          // check device for activity recording
 		       if (session == null) {
 		           	session = ActivityRecording.createSession({          // set up recording session
 		                 :name		=> 	ACTIVITY_NANE,                              // set session name
@@ -49,7 +54,7 @@ module Activity{
 		       }
 		       else if (isRecording()) {
 		       		stoppingTimer();
-		       }else if(!isRecording()){ 
+		       }else if(!isRecording() ){ 
 		       		startingTimer();
 		       }
 		       refreshValues();
@@ -92,6 +97,29 @@ module Activity{
 	    	return result;
 	    }
 	    
+	    function lap(){
+	    	if(isSessionStart()){
+	    		session.addLap();
+	    		var totalDistance = ActivityValues.distance();
+	    		var totalTime = ActivityValues.time();
+	    		var distanceLap = totalDistance - lastDistance;
+	    		var timeLap = 3600*(totalTime/1000) - lastTime;
+//	    		System.println("Distance Total:"+totalDistance);
+//	    		System.println("Distance Lap:"+distanceLap);
+//	    		System.println("Time Lap:"+timeLap);
+	    		
+	    		var speedLap = distanceLap/timeLap;
+//    			System.println("speedLap Lap:"+speedLap);
+	    		lapNumber++;
+	    		lastDistance = totalDistance;
+	    		lastTime = totalTime;
+	    		activityAlert.lapAlert(lapNumber,ActivityValues.printSpeed(speedLap),ActivityValues.printDistance(distanceLap));
+	    	}
+	    }
+	    
+	    private function calculateSpeed(){
+	    }
+	    
 	    function refreshValues(){
     		try {
 				activityAlert.checkAlert();	
@@ -107,12 +135,14 @@ module Activity{
     	
 	    
 		 private function startingTimer(){
+		 	stopping = 0;
 			starting = 2;
 		    session.start();
 		    SV.playStart();
 		}
 		
 		private function stoppingTimer(){
+			starting = 0;
 			stopping = 2;
 			fireStopMenu();
 	       	session.stop();  
@@ -120,15 +150,20 @@ module Activity{
 		}
 		
 		private function fireStopMenu(){
-			var timer = new Timer.Timer();
-		    timer.start(method(:pushStopMenu),1500,false);
+			if(stopTimer!=null){
+				stopTimer.stop();
+			}
+			stopTimer = new Timer.Timer();
+		    stopTimer.start(method(:pushStopMenu),1500,false);
 		}
 		
 		function pushStopMenu(){
-			var stopMenu = new Rez.Menus.StopMenu();
-			var title = ActivityValues.calculateShortTime()+" - "+ActivityValues.calculateDistance();
-			stopMenu.setTitle(title);
-			 WatchUi.pushView(stopMenu, new StopMenuDelegate(self), WatchUi.SLIDE_IMMEDIATE);
+			if(!isRecording()){
+				var stopMenu = new Rez.Menus.StopMenu();
+				var title = ActivityValues.calculateShortTime()+" - "+ActivityValues.calculateDistance();
+				stopMenu.setTitle(title);
+				WatchUi.pushView(stopMenu, new StopMenuDelegate(self), WatchUi.SLIDE_IMMEDIATE);
+			 }
 		}
 	}
 	
