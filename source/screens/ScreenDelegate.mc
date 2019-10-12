@@ -64,9 +64,13 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	}
 	
 	function onBack() {
-		if(record.isRecording()){
+		if(!record.isSessionStart()){
+			return false;
+		}
+		else if(record.isRecording()){
 			return true;
-		}else{
+		}
+		else{
 			record.pushStopMenu();
     		return true;                  
     	}

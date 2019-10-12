@@ -60,6 +60,11 @@ module Activity{
 			return session!=null && session.isRecording();
 		}
 		
+		function isSessionStart(){
+			var start = session!=null;
+			return start;
+		}
+		
 		function release(){
 			activityRefreshTimer.stop();
 	    	if(Sensor has :unregisterSensorDataListener){
@@ -68,7 +73,10 @@ module Activity{
     	}
     	
     	function discard(){
-	    	var result = session.discard();// discard the session
+	    	var result = false;
+	    	if(session!=null){
+	    		session.discard();// discard the session
+	    	}
 	    	session = null;
 	    	release();
 	    	return result;
@@ -85,11 +93,16 @@ module Activity{
 	    }
 	    
 	    function refreshValues(){
-			activityAlert.checkAlert();	
-			if(percentageField!=null){
-				percentageField.setData(ActivityValues.percentage());
+    		try {
+				activityAlert.checkAlert();	
+				if(percentageField!=null){
+					percentageField.setData(ActivityValues.percentage());
+				}
+				WatchUi.requestUpdate();
+			} catch (e instanceof Lang.Exception) {
+				WatchUi.requestUpdate();
 			}
-	    	WatchUi.requestUpdate();
+	    	
     	}
     	
 	    

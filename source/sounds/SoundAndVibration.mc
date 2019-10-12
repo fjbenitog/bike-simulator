@@ -3,41 +3,61 @@ using Toybox.Attention;
 module SoundAndVibration{
 
 	function playingTone(tone){
-		if(Attention has :playTone){
-			Attention.playTone(tone);
+		try{
+			if(Attention has :playTone){
+				Attention.playTone(tone);
+			}
+		} catch (e instanceof Lang.Exception) {
+				WatchUi.requestUpdate();
 		}
 	}
 	
 	function vibrating(){
-		if (Attention has :vibrate) {
-			var vibeData =
-				[
-					new Attention.VibeProfile(50, 250)
-				];
-			Attention.vibrate(vibeData);
+		try {
+			if (Attention has :vibrate) {
+				var vibeData =
+					[
+						new Attention.VibeProfile(50, 250)
+					];
+				Attention.vibrate(vibeData);
+			}
+		} catch (e instanceof Lang.Exception) {
+				WatchUi.requestUpdate();
 		}	
 	}
 	
 	function playStart(){
-		if(Attention has :TONE_START){
-			playingTone(Attention.TONE_START);
+		try {
+			if(Attention has :TONE_START){
+				playingTone(Attention.TONE_START);
+			}
+			vibrating();
+		} catch (e instanceof Lang.Exception) {
+				WatchUi.requestUpdate();
 		}
-		vibrating();
 	
 	}
 	
 	function playStop(){
-		if(Attention has :TONE_STOP){
-			playingTone(Attention.TONE_STOP);
+		try{
+			if(Attention has :TONE_STOP){
+				playingTone(Attention.TONE_STOP);
+			}
+			vibrating();
+		} catch (e instanceof Lang.Exception) {
+				WatchUi.requestUpdate();
 		}
-		vibrating();
 	}
 	
 	function playAlert(){
-		if(Attention has :TONE_INTERVAL_ALERT){
-			playingTone(Attention.TONE_INTERVAL_ALERT);
+		try{
+			if(Attention has :TONE_INTERVAL_ALERT){
+				playingTone(Attention.TONE_INTERVAL_ALERT);
+			}
+			vibrating();
+		} catch (e instanceof Lang.Exception) {
+				WatchUi.requestUpdate();
 		}
-		vibrating();
 	}
 	
 }

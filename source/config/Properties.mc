@@ -18,6 +18,7 @@ module Properties{
 		if(value !=null && value instanceof Lang.Number) {
 			return value;
 		}else{
+			storeActiveTrack(0);
 			return 0;
 		}
 	}
@@ -32,6 +33,7 @@ module Properties{
 		if(gears !=null && gears instanceof Lang.Number) {
 			return gears;
 		}else{
+			storeGears(8);
 			return 8;
 		}
 	}
@@ -45,6 +47,7 @@ module Properties{
 		if(power !=null && power instanceof Lang.Number) {
 			return power;
 		}else{
+			storePower(10);
 			return 10;
 		}
 	}
@@ -58,12 +61,20 @@ module Properties{
 		if(level !=null && level instanceof Lang.Number) {
 			return level;
 		}else{
+			storeLevel(5);
 			return 5;
 		}
 	}
 	
 	function storeLevel(level){
     	Application.getApp().setProperty(Config.LEVEL_KEY, level);
+	}
+	
+	function init(){
+		activeTrack();
+		gears();
+		power();
+		level();
 	}
 	
 

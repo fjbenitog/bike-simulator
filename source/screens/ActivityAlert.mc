@@ -9,19 +9,15 @@ class ActivityAlert {
 	private var lastKm = 0;
 
     function checkAlert(){
-		var timer = null;
-		try {
-	    	var currentKm = ActivityValues.distance().toLong();
-		    	if(currentKm - lastKm == 1){
-		    		SV.playAlert();
-		    		lastKm = currentKm;
-		    		var timer = new Timer.Timer();
-			    	timer.start(method(:removeAlertView),2000,false);
-			    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
-		    	}
-		} catch (e instanceof Lang.Exception) {
-			System.println(e.getErrorMessage());
-		}
+    	var currentKm = ActivityValues.distance().toLong();
+    	if(currentKm - lastKm == 1){
+    		SV.playAlert();
+    		lastKm = currentKm;
+    		var timer = new Timer.Timer();
+	    	timer.start(method(:removeAlertView),2000,false);
+	    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    	}
+
 	}
 
 	function removeAlertView(){

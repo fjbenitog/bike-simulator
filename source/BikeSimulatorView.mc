@@ -1,5 +1,5 @@
 using Toybox.WatchUi;
-
+using Properties;
 class BikeSimulatorView extends WatchUi.View {
 
     function initialize() {
@@ -8,6 +8,7 @@ class BikeSimulatorView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc) {
+    	Properties.init();
         setLayout(Rez.Layouts.MainLayout(dc));
     }
 
