@@ -21,12 +21,16 @@
     <string id="level">Nivel</string>
     
     <string id="distance">DISTANCIA</string>
+    <string id="distanceLap">DIST. VUEL.</string>
     <string id="heartRate">FC</string>
     <string id="speed">VELOCIDAD</string>
+    <string id="speedLap">VEL. VUEL.</string>
     <string id="cadence">CADENCIA</string>
     <string id="time">TIEMPO</string>
-    <string id="percentage">PORCENTAJE</string>
-    <string id="avgSpeed">VELOCIDAD M</string>
+    <string id="timeLap">TPO VUEL.</string>
+    <string id="percentage">PENDIENTE</string>
+    <string id="avgSpeed">VEL. MED.</string>
+    <string id="altitude">ALTITUD V.</string>
     
     <string id="continu">Continuar</string>
     <string id="save">Guardar</string>

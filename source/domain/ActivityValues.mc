@@ -5,6 +5,8 @@ using Toybox.System;
 module ActivityValues {
 
 	var simulator = new Simulator.Calculator(Properties.gears(), Properties.power(), Properties.level());
+	var lastDistance = 0;
+	var lastTime = 0;
 
 	class ActivityTime {
 	
@@ -18,6 +20,53 @@ module ActivityValues {
 			seconds = seconds_;
 		}
 		
+	}
+	
+	function reset(){
+		lastDistance = 0;
+		lastTime = 0;
+	}
+	
+	function lap(){
+		var totalDistance = ActivityValues.distance();
+		var totalTime = ActivityValues.time();
+		var distanceLap = totalDistance - ActivityValues.lastDistance;
+		var timeLap = totalTime - ActivityValues.lastTime;
+		
+		var speedLap = distanceLap/(3600*timeLap/1000);
+		ActivityValues.lastDistance = totalDistance;
+		ActivityValues.lastTime = totalTime;
+		return {:distanceLap => printDistance(distanceLap), 
+				:speedLap => printSpeed(speedLap)};
+	}
+	
+	function distanceLap(){
+		var totalDistance = ActivityValues.distance();
+		return totalDistance - ActivityValues.lastDistance; 
+	}
+	
+	function calculateDistanceLap(){
+		return printDistance(distanceLap());
+	}
+	
+	function timeLap(){
+		var totalTime = ActivityValues.time();
+		return totalTime - ActivityValues.lastTime;
+	}
+	
+	function calculateTimeLap(){
+		var timeLap = timeLap();
+		System.println("TimeLap:"+timeLap);
+		return printTime(timeLap);
+	}
+	
+	function calculateSpeedLap(){
+		var time = timeLap();
+		if(time == 0){
+			return printSpeed(0);
+		}else{
+			return printSpeed(distanceLap()/(3600*time));
+		}
 	}
 	
 	function toHMS(secs) {
@@ -58,7 +107,7 @@ module ActivityValues {
     }
     
     function distance(){
-    	return meterDistance()/1000;
+    	return meterDistance()/50;
     }
     
     function printDistance(distance){
@@ -135,6 +184,28 @@ module ActivityValues {
     	}else{
     		return profile[distance.toNumber()];
 		}
+    }
+    
+    function calculateAltitude(){
+    	var distance = distance().toNumber();
+    	var currentTrack = DataTracks.getActiveTrack();
+    	var baseAltitude = currentTrack.altitude;
+    	var profile = DataTracks.getActiveTrack().profile;
+    	
+    	if(distance <=0 ){
+    		return baseAltitude;
+    	}else{
+    		var altitude = baseAltitude;
+    		var index = distance;
+    		if(distance>currentTrack.profile.size()-1){
+    			index = currentTrack.profile.size();
+    		}
+    		for(var i = 0 ; i<index; i++){
+    			altitude = altitude + (10*profile[i]);
+    		}
+    		return altitude.toLong();
+    	}
+    	
     }
     function calculatePercentage(){
     	return percentage().toString();

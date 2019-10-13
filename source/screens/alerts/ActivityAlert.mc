@@ -31,7 +31,9 @@ class ActivityAlert {
     		alertTimer = new Timer.Timer();
 	    	alertTimer.start(method(:removeAlertView),2000,false);
 	    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
+	    	return true;
     	}
+    	return false;
 
 	}
 	
