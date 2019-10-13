@@ -104,12 +104,8 @@ module Activity{
 	    		var totalTime = ActivityValues.time();
 	    		var distanceLap = totalDistance - lastDistance;
 	    		var timeLap = 3600*(totalTime/1000) - lastTime;
-//	    		System.println("Distance Total:"+totalDistance);
-//	    		System.println("Distance Lap:"+distanceLap);
-//	    		System.println("Time Lap:"+timeLap);
 	    		
 	    		var speedLap = distanceLap/timeLap;
-//    			System.println("speedLap Lap:"+speedLap);
 	    		lapNumber++;
 	    		lastDistance = totalDistance;
 	    		lastTime = totalTime;

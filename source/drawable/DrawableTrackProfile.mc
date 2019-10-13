@@ -60,6 +60,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		var calculatedPointsAndDistance = selectPoints(ActivityValues.distance());
 		var virtualdrawPoints = calculatedPointsAndDistance[0];
 		var currentDistance = calculatedPointsAndDistance[1];
+		var startKm = calculatedPointsAndDistance[2];
 	
 
 		//Calculate scales to redimension Profile
@@ -70,7 +71,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		
 
 		//Draw border and populate polygon for profile
-		var polygons = calculatePolygonsAndDrawLine(rate,scale,pethWidth,virtualdrawPoints,currentDistance,dc);
+		var polygons = calculatePolygonsAndDrawLine(rate,scale,pethWidth,virtualdrawPoints,currentDistance,startKm,dc);
 		var currentPolygon = polygons[0];
 		var polygon = polygons[1];
 
@@ -90,32 +91,27 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	}else{
     		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_TRANSPARENT);
 			dc.drawText(x + width/2, y + padding, font, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
-			if(polygon.size() > 1){
-		    	var realWidth = polygon[polygon.size()-2][0]-polygon[polygon.size()-1][0];
-		    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		    	dc.drawLine(x+realWidth/4,y+1,x+realWidth/4,y+4);
-		    	dc.drawLine(x+realWidth/2,y+1,x+realWidth/2,y+4);
-		    	dc.drawLine(x+3*realWidth/4,y+1,x+3*realWidth/4,y+4);
-	    	}
     	}
     	
     	
 	}
 	
-	private function calculatePolygonsAndDrawLine(rate,scale,pethWidth,virtualdrawPoints,currentDistance,dc){
+	private function calculatePolygonsAndDrawLine(rate,scale,pethWidth,virtualdrawPoints,currentDistance,startKm,dc){
 		var polygon = [];
 		var currentPolygon = [];
 		var prevXPoint = null;
 		var prevYPoint = null; 
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.Graphics.COLOR_TRANSPARENT);
-		dc.setPenWidth(pethWidth);
+		var kmMark = calculateKmMark(virtualdrawPoints.size()) ;
+		
 		for(var i = 0; i < virtualdrawPoints.size(); ++i) {
+			dc.setPenWidth(pethWidth);
 			var xPoint = x + (i * rate).toNumber() + pethWidth + 1;
 			var yPoint = y - ((virtualdrawPoints[i] + base) * scale).toNumber();
-			if(i < currentDistance ){ 
+			if(i < currentDistance){ 
 				currentPolygon.add([xPoint, yPoint]);
 			}
-			if(i >= currentDistance - 1){
+			if(i >= (currentDistance - 1)){
 				polygon.add([xPoint, yPoint]);
 			}
 		
@@ -124,9 +120,22 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 			}
 			prevXPoint = xPoint;
 			prevYPoint = yPoint;
+			if(((startKm + i)%kmMark).toLong() == 0 && i!=0){
+				dc.setPenWidth(1);
+				dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		    	dc.drawLine(xPoint - 1,y+1,xPoint - 1,y+4);
+			}
 
     	}
     	return [currentPolygon,polygon];
+	}
+	
+	private function calculateKmMark(size){
+		if(zoom){
+			return 2;
+		}else{
+			return (size/4) + 1;
+		}
 	}
 	
 	private function closePolygonAndDrawLines(polygon,dc){
@@ -165,13 +174,13 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		var virtualDistance = currentDistance;
 		if(zoom){
 			var zoomDistance = 5;
-			var startPoint = currentDistance - zoomDistance;
-			var endPoint = currentDistance + zoomDistance;
+			var startPoint = currentDistance.toLong() - zoomDistance;
+			var endPoint = currentDistance.toLong() + zoomDistance + 1;
 			if(startPoint<0){
 				startPoint = 0;
 				endPoint = 2 * zoomDistance;
 			}else{
-				virtualDistance = zoomDistance;
+				virtualDistance = zoomDistance+0.1;
 			}
 			if(endPoint > drawPoints.size()){
 				virtualDistance = zoomDistance + (endPoint - drawPoints.size());
@@ -179,10 +188,9 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 				startPoint = drawPoints.size() - 2*zoomDistance;
 				
 			}
-			
-			return [drawPoints.slice(startPoint, endPoint),virtualDistance];
+			return [drawPoints.slice(startPoint, endPoint),virtualDistance,startPoint.toLong()];
 		}else{
-			return [drawPoints,virtualDistance];
+			return [drawPoints,virtualDistance,0];
 		}
 	}
 	
