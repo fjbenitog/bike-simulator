@@ -5,7 +5,7 @@ using Activity;
 
 class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	
-	private const numSreens = 3;
+	private const numSreens = 4;
 	
 	var index;
 	var record;
@@ -51,8 +51,10 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
             view = new ProfileTrackView();
         } else if(1 == index){
             view = new DataFieldsView1();
+        }else if(2 == index){
+            view = new DataFieldsView2();
         }else {
-        	view = new DataFieldsView2();
+        	view = new DataFieldsView3();
         }
 		currentView = view;
         return view;
@@ -88,7 +90,8 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     
     private function changeZoom(){
     	if(currentView has :changeZoom){
-    		currentView.changeZoom();
+    		var zoomMode = currentView.changeZoom();
+    		record.setZoomMode(zoomMode);
     		WatchUi.requestUpdate();
     		return true;
     	}
@@ -97,6 +100,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     private function resetZoom(){
+    	record.setZoomMode(false);
     	if(currentView has :resetZoom){
     		currentView.resetZoom();
     		return true;
@@ -104,6 +108,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     		return false;
     	}
     }
+    
     
     
 }

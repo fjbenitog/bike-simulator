@@ -4,10 +4,13 @@ class Track{
 	var profile;
 	var drawPoints;
 	var maxPoint;
+	var altitude;
 	
-	function initialize(name_,profile_) {
+	
+	function initialize(name_,profile_,altitude_) {
         name = name_;
         profile = profile_;
+        altitude = altitude_;
         
         drawPoints = new [profile_.size()];
         var previousPoint = 0;

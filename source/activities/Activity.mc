@@ -6,6 +6,7 @@ module Activity{
 
 	var starting = 0;
 	var stopping = 0;
+	var zoomMode = false;
 	
 	class Record{
 		var activityRefreshTimer;
@@ -13,16 +14,17 @@ module Activity{
 		var levelField;
 	   	var trackField;
 	   	var percentageField;
+	   	var altitudeField;
 	   	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
 	   	
 	   	var lapNumber = 0;
-	   	var lastDistance = 0;
-	   	var lastTime = 0;
 	   	var stopTimer = null;
+	   	var lastAltitude;
 	   	
 	   	private const LEVEL_FIELD_ID = 0;
 		private const TRACK_FIELD_ID = 1;
 		private const PERCENTAGE_FIELD_ID = 2;
+		private const ALTITUDE_FIELD_ID = 3;
 		private const ACTIVITY_NANE = "Bike Indoor Simulator";
 		
 		function initialize(){
@@ -34,6 +36,10 @@ module Activity{
 	        		Sensor.SENSOR_BIKESPEED,
 	        		Sensor.SENSOR_BIKECADENCE,
 	        	]);
+		}
+		
+		function setZoomMode(zoomMode_){
+			zoomMode = zoomMode_;
 		}
 		
 		function handle(){
@@ -50,6 +56,8 @@ module Activity{
 		       				{ :mesgType=>FitContributor.MESG_TYPE_SESSION, :units=>"Track",:count=>32});
 		       		percentageField = session.createField("percentage",PERCENTAGE_FIELD_ID,FitContributor.DATA_TYPE_SINT32, 
 		       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"%" });
+		       		altitudeField = session.createField("altitude",ALTITUDE_FIELD_ID,FitContributor.DATA_TYPE_UINT32, 
+		       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"m" });
 		          	startingTimer();
 		       }
 		       else if (isRecording()) {
@@ -72,6 +80,7 @@ module Activity{
 		
 		function release(){
 			activityRefreshTimer.stop();
+			ActivityValues.reset();
 	    	if(Sensor has :unregisterSensorDataListener){
 				Sensor.unregisterSensorDataListener();
 			}
@@ -100,16 +109,9 @@ module Activity{
 	    function lap(){
 	    	if(isSessionStart()){
 	    		session.addLap();
-	    		var totalDistance = ActivityValues.distance();
-	    		var totalTime = ActivityValues.time();
-	    		var distanceLap = totalDistance - lastDistance;
-	    		var timeLap = 3600*(totalTime/1000) - lastTime;
-	    		
-	    		var speedLap = distanceLap/timeLap;
+	    		var lapValues = ActivityValues.lap();
 	    		lapNumber++;
-	    		lastDistance = totalDistance;
-	    		lastTime = totalTime;
-	    		activityAlert.lapAlert(lapNumber,ActivityValues.printSpeed(speedLap),ActivityValues.printDistance(distanceLap));
+	    		activityAlert.lapAlert(lapNumber,lapValues.get(:speedLap),lapValues.get(:distanceLap));
 	    	}
 	    }
 	    
@@ -118,9 +120,14 @@ module Activity{
 	    
 	    function refreshValues(){
     		try {
-				activityAlert.checkAlert();	
-				if(percentageField!=null){
-					percentageField.setData(ActivityValues.percentage());
+				var isAlert = activityAlert.checkAlert(!zoomMode);	
+				if(isAlert){
+					if(percentageField!=null){
+						percentageField.setData(ActivityValues.percentage());
+					}
+					if(altitudeField!=null){
+						altitudeField.setData(ActivityValues.calculateAltitude());
+					}
 				}
 				WatchUi.requestUpdate();
 			} catch (e instanceof Lang.Exception) {

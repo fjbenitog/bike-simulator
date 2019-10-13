@@ -7,10 +7,10 @@ class DataFieldsView2 extends DataFieldsView {
     function initialize() {
     	var fields = 
     	[
-    		[WatchUi.loadResource(Rez.Strings.time) 		, :calculateTime],
+    		[WatchUi.loadResource(Rez.Strings.timeLap) 		, :calculateTimeLap],
     		[WatchUi.loadResource(Rez.Strings.percentage)	, :calculatePercentage],
-			[WatchUi.loadResource(Rez.Strings.avgSpeed)		, :calculateAvgSpeed],
-			[WatchUi.loadResource(Rez.Strings.distance)		, :calculateDistance],
+			[WatchUi.loadResource(Rez.Strings.speedLap)		, :calculateSpeedLap],
+			[WatchUi.loadResource(Rez.Strings.distanceLap)	, :calculateDistanceLap],
 
 		];
 		

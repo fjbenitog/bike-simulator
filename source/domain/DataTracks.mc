@@ -18,11 +18,11 @@ module DataTracks{
 						-7,-6,-6,-6,-7,1,2,3,2,1,1
 						];					
 						
-	var Tracks = [	new Track("La Covatilla",profile1),
-					new Track("Hard",profile2),
-					new Track("Medium",profile3),
-					new Track("Morcuera - Canencia",profile4),
-					new Track("Long",profile5)
+	var Tracks = [	new Track("La Covatilla",profile1,850),
+					new Track("Hard",profile2,150),
+					new Track("Medium",profile3,600),
+					new Track("Morcuera - Canencia",profile4,1173),
+					new Track("Long",profile5,350)
 				 ];
 	
 	function getIndex(value) {

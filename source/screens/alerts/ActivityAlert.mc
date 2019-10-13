@@ -19,19 +19,24 @@ class ActivityAlert {
 		WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
 	}
 
-    function checkAlert(){
+    function checkAlert(show){
     	var currentKm = ActivityValues.distance().toLong();
     	if(currentKm - lastKm == 1 && currentKm<=trackLenght){
-    		SV.playAlert();
     		lastKm = currentKm;
-    		if(alertTimer!=null){
-    			alertTimer.stop();
-    			removeAlertView();
-    		}
-    		alertTimer = new Timer.Timer();
-	    	alertTimer.start(method(:removeAlertView),2000,false);
-	    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
+    		if(show == true){
+	    		SV.playAlert();
+
+	    		if(alertTimer!=null){
+	    			alertTimer.stop();
+	    			removeAlertView();
+	    		}
+	    		alertTimer = new Timer.Timer();
+		    	alertTimer.start(method(:removeAlertView),2000,false);
+		    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
+	    	}
+	    	return true;
     	}
+    	return false;
 
 	}
 	

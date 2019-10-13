@@ -20,12 +20,16 @@
     <string id="level">Level</string>
     
     <string id="distance">DISTANCE</string>
+    <string id="distanceLap">LAP DIST. </string>
     <string id="heartRate">HR</string>
     <string id="speed">SPEED</string>
+    <string id="speedLap">LAP SPEED</string>
     <string id="cadence">CADENCE</string>
-    <string id="time">TIME</string>
-    <string id="percentage">PERCENTAGE</string>
+    <string id="time">TIMER</string>
+    <string id="timeLap">TIME LAP</string>
+    <string id="percentage">GRADE</string>
     <string id="avgSpeed">AVG SPEED</string>
+    <string id="altitude">V. ELEVATION</string>
     
     <string id="continu">Continue</string>
     <string id="save">Save</string>
@@ -38,6 +42,8 @@ $2$</string>
 	<string id="emptyUnit"></string>
 	<string id="percentageUnit">%</string>
 	<string id="trackLabel">Track</string>
+	<string id="altitudeLabel">Virtual Altitude</string>
+	<string id="altitudeUnit">m</string>
 	
 	<string id="saving">Saving</string>
 	<string id="discarding">Discarding</string>

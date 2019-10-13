@@ -5,5 +5,7 @@
          dataLabel="@Strings.trackLabel" unitLabel="@Strings.emptyUnit" />
         <fitField id="2" displayInChart="true" sortOrder = "2" precision="0" 
         chartTitle="@Strings.percentage" dataLabel="@Strings.percentage" unitLabel="@Strings.percentageUnit" fillColor="#FFA500" />
+        <fitField id="3" displayInChart="true" sortOrder = "3" precision="0" 
+        chartTitle="@Strings.altitudeLabel" dataLabel="@Strings.altitudeLabel" unitLabel="@Strings.altitudeUnit" fillColor="#FFA500" />
         
 </fitContributions>
