@@ -90,7 +90,8 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     
     private function changeZoom(){
     	if(currentView has :changeZoom){
-    		currentView.changeZoom();
+    		var zoomMode = currentView.changeZoom();
+    		record.setZoomMode(zoomMode);
     		WatchUi.requestUpdate();
     		return true;
     	}
@@ -99,6 +100,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     private function resetZoom(){
+    	record.setZoomMode(false);
     	if(currentView has :resetZoom){
     		currentView.resetZoom();
     		return true;
@@ -106,6 +108,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     		return false;
     	}
     }
+    
     
     
 }

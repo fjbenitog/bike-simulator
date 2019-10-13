@@ -1,6 +1,6 @@
 <strings>
 
-	<string id="AppName">BIS</string>
+	<string id="AppName">Bike Simulator</string>
     <string id="prompt">Bienvenido a
     Bike Indoor Simulator</string>
     <string id="pressStart">Pulsa Start</string>

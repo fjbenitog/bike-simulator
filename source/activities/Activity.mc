@@ -6,6 +6,7 @@ module Activity{
 
 	var starting = 0;
 	var stopping = 0;
+	var zoomMode = false;
 	
 	class Record{
 		var activityRefreshTimer;
@@ -35,6 +36,10 @@ module Activity{
 	        		Sensor.SENSOR_BIKESPEED,
 	        		Sensor.SENSOR_BIKECADENCE,
 	        	]);
+		}
+		
+		function setZoomMode(zoomMode_){
+			zoomMode = zoomMode_;
 		}
 		
 		function handle(){
@@ -115,7 +120,7 @@ module Activity{
 	    
 	    function refreshValues(){
     		try {
-				var isAlert = activityAlert.checkAlert();	
+				var isAlert = activityAlert.checkAlert(!zoomMode);	
 				if(isAlert){
 					if(percentageField!=null){
 						percentageField.setData(ActivityValues.percentage());

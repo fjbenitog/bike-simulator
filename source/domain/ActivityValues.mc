@@ -56,7 +56,6 @@ module ActivityValues {
 	
 	function calculateTimeLap(){
 		var timeLap = timeLap();
-		System.println("TimeLap:"+timeLap);
 		return printTime(timeLap);
 	}
 	
