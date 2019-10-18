@@ -60,16 +60,17 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		var virtualdrawPoints = calculatedPointsAndDistance[0];
 		var currentDistance = calculatedPointsAndDistance[1];
 		var startKm = calculatedPointsAndDistance[2];
+		var initPoint = calculatedPointsAndDistance[3];
 	
 
 		//Calculate scales to redimension Profile
 		var distance = virtualdrawPoints.size();
-		var rate = width.toDouble() / distance;
+		var rate = width.toDouble() / (distance+1);
 		var scale = height.toDouble() / (maxPoint +base);
 		
 
 		//Draw border and populate polygon for profile
-		var cursor = calculateCursorAndDrawProfile(rate,scale,virtualdrawPoints,currentDistance,startKm,dc);
+		var cursor = calculateCursorAndDrawProfile(rate,scale,virtualdrawPoints,currentDistance,startKm,initPoint,dc);
     	
     	drawCursor(cursor,dc);
     	
@@ -85,25 +86,24 @@ class DrawableTrackProfile extends WatchUi.Drawable {
     	
 	}
 	
-	private function calculateCursorAndDrawProfile(rate,scale,virtualdrawPoints,currentDistance,startKm,dc){
+	private function calculateCursorAndDrawProfile(rate,scale,virtualdrawPoints,currentDistance,startKm,initPoint,dc){
 		var cursor = null;
 		var prevXPoint = null;
 		var prevYPoint = null; 
 		var firstXPoint = null;
 		var firstYPoint = null; 
-		var kmMark = calculateKmMark(virtualdrawPoints.size()) ;
-		
-		for(var i = 0; i < virtualdrawPoints.size(); ++i) {
-			var xPoint = x + (i * rate).toNumber();
-			var yPoint = y - ((virtualdrawPoints[i] + base) * scale).toNumber();
+		var kmMark = calculateKmMark(virtualdrawPoints.size()+1) ;
+		var lineWidth = 2;
+		for(var i = 0; i <= virtualdrawPoints.size(); ++i) {
+			var xPoint = x + (i * rate).toNumber() + lineWidth;
+			var yPoint = calculateY(i,virtualdrawPoints,scale,initPoint);
+			if(i < currentDistance){ 
+				cursor = [xPoint, yPoint];
+			}
 			if(i==0){
 				firstXPoint = xPoint;
 				firstYPoint = yPoint;
 			}
-			if(i < currentDistance){ 
-				cursor = [xPoint, yPoint];
-			}
-
 			if(i>0){
 				dc.setPenWidth(1);
 				if(i > currentDistance){ 
@@ -124,26 +124,40 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 			prevXPoint = xPoint;
 			prevYPoint = yPoint;
 			
-			if(((startKm + i)%kmMark).toLong() == 0 && i!=0){
+			if(((startKm + i)%kmMark).toLong() == 0){
+				dc.setPenWidth(2);
 				dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		    	dc.drawLine(xPoint - 1,y+1,xPoint - 1,y+4);
+		    	dc.drawLine(xPoint,y+1,xPoint,y+4);
 			}
 
     	}
-    	dc.setPenWidth(2);
+    	dc.setPenWidth(lineWidth);
     	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		dc.drawLine(prevXPoint, prevYPoint, prevXPoint, y);
-		dc.drawLine(prevXPoint, y, x, y);
-		dc.drawLine(x, y, firstXPoint, firstYPoint);
+		dc.drawLine(prevXPoint, y, firstXPoint, y);
+		dc.drawLine(firstXPoint, y, firstXPoint, firstYPoint);
 		dc.setPenWidth(1);
     	return cursor;
+	}
+	
+	
+	private function calculateY(i,virtualdrawPoints,scale,initPoint){
+		if(i==0 && initPoint == null){
+			return y - (base * scale);
+		}else if(i==0 && initPoint != null){
+			return y - ((initPoint + base) * scale).toNumber();
+		}
+		else{
+			return y - ((virtualdrawPoints[i-1] + base) * scale).toNumber();
+		}
+	
 	}
 	
 	private function calculateKmMark(size){
 		if(zoom){
 			return 2;
 		}else{
-			return (size/4) + 1;
+			return (size/4);
 		}
 	}
 	
@@ -161,22 +175,27 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		if(zoom){
 			var zoomDistance = 5;
 			var startPoint = currentDistance.toLong() - zoomDistance;
-			var endPoint = currentDistance.toLong() + zoomDistance + 1;
+			var endPoint = currentDistance.toLong() + zoomDistance;
+			var initPoint = null;
 			if(startPoint<0){
 				startPoint = 0;
 				endPoint = 2 * zoomDistance;
 			}else{
 				virtualDistance = zoomDistance+0.1;
+				
 			}
 			if(endPoint > drawPoints.size()){
-				virtualDistance = zoomDistance + (endPoint - drawPoints.size());
+				virtualDistance = zoomDistance+0.1 + (endPoint - drawPoints.size());
 				endPoint = drawPoints.size();
 				startPoint = drawPoints.size() - 2*zoomDistance;
 				
 			}
-			return [drawPoints.slice(startPoint, endPoint),virtualDistance,startPoint.toLong()];
+			if((startPoint-1)>0){
+				initPoint = drawPoints[(startPoint-1).toNumber()];
+			}
+			return [drawPoints.slice(startPoint, endPoint),virtualDistance,startPoint.toLong(),initPoint];
 		}else{
-			return [drawPoints,virtualDistance,0];
+			return [drawPoints,virtualDistance,0,null];
 		}
 	}
 	

@@ -106,7 +106,7 @@ module ActivityValues {
     }
     
     function distance(){
-    	return meterDistance()/1000;
+    	return meterDistance()/50;
     }
     
     function printDistance(distance){
@@ -178,7 +178,7 @@ module ActivityValues {
     function percentage(){
     	var distance = calculateDistance().toFloat();
     	var profile = DataTracks.getActiveTrack().profile;
-    	if(distance <=0 || distance>profile.size()-1){
+    	if(distance <=0 || distance>profile.size()){
     		return 0;
     	}else{
     		return profile[distance.toNumber()];
