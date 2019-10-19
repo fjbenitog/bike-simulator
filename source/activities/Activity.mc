@@ -8,19 +8,21 @@ module Activity{
 	var bikeSpeedActive		= false;
 	var bikeCadenceActive 	= false;
 	
+	enum {
+		Started,
+		Stopped
+	}
+	
 	class Record{
-//		var activityRefreshTimer;
 		var session;
 		var levelField;
 	   	var trackField;
 	   	var percentageField;
 	   	var altitudeField;
-//	   	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
 	   	
 	   	var lapNumber = 0;
 	   	var stopTimer = null;
 	   	var lastAltitude;
-//   		var zoomMode = false;
 	   	
 	   	private const LEVEL_FIELD_ID = 0;
 		private const TRACK_FIELD_ID = 1;
@@ -28,9 +30,7 @@ module Activity{
 		private const ALTITUDE_FIELD_ID = 3;
 		private const ACTIVITY_NANE = "Bike Indoor Simulator";
 		
-		function initialize(){
-//		    activityRefreshTimer = new Timer.Timer();
-//        	activityRefreshTimer.start(method(:refreshValues),1000,true); 
+		function initialize(){ 
 			Sensor.setEnabledSensors(
 	        	[
 	        		Sensor.SENSOR_HEARTRATE,
@@ -58,10 +58,6 @@ module Activity{
 	    	}
 		}
 		
-//		function setZoomMode(zoomMode_){
-//			zoomMode = zoomMode_;
-//		}
-		
 		function handle(){
 			if (Toybox has :ActivityRecording ) {                          // check device for activity recording
 		       if (session == null) {
@@ -78,14 +74,13 @@ module Activity{
 		       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"%" });
 		       		altitudeField = session.createField("altitude",ALTITUDE_FIELD_ID,FitContributor.DATA_TYPE_UINT32, 
 		       				{ :mesgType=>FitContributor.MESG_TYPE_RECORD, :units=>"m" });
-		          	startingTimer();
+		          	return startingTimer();
 		       }
 		       else if (isRecording()) {
-		       		stoppingTimer();
+		       		return stoppingTimer();
 		       }else if(!isRecording() ){ 
-		       		startingTimer();
+		       		return startingTimer();
 		       }
-//		       refreshValues();
 		   }
 		}
 		
@@ -99,7 +94,6 @@ module Activity{
 		}
 		
 		function release(){
-//			activityRefreshTimer.stop();
 			ActivityValues.reset();
 	    	if(Sensor has :unregisterSensorDataListener){
 				Sensor.unregisterSensorDataListener();
@@ -109,7 +103,7 @@ module Activity{
     	function discard(){
 	    	var result = false;
 	    	if(session!=null){
-	    		session.discard();// discard the session
+	    		session.discard();
 	    	}
 	    	session = null;
 	    	release();
@@ -120,7 +114,7 @@ module Activity{
 			var level = Properties.level().format("%u");
 			levelField.setData(level);
 			trackField.setData(DataTracks.getActiveTrack().name);
-	    	var result = session.save();// save the session
+	    	var result = session.save();
 	    	session = null;
 	    	release();
 	    	return result;
@@ -136,29 +130,10 @@ module Activity{
 	    					:distanceLap 	=> lapValues.get(:distanceLap), 
 							:speedLap 		=> lapValues.get(:speedLap)
 						};
-//	    		activityAlert.lapAlert(lapNumber,lapValues.get(:speedLap),lapValues.get(:distanceLap));
 	    	}else{
 	    		return null;
 	    	}
 	    }
-	    
-//	    function refreshValues(){
-//    		try {
-//				var isAlert = activityAlert.checkAlert(!zoomMode);	
-//				if(isAlert){
-//					if(percentageField!=null){
-//						percentageField.setData(ActivityValues.percentage());
-//					}
-//					if(altitudeField!=null){
-//						altitudeField.setData(ActivityValues.calculateAltitude());
-//					}
-//				}
-//				WatchUi.requestUpdate();
-//			} catch (e instanceof Lang.Exception) {
-//				WatchUi.requestUpdate();
-//			}
-//	    	
-//    	}
     	
     	function collectData(){
     		if(percentageField!=null){
@@ -170,32 +145,16 @@ module Activity{
     	}
     	
 	    
-		 private function startingTimer(){
+		private function startingTimer(){
 		    session.start();
 		    SV.playStart();
+		    return Started;
 		}
 		
 		private function stoppingTimer(){
-			fireStopMenu();
 	       	session.stop();  
 	       	SV.playStop(); 
-		}
-		
-		private function fireStopMenu(){
-			if(stopTimer!=null){
-				stopTimer.stop();
-			}
-			stopTimer = new Timer.Timer();
-		    stopTimer.start(method(:pushStopMenu),1500,false);
-		}
-		
-		function pushStopMenu(){
-			if(!isRecording()){
-				var stopMenu = new Rez.Menus.StopMenu();
-				var title = ActivityValues.calculateShortTime()+" - "+ActivityValues.calculateDistance();
-				stopMenu.setTitle(title);
-				WatchUi.pushView(stopMenu, new StopMenuDelegate(self), WatchUi.SLIDE_IMMEDIATE);
-			 }
+	       	return Stopped;
 		}
 	}
 	

@@ -12,6 +12,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	var currentView;
 	var activityRefreshTimer;
 	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
+	var stopTimer;
 	
 	function initialize(index_, currentView_) {
         BehaviorDelegate.initialize();
@@ -35,7 +36,6 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 		}
     	
 	}
-    
     
     function onNextPage() {
         index = (index + 1) % numSreens;
@@ -66,21 +66,25 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         if (0 == index) {
             view = new ProfileTrackView();
         } else if(1 == index){
-            view = new DataFieldsView1();
+            view = DataFields.createView1();
         }else if(2 == index){
-            view = new DataFieldsView2();
+            view = DataFields.createView2();
         }else {
-        	view = new DataFieldsView3();
+        	view = DataFields.createView3();
         }
 		currentView = view;
         return view;
     }
 
     function onSelect() {
-		record.handle();
-//		refreshValues(); TODO: Maybe not necessary
-		hideSensors();
-		stateRecording();
+		var status = record.handle();
+		if(status == Activity.Started){
+			hideSensors();
+		}
+		if(status == Activity.Stopped){
+			fireStopMenu();
+		}
+		stateRecording(status);
 		return true;
 	}
 	
@@ -89,14 +93,11 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 			return false;
 		}
 		else if(record.isRecording()){
-			var lapValues = record.lap();
-			if(lapValues!=null){
-				activityAlert.lapAlert(lapValues.get(:lapNumber),lapValues.get(:speedLap),lapValues.get(:distanceLap));
-			}
+			lap();
 			return true;
 		}
 		else{
-			record.pushStopMenu();
+			pushStopMenu();
     		return true;                  
     	}
 
@@ -110,10 +111,16 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	}
     }
     
+    private function lap(){
+    	var lapValues = record.lap();
+		if(lapValues!=null){
+			activityAlert.lapAlert(lapValues.get(:lapNumber),lapValues.get(:speedLap),lapValues.get(:distanceLap));
+		}
+    }
+    
     private function changeZoom(){
     	if(currentView has :changeZoom){
     		currentView.changeZoom();
-//    		record.setZoomMode(zoomMode);
     		return true;
     	}
     	return false;
@@ -130,7 +137,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     }
     
     private function hideSensors(){
-    	if(currentView has :hideSensors && record.isRecording()){
+    	if(currentView has :hideSensors){
     		currentView.hideSensors();
     		return false;
     	}else{
@@ -138,14 +145,45 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	}
     }
     
-    private function stateRecording(){
-    	if(currentView has :start && record.isRecording()){
+    private function stateRecording(state){
+    	if(currentView has :start && state == Activity.Started){
     		currentView.start();
     	}
-    	if(currentView has :stop && !record.isRecording()){
+    	if(currentView has :stop && state == Activity.Stopped){
     		currentView.stop();
     	}
     }
+    
+    private function fireStopMenu(){
+		if(stopTimer!=null){
+			stopTimer.stop();
+		}
+		stopTimer = new Timer.Timer();
+	    stopTimer.start(method(:pushStopMenu),1500,false);
+	}
+		
+	function pushStopMenu(){
+		if(!record.isRecording()){
+			var stopMenu = new Rez.Menus.StopMenu();
+			var title = ActivityValues.calculateTime()+" - "+ActivityValues.calculateDistance();
+			stopMenu.setTitle(title);
+			WatchUi.pushView(
+				stopMenu,
+			 	new StopMenuDelegate(
+			 		record.method(:discard),
+			 		record.method(:handle),
+			 		record.method(:save),
+			 		method(:release)
+			 		),
+			  	WatchUi.SLIDE_IMMEDIATE);
+		 }
+	}
+	
+	function release(){
+		if(activityRefreshTimer!=null){
+			activityRefreshTimer.stop();
+		}
+	}
     
     
     
