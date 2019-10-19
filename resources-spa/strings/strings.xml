@@ -41,5 +41,7 @@
 	
 	<string id="saving">Guardando</string>
 	<string id="discarding">Descartando</string>
+	
+	<string id="trackCompleted">¡¡¡Etapa\nCompletada!!!</string>
 
 </strings>

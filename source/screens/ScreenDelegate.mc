@@ -35,7 +35,8 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 				}
 				if(trackLenght<=ActivityValues.distance().toLong()){
 					completed = true;
-					onSelect();
+					record.handle();
+					WatchUi.pushView(new AlertTrackCompletedView(method(:pushStopMenu)), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
 				}
 			}
 			

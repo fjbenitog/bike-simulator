@@ -47,5 +47,7 @@ $2$</string>
 	
 	<string id="saving">Saving</string>
 	<string id="discarding">Discarding</string>
+	
+	<string id="trackCompleted">Track\nCompleted!!!</string>
     
 </strings>

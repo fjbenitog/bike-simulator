@@ -21,17 +21,14 @@ class StopMenuDelegate extends WatchUi.MenuInputDelegate {
 		if (item == :discard) {
 			clean.invoke();
 			WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-//           	record.discard();
 			discard.invoke();
             savingProgress(WatchUi.loadResource(Rez.Strings.discarding));
         }else if(item == :continu){
-//        	record.handle();
         	continu.invoke();
         	return true;
         }else if(item == :save){
         	clean.invoke();
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-//        	record.save();
 			save.invoke();
         	savingProgress(WatchUi.loadResource(Rez.Strings.saving));
         }
