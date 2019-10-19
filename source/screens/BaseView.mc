@@ -83,19 +83,20 @@ class BaseView extends WatchUi.View {
     	var height = dc.getHeight()/3;
     	var column = dc.getWidth()/4;
     	var marging = 35;
+    	
     	dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
     	dc.fillRectangle(0,0,dc.getWidth(),height);
     	dc.setPenWidth(2);
     	dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
     	dc.drawLine(0, height, dc.getWidth(), height);
     	if(blinking || Activity.heartRateActive){
-    		dc.drawBitmap(column, height - marging, heartIcon);
+    		dc.drawBitmap(column -11 , height - marging, heartIcon);
     	}
     	if(blinking || Activity.bikeSpeedActive){
-    		dc.drawBitmap(column*2, height - marging, speedIcon);
+    		dc.drawBitmap(column*2 - 11, height - marging, speedIcon);
     	}
     	if(blinking || Activity.bikeCadenceActive){
-    		dc.drawBitmap(column*3, height - marging, cadenceIcon);
+    		dc.drawBitmap(column*3 -11 , height - marging, cadenceIcon);
     	}
     }
     
