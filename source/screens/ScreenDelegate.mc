@@ -10,13 +10,31 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	var index;
 	var record;
 	var currentView;
+	var activityRefreshTimer;
+	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
 	
 	function initialize(index_, currentView_) {
         BehaviorDelegate.initialize();
         index = index_;
         currentView = currentView_;
         record = new Activity.Record();
+        
+        activityRefreshTimer = new Timer.Timer();
+        activityRefreshTimer.start(method(:refreshValues),1000,true);
     }
+    
+    function refreshValues(){
+		try {
+			var isAlert = activityAlert.checkAlert(!isZoom());	
+			if(isAlert){
+				record.collectData();
+			}
+			WatchUi.requestUpdate();
+		} catch (e instanceof Lang.Exception) {
+			WatchUi.requestUpdate();
+		}
+    	
+	}
     
     
     function onNextPage() {
@@ -60,6 +78,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
     function onSelect() {
 		record.handle();
+//		refreshValues(); TODO: Maybe not necessary
 		hideSensors();
 		stateRecording();
 		return true;
@@ -70,7 +89,10 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 			return false;
 		}
 		else if(record.isRecording()){
-			record.lap();
+			var lapValues = record.lap();
+			if(lapValues!=null){
+				activityAlert.lapAlert(lapValues.get(:lapNumber),lapValues.get(:speedLap),lapValues.get(:distanceLap));
+			}
 			return true;
 		}
 		else{
@@ -90,14 +112,22 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     
     private function changeZoom(){
     	if(currentView has :changeZoom){
-    		var zoomMode = currentView.changeZoom();
-    		record.setZoomMode(zoomMode);
+    		currentView.changeZoom();
+//    		record.setZoomMode(zoomMode);
     		return true;
     	}
     	return false;
 
     }
     
+    
+    private function isZoom(){
+    	if(currentView has :isZoom){
+    		return currentView.isZoom();
+    	}
+    	return false;
+
+    }
     
     private function hideSensors(){
     	if(currentView has :hideSensors && record.isRecording()){

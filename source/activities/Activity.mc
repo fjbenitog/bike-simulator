@@ -9,18 +9,18 @@ module Activity{
 	var bikeCadenceActive 	= false;
 	
 	class Record{
-		var activityRefreshTimer;
+//		var activityRefreshTimer;
 		var session;
 		var levelField;
 	   	var trackField;
 	   	var percentageField;
 	   	var altitudeField;
-	   	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
+//	   	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
 	   	
 	   	var lapNumber = 0;
 	   	var stopTimer = null;
 	   	var lastAltitude;
-   		var zoomMode = false;
+//   		var zoomMode = false;
 	   	
 	   	private const LEVEL_FIELD_ID = 0;
 		private const TRACK_FIELD_ID = 1;
@@ -29,8 +29,8 @@ module Activity{
 		private const ACTIVITY_NANE = "Bike Indoor Simulator";
 		
 		function initialize(){
-		    activityRefreshTimer = new Timer.Timer();
-        	activityRefreshTimer.start(method(:refreshValues),1000,true); 
+//		    activityRefreshTimer = new Timer.Timer();
+//        	activityRefreshTimer.start(method(:refreshValues),1000,true); 
 			Sensor.setEnabledSensors(
 	        	[
 	        		Sensor.SENSOR_HEARTRATE,
@@ -58,9 +58,9 @@ module Activity{
 	    	}
 		}
 		
-		function setZoomMode(zoomMode_){
-			zoomMode = zoomMode_;
-		}
+//		function setZoomMode(zoomMode_){
+//			zoomMode = zoomMode_;
+//		}
 		
 		function handle(){
 			if (Toybox has :ActivityRecording ) {                          // check device for activity recording
@@ -85,7 +85,7 @@ module Activity{
 		       }else if(!isRecording() ){ 
 		       		startingTimer();
 		       }
-		       refreshValues();
+//		       refreshValues();
 		   }
 		}
 		
@@ -99,7 +99,7 @@ module Activity{
 		}
 		
 		function release(){
-			activityRefreshTimer.stop();
+//			activityRefreshTimer.stop();
 			ActivityValues.reset();
 	    	if(Sensor has :unregisterSensorDataListener){
 				Sensor.unregisterSensorDataListener();
@@ -131,26 +131,42 @@ module Activity{
 	    		session.addLap();
 	    		var lapValues = ActivityValues.lap();
 	    		lapNumber++;
-	    		activityAlert.lapAlert(lapNumber,lapValues.get(:speedLap),lapValues.get(:distanceLap));
+	    		return {
+	    					:lapNumber 		=> lapNumber,
+	    					:distanceLap 	=> lapValues.get(:distanceLap), 
+							:speedLap 		=> lapValues.get(:speedLap)
+						};
+//	    		activityAlert.lapAlert(lapNumber,lapValues.get(:speedLap),lapValues.get(:distanceLap));
+	    	}else{
+	    		return null;
 	    	}
 	    }
 	    
-	    function refreshValues(){
-    		try {
-				var isAlert = activityAlert.checkAlert(!zoomMode);	
-				if(isAlert){
-					if(percentageField!=null){
-						percentageField.setData(ActivityValues.percentage());
-					}
-					if(altitudeField!=null){
-						altitudeField.setData(ActivityValues.calculateAltitude());
-					}
-				}
-				WatchUi.requestUpdate();
-			} catch (e instanceof Lang.Exception) {
-				WatchUi.requestUpdate();
+//	    function refreshValues(){
+//    		try {
+//				var isAlert = activityAlert.checkAlert(!zoomMode);	
+//				if(isAlert){
+//					if(percentageField!=null){
+//						percentageField.setData(ActivityValues.percentage());
+//					}
+//					if(altitudeField!=null){
+//						altitudeField.setData(ActivityValues.calculateAltitude());
+//					}
+//				}
+//				WatchUi.requestUpdate();
+//			} catch (e instanceof Lang.Exception) {
+//				WatchUi.requestUpdate();
+//			}
+//	    	
+//    	}
+    	
+    	function collectData(){
+    		if(percentageField!=null){
+				percentageField.setData(ActivityValues.percentage());
 			}
-	    	
+			if(altitudeField!=null){
+				altitudeField.setData(ActivityValues.calculateAltitude());
+			}
     	}
     	
 	    

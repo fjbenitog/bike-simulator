@@ -209,4 +209,8 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 		return zoom;
 	}
 	
+	function isZoom(){
+		return zoom;
+	}
+	
 }

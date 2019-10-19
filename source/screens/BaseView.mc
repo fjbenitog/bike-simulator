@@ -112,7 +112,7 @@ class BaseView extends WatchUi.View {
     	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
     	dc.drawRectangle(x,height,width,15);
     	dc.fillRectangle(x+2,height+2,((width - 4) * battery)/100,11);
-    	dc.drawLine(x + width, height + 4, x + width, height + 11);
+    	dc.fillRectangle(x + width, height + 4, 2, 8);
     }
     
     
