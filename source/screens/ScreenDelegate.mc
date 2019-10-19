@@ -11,8 +11,10 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	var record;
 	var currentView;
 	var activityRefreshTimer;
-	var activityAlert = new ActivityAlert(DataTracks.getActiveTrack().profile.size());
+	var trackLenght = DataTracks.getActiveTrack().profile.size();
+	var activityAlert = new ActivityAlert(trackLenght);
 	var stopTimer;
+	var completed = false;
 	
 	function initialize(index_, currentView_) {
         BehaviorDelegate.initialize();
@@ -26,10 +28,17 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     
     function refreshValues(){
 		try {
-			var isAlert = activityAlert.checkAlert(!isZoom());	
-			if(isAlert){
-				record.collectData();
+			if(!completed){
+				var isAlert = activityAlert.checkAlert(!isZoom());	
+				if(isAlert){
+					record.collectData();
+				}
+				if(trackLenght<=ActivityValues.distance().toLong()){
+					completed = true;
+					onSelect();
+				}
 			}
+			
 			WatchUi.requestUpdate();
 		} catch (e instanceof Lang.Exception) {
 			WatchUi.requestUpdate();
@@ -66,11 +75,28 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         if (0 == index) {
             view = new ProfileTrackView();
         } else if(1 == index){
-            view = DataFields.createView1();
+            view = new DataFieldsView([
+								    		[WatchUi.loadResource(Rez.Strings.speed)		, :calculateSpeed],
+											[WatchUi.loadResource(Rez.Strings.heartRate) 	, :calculateHeartRate],
+											[WatchUi.loadResource(Rez.Strings.cadence)		, :calculateCadence],
+											[WatchUi.loadResource(Rez.Strings.distance)		, :calculateDistance],
+										]);
         }else if(2 == index){
-            view = DataFields.createView2();
+            view = new DataFieldsView([
+								    		[WatchUi.loadResource(Rez.Strings.timeLap) 		, :calculateTimeLap],
+								    		[WatchUi.loadResource(Rez.Strings.percentage)	, :calculatePercentage],
+											[WatchUi.loadResource(Rez.Strings.speedLap)		, :calculateSpeedLap],
+											[WatchUi.loadResource(Rez.Strings.distanceLap)	, :calculateDistanceLap],
+
+										]);
         }else {
-        	view = DataFields.createView3();
+        	view = new DataFieldsView([
+								    		[WatchUi.loadResource(Rez.Strings.time) 		, :calculateTime],
+								    		[WatchUi.loadResource(Rez.Strings.altitude)		, :calculateAltitude],
+											[WatchUi.loadResource(Rez.Strings.avgSpeed)		, :calculateAvgSpeed],
+											[WatchUi.loadResource(Rez.Strings.distance)		, :calculateDistance],
+
+										]);
         }
 		currentView = view;
         return view;
@@ -90,6 +116,7 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 	
 	function onBack() {
 		if(!record.isSessionStart()){
+			release();
 			return false;
 		}
 		else if(record.isRecording()){

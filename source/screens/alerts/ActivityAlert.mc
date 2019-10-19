@@ -15,7 +15,7 @@ class ActivityAlert {
 
     function checkAlert(show){
     	var currentKm = ActivityValues.distance().toLong();
-    	if(currentKm - lastKm == 1 && currentKm<=trackLenght){
+    	if(currentKm - lastKm == 1 && currentKm<trackLenght){
     		lastKm = currentKm;
     		if(show == true){
 	    		SV.playAlert();

@@ -26,6 +26,7 @@ class BaseView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc) {
+    	View.onLayout(dc);
     	if(ActivityValues.time()<=0){
 	    	heartIcon = WatchUi.loadResource(Rez.Drawables.HeartIcon);
 	    	speedIcon = WatchUi.loadResource(Rez.Drawables.SpeedIcon);
@@ -39,13 +40,17 @@ class BaseView extends WatchUi.View {
 
     // Update the view
     function onUpdate(dc) {
-
+		View.onUpdate(dc);
+		drawContaint(dc);
     	if(displaySensors){
         	drawSensorsInfo(dc);
         	drawBattery(dc);
         }
     	drawStartingIcon(dc);
     	drawStoppingIcon(dc);
+    }
+    
+    function drawContaint(dc){
     }
     
     private function drawStartingIcon(dc){

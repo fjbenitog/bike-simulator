@@ -1,5 +1,6 @@
 class Track{
 
+	var id;
 	var name;
 	var profile;
 	var drawPoints;
@@ -7,7 +8,8 @@ class Track{
 	var altitude;
 	
 	
-	function initialize(name_,profile_,altitude_) {
+	function initialize(id_,name_,profile_,altitude_) {
+		id = id_;
         name = name_;
         profile = profile_;
         altitude = altitude_;

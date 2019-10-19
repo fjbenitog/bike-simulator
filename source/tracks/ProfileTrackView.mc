@@ -24,16 +24,11 @@ class ProfileTrackView  extends BaseView {
     }
 
 
-    // Update the view
-    function onUpdate(dc) {
-        // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
-        	
+    
+    function drawContaint(dc) {
     	drawFields(dc);
         dc.setColor(Graphics.COLOR_ORANGE, Graphics.COLOR_TRANSPARENT);
         drawableTrackProfile.draw(dc);
-        
-        BaseView.onUpdate(dc);
     }
     
     private function drawFields(dc){
