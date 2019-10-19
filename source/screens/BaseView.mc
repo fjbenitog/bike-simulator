@@ -1,6 +1,7 @@
 using Toybox.WatchUi;
 using Toybox.Graphics;
 using Toybox.Math;
+using Toybox.System;
 using ActivityValues;
 using Toybox.Timer;
 
@@ -38,8 +39,10 @@ class BaseView extends WatchUi.View {
 
     // Update the view
     function onUpdate(dc) {
+
     	if(displaySensors){
         	drawSensorsInfo(dc);
+        	drawBattery(dc);
         }
     	drawStartingIcon(dc);
     	drawStoppingIcon(dc);
@@ -98,6 +101,18 @@ class BaseView extends WatchUi.View {
     	if(blinking || Activity.bikeCadenceActive){
     		dc.drawBitmap(column*3 -11 , height - marging, cadenceIcon);
     	}
+    }
+    
+    private function drawBattery(dc){
+    	var battery = System.getSystemStats().battery;
+    	dc.setPenWidth(1);
+    	var width = 30;
+    	var height = dc.getHeight()/6 - 25;
+    	var x = (dc.getWidth() - width)/2 - 1;
+    	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+    	dc.drawRectangle(x,height,width,15);
+    	dc.fillRectangle(x+2,height+2,((width - 4) * battery)/100,11);
+    	dc.drawLine(x + width, height + 4, x + width, height + 11);
     }
     
     
