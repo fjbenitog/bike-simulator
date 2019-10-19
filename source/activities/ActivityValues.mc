@@ -94,8 +94,8 @@ module ActivityValues {
     }
     
     function distance(){
-//    	return meterDistance()/1000;
-    	return meterDistance()/50;
+    	return meterDistance()/1000;
+    	//return meterDistance()/50;
     }
     
     function printDistance(distance){
