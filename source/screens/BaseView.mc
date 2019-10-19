@@ -26,11 +26,11 @@ class BaseView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc) {
-    	heartIcon = WatchUi.loadResource(Rez.Drawables.HeartIcon);
-    	speedIcon = WatchUi.loadResource(Rez.Drawables.SpeedIcon);
-    	cadenceIcon = WatchUi.loadResource(Rez.Drawables.CadenceIcon);
-    	
     	if(ActivityValues.time()<=0){
+	    	heartIcon = WatchUi.loadResource(Rez.Drawables.HeartIcon);
+	    	speedIcon = WatchUi.loadResource(Rez.Drawables.SpeedIcon);
+	    	cadenceIcon = WatchUi.loadResource(Rez.Drawables.CadenceIcon);
+    	
 	    	sensorTimer = new Timer.Timer();
 	        sensorTimer.start(method(:showSensors),2000,false); 
         }
