@@ -6,6 +6,7 @@ class Track{
 	var drawPoints;
 	var maxPoint;
 	var altitude;
+	var reversed = false;
 	
 	
 	function initialize(id_,name_,profile_,altitude_) {

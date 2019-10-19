@@ -117,4 +117,12 @@ class OwnPickerDelegate extends WatchUi.BehaviorDelegate {
     	return true;
 	}
 	
+	function onMenuAction(value){
+	}
+	
+	function onMenu() {
+		onMenuAction(pickerFactory.getValue(index));
+		return true;
+    }
+	
 }
