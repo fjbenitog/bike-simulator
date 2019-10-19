@@ -10,4 +10,14 @@
             <color>FFFFFF</color>
         </palette>
     </bitmap>
+    <bitmap id="SpeedIcon" filename="images/speed_icon.png">
+    	<palette disableTransparency="false">
+            <color>FFFFFF</color>
+        </palette>
+    </bitmap>
+    <bitmap id="CadenceIcon" filename="images/cadence_icon.png">
+    	<palette disableTransparency="false">
+            <color>FFFFFF</color>
+        </palette>
+    </bitmap>
 </resources>

@@ -4,9 +4,9 @@ using Toybox.Timer;
 
 module Activity{
 
-	var starting = 0;
-	var stopping = 0;
-	var zoomMode = false;
+	var heartRateActive 	= false;
+	var bikeSpeedActive		= false;
+	var bikeCadenceActive 	= false;
 	
 	class Record{
 		var activityRefreshTimer;
@@ -20,6 +20,7 @@ module Activity{
 	   	var lapNumber = 0;
 	   	var stopTimer = null;
 	   	var lastAltitude;
+   		var zoomMode = false;
 	   	
 	   	private const LEVEL_FIELD_ID = 0;
 		private const TRACK_FIELD_ID = 1;
@@ -36,6 +37,25 @@ module Activity{
 	        		Sensor.SENSOR_BIKESPEED,
 	        		Sensor.SENSOR_BIKECADENCE,
 	        	]);
+	        Sensor.enableSensorEvents(method(:onSensor));
+		}
+		
+		function onSensor(sensorInfo) {
+	    	if(sensorInfo.heartRate!=null && sensorInfo.heartRate>0){
+	    		heartRateActive = true;
+	    	}else{
+	    		heartRateActive = false;
+	    	}
+	    	if(sensorInfo.speed!=null && sensorInfo.speed>0){
+	    		bikeSpeedActive = true;
+	    	}else{
+	    		bikeSpeedActive = false;
+	    	}
+	    	if(sensorInfo.cadence!=null && sensorInfo.cadence>0){
+	    		bikeCadenceActive = true;
+	    	}else{
+	    		bikeCadenceActive = false;
+	    	}
 		}
 		
 		function setZoomMode(zoomMode_){
@@ -115,9 +135,6 @@ module Activity{
 	    	}
 	    }
 	    
-	    private function calculateSpeed(){
-	    }
-	    
 	    function refreshValues(){
     		try {
 				var isAlert = activityAlert.checkAlert(!zoomMode);	
@@ -138,15 +155,11 @@ module Activity{
     	
 	    
 		 private function startingTimer(){
-		 	stopping = 0;
-			starting = 2;
 		    session.start();
 		    SV.playStart();
 		}
 		
 		private function stoppingTimer(){
-			starting = 0;
-			stopping = 2;
 			fireStopMenu();
 	       	session.stop();  
 	       	SV.playStop(); 

@@ -7,16 +7,10 @@ using SoundAndVibration as SV;
 class ActivityAlert {
 
 	private var lastKm = 0;
-	private var alertTimer;
 	private var trackLenght;
 	
 	function initialize(trackLenght_){
 		trackLenght = trackLenght_;
-	}
-	
-	function removeAlertView(){
-		alertTimer = null;
-		WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
 	}
 
     function checkAlert(show){
@@ -25,13 +19,6 @@ class ActivityAlert {
     		lastKm = currentKm;
     		if(show == true){
 	    		SV.playAlert();
-
-	    		if(alertTimer!=null){
-	    			alertTimer.stop();
-	    			removeAlertView();
-	    		}
-	    		alertTimer = new Timer.Timer();
-		    	alertTimer.start(method(:removeAlertView),2000,false);
 		    	WatchUi.pushView(new AlertView(), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
 	    	}
 	    	return true;
@@ -43,12 +30,6 @@ class ActivityAlert {
 	
 	function lapAlert(lap,speedLap,distanceLap){
 		SV.playLap();
-		if(alertTimer!=null){
-			removeAlertView();
-			alertTimer.stop();
-    	}
-		alertTimer = new Timer.Timer();
-    	alertTimer.start(method(:removeAlertView),2000,false);
     	WatchUi.pushView(new LapView(lap,speedLap,distanceLap), new AlertDelegate(), WatchUi.SLIDE_IMMEDIATE);
 	}
 

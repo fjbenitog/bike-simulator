@@ -22,7 +22,6 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     function onNextPage() {
         index = (index + 1) % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_LEFT);
-        resetZoom();
     }
 
     function onPreviousPage() {
@@ -32,7 +31,6 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         }
         index = index % numSreens;
         WatchUi.switchToView(getView(index), self, WatchUi.SLIDE_RIGHT);
-        resetZoom();
     }
     
     function onKey(evt) {
@@ -62,6 +60,8 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
 
     function onSelect() {
 		record.handle();
+		hideSensors();
+		stateRecording();
 		return true;
 	}
 	
@@ -92,22 +92,31 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
     	if(currentView has :changeZoom){
     		var zoomMode = currentView.changeZoom();
     		record.setZoomMode(zoomMode);
-    		WatchUi.requestUpdate();
     		return true;
     	}
     	return false;
 
     }
     
-    private function resetZoom(){
-    	record.setZoomMode(false);
-    	if(currentView has :resetZoom){
-    		currentView.resetZoom();
-    		return true;
-    	}else{
+    
+    private function hideSensors(){
+    	if(currentView has :hideSensors && record.isRecording()){
+    		currentView.hideSensors();
     		return false;
+    	}else{
+    		return true;
     	}
     }
+    
+    private function stateRecording(){
+    	if(currentView has :start && record.isRecording()){
+    		currentView.start();
+    	}
+    	if(currentView has :stop && !record.isRecording()){
+    		currentView.stop();
+    	}
+    }
+    
     
     
     

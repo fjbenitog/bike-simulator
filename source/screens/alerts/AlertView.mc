@@ -1,8 +1,12 @@
 using Toybox.WatchUi;
 using Toybox.Graphics;
 using ActivityValues;
+using Toybox.Timer;
+
 
 class AlertView extends WatchUi.View {
+	
+	private var alertTimer;
 	
     function initialize() {
         View.initialize();
@@ -10,8 +14,13 @@ class AlertView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc) {
-        
+    	alertTimer = new Timer.Timer();
+    	alertTimer.start(method(:removeAlertView),2000,false);
     }
+    
+    function removeAlertView(){
+		WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+	}
 
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
@@ -42,6 +51,9 @@ class AlertView extends WatchUi.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() {
+    	if(alertTimer!=null){
+    		alertTimer.stop();
+    	}
     }
     
 }
