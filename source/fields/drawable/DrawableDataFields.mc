@@ -16,6 +16,8 @@ class DrawableDataFields extends WatchUi.Drawable {
 	}
 	
 	function draw(dc) {
+		dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
+		dc.clear();
 		dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
 		dc.setPenWidth(2);
 		var height = dc.getHeight()/3;

@@ -11,7 +11,8 @@ class TrackPickerDelegate extends OwnPickerDelegate {
 
     
     function onAccept(value) {
-    	Properties.storeActiveTrack(DataTracks.getIndex(value.name));
+    	Properties.storeActiveTrack(value.id);
+    	DataTracks.activeTrack = value;
     	WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 }

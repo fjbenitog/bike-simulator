@@ -8,19 +8,7 @@ module ActivityValues {
 	var lastDistance = 0;
 	var lastTime = 0;
 
-	class ActivityTime {
-	
-		var hours;
-		var minutes;
-		var seconds;
-		
-		function initialize(hours_, minutes_, seconds_){
-			hours = hours_;
-			minutes = minutes_;
-			seconds = seconds_;
-		}
-		
-	}
+
 	
 	function reset(){
 		lastDistance = 0;
@@ -72,7 +60,7 @@ module ActivityValues {
 		var hr = secs/3600;
 		var min = (secs-(hr*3600))/60;
 		var sec = secs%60;
-		return new ActivityTime(hr,min,sec);
+		return [hr,min,sec];
 	}
 	
 	function time(){
@@ -81,9 +69,9 @@ module ActivityValues {
 	
 	function printTime(time){
 		var activityTime = ActivityValues.toHMS(time/1000);
-		return activityTime.hours.format("%02d")+":"+
-			activityTime.minutes.format("%02d")+
-			":"+activityTime.seconds.format("%02d");
+		return activityTime[0].format("%02d")+":"+
+			activityTime[1].format("%02d")+
+			":"+activityTime[2].format("%02d");
 	}
 	
 	function calculateTime(){
@@ -93,8 +81,8 @@ module ActivityValues {
     function calculateShortTime(){
     	var milis = time();
 		var activityTime = ActivityValues.toHMS(milis/1000);
-		return activityTime.hours.format("%02d")+":"+
-			activityTime.minutes.format("%02d");
+		return activityTime[0].format("%02d")+":"+
+			activityTime[1].format("%02d");
     }
     
     function meterDistance(){
@@ -107,6 +95,7 @@ module ActivityValues {
     
     function distance(){
     	return meterDistance()/1000;
+    	//return meterDistance()/50;
     }
     
     function printDistance(distance){
@@ -176,12 +165,12 @@ module ActivityValues {
     	return cadence.toString();
     }
     function percentage(){
-    	var distance = calculateDistance().toFloat();
+    	var distance = calculateDistance().toNumber();
     	var profile = DataTracks.getActiveTrack().profile;
-    	if(distance <=0 || distance>profile.size()){
+    	if(distance <=0 || distance>=profile.size()){
     		return 0;
     	}else{
-    		return profile[distance.toNumber()];
+    		return profile[distance];
 		}
     }
     
@@ -189,15 +178,15 @@ module ActivityValues {
     	var distance = distance().toNumber();
     	var currentTrack = DataTracks.getActiveTrack();
     	var baseAltitude = currentTrack.altitude;
-    	var profile = DataTracks.getActiveTrack().profile;
+    	var profile = currentTrack.profile;
     	
     	if(distance <=0 ){
     		return baseAltitude;
     	}else{
     		var altitude = baseAltitude;
     		var index = distance;
-    		if(distance>currentTrack.profile.size()-1){
-    			index = currentTrack.profile.size();
+    		if(distance>profile.size()-1){
+    			index = profile.size();
     		}
     		for(var i = 0 ; i<index; i++){
     			altitude = altitude + (10*profile[i]);

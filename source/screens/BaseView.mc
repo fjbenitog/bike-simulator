@@ -26,11 +26,12 @@ class BaseView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc) {
-    	heartIcon = WatchUi.loadResource(Rez.Drawables.HeartIcon);
-    	speedIcon = WatchUi.loadResource(Rez.Drawables.SpeedIcon);
-    	cadenceIcon = WatchUi.loadResource(Rez.Drawables.CadenceIcon);
-    	
+    	View.onLayout(dc);
     	if(ActivityValues.time()<=0){
+	    	heartIcon = WatchUi.loadResource(Rez.Drawables.HeartIcon);
+	    	speedIcon = WatchUi.loadResource(Rez.Drawables.SpeedIcon);
+	    	cadenceIcon = WatchUi.loadResource(Rez.Drawables.CadenceIcon);
+    	
 	    	sensorTimer = new Timer.Timer();
 	        sensorTimer.start(method(:showSensors),2000,false); 
         }
@@ -39,13 +40,17 @@ class BaseView extends WatchUi.View {
 
     // Update the view
     function onUpdate(dc) {
-
+		View.onUpdate(dc);
+		drawContaint(dc);
     	if(displaySensors){
         	drawSensorsInfo(dc);
         	drawBattery(dc);
         }
     	drawStartingIcon(dc);
     	drawStoppingIcon(dc);
+    }
+    
+    function drawContaint(dc){
     }
     
     private function drawStartingIcon(dc){
@@ -112,7 +117,7 @@ class BaseView extends WatchUi.View {
     	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
     	dc.drawRectangle(x,height,width,15);
     	dc.fillRectangle(x+2,height+2,((width - 4) * battery)/100,11);
-    	dc.drawLine(x + width, height + 4, x + width, height + 11);
+    	dc.fillRectangle(x + width, height + 4, 2, 8);
     }
     
     

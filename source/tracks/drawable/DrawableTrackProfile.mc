@@ -18,8 +18,9 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 
 	function initialize(options) {
 	    Drawable.initialize(options);
-        drawPoints = options.get(:track).drawPoints;
-        maxPoint = options.get(:track).maxPoint;
+	    var track = options.get(:track);
+        drawPoints = track.drawPoints;
+        maxPoint = track.maxPoint;
         var x_ = options.get(:x);
         if(x_ != null) {
             x = x_;
@@ -206,6 +207,10 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	
 	function resetZoom(){
 		zoom = false;
+		return zoom;
+	}
+	
+	function isZoom(){
 		return zoom;
 	}
 	

@@ -1,9 +1,8 @@
 <strings>
     <string id="AppName">Bike Simulator</string>
-    <string id="version">V. 1.0.6.snapshot-4</string>
+    <string id="version">V. 1.0.6.snapshot-6</string>
 
-    <string id="prompt">Welcome to
-    Bike Indoor Simulator</string>
+    <string id="prompt">Welcome to\nBike Indoor Simulator</string>
     <string id="pressStart">Press Start</string>
     <string id="tracksTitle">Tracks</string>
 
@@ -35,8 +34,6 @@
     <string id="save">Save</string>
     <string id="discard">Discard</string>
     
-    <string id="stopTitle">$1$
-$2$</string>
 
 	<string id="levelLabel">Level</string>
 	<string id="emptyUnit"></string>
@@ -47,5 +44,7 @@ $2$</string>
 	
 	<string id="saving">Saving</string>
 	<string id="discarding">Discarding</string>
+	
+	<string id="trackCompleted">Track\nCompleted!!!</string>
     
 </strings>

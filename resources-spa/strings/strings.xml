@@ -1,8 +1,7 @@
 <strings>
 
 	<string id="AppName">Bike Simulator</string>
-    <string id="prompt">Bienvenido a
-    Bike Indoor Simulator</string>
+    <string id="prompt">Bienvenido a\nBike Indoor Simulator</string>
     <string id="pressStart">Pulsa Start</string>
 
 
@@ -41,5 +40,7 @@
 	
 	<string id="saving">Guardando</string>
 	<string id="discarding">Descartando</string>
+	
+	<string id="trackCompleted">¡¡¡Etapa\nCompletada!!!</string>
 
 </strings>
