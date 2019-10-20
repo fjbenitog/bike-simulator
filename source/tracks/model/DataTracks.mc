@@ -1,5 +1,6 @@
 using Toybox.Application;
 using Toybox.System;
+using Toybox.Math;
 module DataTracks{
 					
 	var activeTrack = null;		
@@ -18,11 +19,31 @@ module DataTracks{
 						2,2,2,1,1,3,1,0,0,0,1,-1,0,0,1,1,-1,
 						0,0,2,2,2,1,0,0,5,0,-3,3,-2,5,5,6,-6,-5,-5,2,-3,3,0,10,7,-7,2,4,3,2,5,5,2,5,6,7,6,6,6,7,5,-5,
 						-7,-6,-6,-6,-7,1,2,3,2,1,1
-						],350)
+						],350),
+					new Track(5,"Random",randomTrack(),0)
 				 ];
 	}		
 	
 
+	function randomTrack(){
+		var kms = randomNumber(40,100);
+		var profile = new [kms];
+		var acc = 0;
+		for(var i = 0; i< profile.size(); i++){
+			var gradient = randomNumber(-8,8);
+			if((acc + gradient)< 0){
+				gradient = 0;
+			}
+			acc = acc + gradient;
+			profile[i] = gradient;
+		}
+		return profile;
+	}
+	
+	function randomNumber(min,max){
+		var maxInt = 2147483647;
+		return (((Math.rand().toFloat()/maxInt)*(max-min)) + min).toNumber();
+	}
     
     function getActiveTrack(){
     	if(activeTrack == null){
