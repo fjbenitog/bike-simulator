@@ -41,21 +41,9 @@ module Activity{
 		}
 		
 		function onSensor(sensorInfo) {
-	    	if(sensorInfo.heartRate!=null && sensorInfo.heartRate>0){
-	    		heartRateActive = true;
-	    	}else{
-	    		heartRateActive = false;
-	    	}
-	    	if(sensorInfo.speed!=null && sensorInfo.speed>0){
-	    		bikeSpeedActive = true;
-	    	}else{
-	    		bikeSpeedActive = false;
-	    	}
-	    	if(sensorInfo.cadence!=null && sensorInfo.cadence>0){
-	    		bikeCadenceActive = true;
-	    	}else{
-	    		bikeCadenceActive = false;
-	    	}
+			heartRateActive = sensorInfo.heartRate!=null; 
+			bikeSpeedActive = sensorInfo.speed!=null;
+			bikeCadenceActive = sensorInfo.cadence!=null;
 		}
 		
 		function handle(){

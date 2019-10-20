@@ -26,7 +26,7 @@ module DataTracks{
 	
 
 	function randomTrack(){
-		var kms = randomNumber(40,100);
+		var kms = randomNumber(20,100);
 		var profile = new [kms];
 		var acc = 0;
 		for(var i = 0; i< profile.size(); i++){
