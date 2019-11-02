@@ -76,28 +76,18 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
         if (0 == index) {
             view = new ProfileTrackView();
         } else if(1 == index){
-            view = new DataFieldsView([
-								    		[WatchUi.loadResource(Rez.Strings.speed)		, :calculateSpeed],
-											[WatchUi.loadResource(Rez.Strings.heartRate) 	, :calculateHeartRate],
-											[WatchUi.loadResource(Rez.Strings.cadence)		, :calculateCadence],
-											[WatchUi.loadResource(Rez.Strings.distance)		, :calculateDistance],
-										]);
+            view = new DataFieldsView1();
         }else if(2 == index){
-            view = new DataFieldsView([
-								    		[WatchUi.loadResource(Rez.Strings.timeLap) 		, :calculateTimeLap],
-								    		[WatchUi.loadResource(Rez.Strings.percentage)	, :calculatePercentage],
-											[WatchUi.loadResource(Rez.Strings.speedLap)		, :calculateSpeedLap],
-											[WatchUi.loadResource(Rez.Strings.distanceLap)	, :calculateDistanceLap],
-
-										]);
+            view = new DataFieldsView2();
         }else {
-        	view = new DataFieldsView([
+        	view = new DataFieldsView3();
+        	/*([
 								    		[WatchUi.loadResource(Rez.Strings.time) 		, :calculateTime],
 								    		[WatchUi.loadResource(Rez.Strings.altitude)		, :calculateAltitude],
 											[WatchUi.loadResource(Rez.Strings.avgSpeed)		, :calculateAvgSpeed],
 											[WatchUi.loadResource(Rez.Strings.distance)		, :calculateDistance],
 
-										]);
+										]);*/
         }
 		currentView = view;
         return view;

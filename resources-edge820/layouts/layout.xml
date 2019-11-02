@@ -1,11 +1,5 @@
 <resources>
-	<layout id="MainLayout">
-	    <label x="center" y="65" text="@Strings.prompt" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER" font="Graphics.FONT_SMALL"/>
-	    
-	    <label x="center" y="140" text="@Strings.pressStart" color="Graphics.COLOR_RED" justification="Graphics.TEXT_JUSTIFY_CENTER" font="Graphics.FONT_SMALL"/>
-	    <label x="center" y="180" text="@Strings.version" 	color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER" font="Graphics.FONT_XTINY"/>
-	</layout>
-	<layout id="DataFieldsView1">
+<layout id="DataFieldsView1">
 		<drawable id="DataFields" class="DrawableDataFields">
 			<param name="title1">@Strings.speed</param>
 			<param name="field1">:calculateSpeed</param>
@@ -15,8 +9,10 @@
 			<param name="field3">:calculateCadence</param>
 			<param name="title4">@Strings.distance</param>
 			<param name="field4">:calculateDistance</param>
-			<param name="fieldTitleMargin">3</param>
+			<param name="fieldTitleMargin">0</param>
 			<param name="fieldNumberMargin">0</param>
+			<param name="titleFont">Graphics.FONT_SYSTEM_MEDIUM</param>
+			<param name="numberFont">Graphics.FONT_NUMBER_HOT</param>
 		</drawable>
 	</layout>
 	<layout id="DataFieldsView2">
@@ -29,8 +25,10 @@
 			<param name="field3">:calculateSpeedLap</param>
 			<param name="title4">@Strings.distanceLap</param>
 			<param name="field4">:calculateDistanceLap</param>
-			<param name="fieldTitleMargin">3</param>
+			<param name="fieldTitleMargin">0</param>
 			<param name="fieldNumberMargin">0</param>
+			<param name="titleFont">Graphics.FONT_SYSTEM_MEDIUM</param>
+			<param name="numberFont">Graphics.FONT_NUMBER_HOT</param>
 		</drawable>
 	</layout>
 	<layout id="DataFieldsView3">
@@ -43,8 +41,11 @@
 			<param name="field3">:calculateAvgSpeed</param>
 			<param name="title4">@Strings.distance</param>
 			<param name="field4">:calculateDistance</param>
-			<param name="fieldTitleMargin">3</param>
+			<param name="fieldTitleMargin">0</param>
 			<param name="fieldNumberMargin">0</param>
+			<param name="titleFont">Graphics.FONT_SYSTEM_MEDIUM</param>
+			<param name="numberFont">Graphics.FONT_NUMBER_HOT</param>
 		</drawable>
 	</layout>
+	
 </resources>
