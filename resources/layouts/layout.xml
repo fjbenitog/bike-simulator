@@ -1,9 +1,9 @@
 <resources>
 	<layout id="MainLayout">
-	    <label x="center" y="65" text="@Strings.prompt" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER" font="Graphics.FONT_SMALL"/>
+	    <label x="center" y="40%" text="@Strings.prompt" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER" font="Graphics.FONT_SMALL"/>
 	    
-	    <label x="center" y="140" text="@Strings.pressStart" color="Graphics.COLOR_RED" justification="Graphics.TEXT_JUSTIFY_CENTER" font="Graphics.FONT_SMALL"/>
-	    <label x="center" y="180" text="@Strings.version" 	color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER" font="Graphics.FONT_XTINY"/>
+	    <label x="center" y="70%" text="@Strings.pressStart" color="Graphics.COLOR_RED" justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER" font="Graphics.FONT_SMALL"/>
+	    <label x="center" y="85%" text="@Strings.version" 	color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER" font="Graphics.FONT_XTINY"/>
 	</layout>
 	<layout id="DataFieldsView1">
 		<drawable id="DataFields" class="DrawableDataFields">
