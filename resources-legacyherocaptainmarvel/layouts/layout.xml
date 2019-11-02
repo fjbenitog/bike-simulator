@@ -1,0 +1,44 @@
+<resources>
+	<layout id="DataFieldsView1">
+		<drawable id="DataFields" class="DrawableDataFields">
+			<param name="title1">@Strings.speed</param>
+			<param name="field1">:calculateSpeed</param>
+			<param name="title2">@Strings.heartRate</param>
+			<param name="field2">:calculateHeartRate</param>
+			<param name="title3">@Strings.cadence</param>
+			<param name="field3">:calculateCadence</param>
+			<param name="title4">@Strings.distance</param>
+			<param name="field4">:calculateDistance</param>
+			<param name="fieldTitleMargin">5</param>
+			<param name="fieldNumberMargin">0</param>
+		</drawable>
+	</layout>
+	<layout id="DataFieldsView2">
+		<drawable id="DataFields" class="DrawableDataFields">
+			<param name="title1">@Strings.timeLap</param>
+			<param name="field1">:calculateTimeLap</param>
+			<param name="title2">@Strings.percentage</param>
+			<param name="field2">:calculatePercentage</param>
+			<param name="title3">@Strings.speedLap</param>
+			<param name="field3">:calculateSpeedLap</param>
+			<param name="title4">@Strings.distanceLap</param>
+			<param name="field4">:calculateDistanceLap</param>
+			<param name="fieldTitleMargin">5</param>
+			<param name="fieldNumberMargin">0</param>
+		</drawable>
+	</layout>
+	<layout id="DataFieldsView3">
+		<drawable id="DataFields" class="DrawableDataFields">
+			<param name="title1">@Strings.time</param>
+			<param name="field1">:calculateTime</param>
+			<param name="title2">@Strings.altitude</param>
+			<param name="field2">:calculateAltitude</param>
+			<param name="title3">@Strings.avgSpeed</param>
+			<param name="field3">:calculateAvgSpeed</param>
+			<param name="title4">@Strings.distance</param>
+			<param name="field4">:calculateDistance</param>
+			<param name="fieldTitleMargin">5</param>
+			<param name="fieldNumberMargin">0</param>
+		</drawable>
+	</layout>
+</resources>

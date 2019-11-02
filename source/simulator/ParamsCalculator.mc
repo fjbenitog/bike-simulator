@@ -12,20 +12,12 @@ module Simulator{
 			gear = gear_;
 		}
 	}
-	
-	class Calculator{
-		private const MAX_PERCENTAGE = 25;
-	
-		private var gears;
-		private var powerSize;
-		private var level;
-		function initialize(gears_, powerSize_, level_){
-			gears = gears_;
-			powerSize = powerSize_;
-			level = level_;
-		}
 		
 		function calculate(percentage){
+			return calculateForTesting(Properties.gears(), Properties.power(), Properties.level(),percentage);
+		}
+		
+		function calculateForTesting(gears, powerSize, level,percentage){
 			var power = percentage + level;
 			if(power > powerSize){
 				return new Result(powerSize,gears - (power - powerSize));
@@ -36,7 +28,6 @@ module Simulator{
 			}
 		}
 		
-	}
 	
 	(:test)
 	function level1Percentage0(logger){
@@ -171,8 +162,7 @@ module Simulator{
 	
 	function checkCalculator(logger,gears,powerSize,level,percentage,expectedResult){
 		logger.debug("Calculator(gears:"+gears+",powerSize:"+powerSize+",level:"+level+") with percentage = "+percentage);
-		var cal = new Calculator(gears,powerSize,level);
-		var result = cal.calculate(percentage);
+		var result = calculateForTesting(gears,powerSize,level,percentage);
 		logger.debug("Return: Result(power:"+result.power+" , gear:"+result.gear+")");
 		Test.assertEqualMessage(expectedResult.power, result.power, "Power expected was "+expectedResult.power+" but was " + result.power);
 		Test.assertEqualMessage(expectedResult.gear, result.gear, "Gear expected was "+expectedResult.gear+" but was " + result.gear);

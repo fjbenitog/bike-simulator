@@ -15,12 +15,14 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	var padding = 0;
 	var font = Graphics.FONT_XTINY;
 	var zoom = false;
+	var initialPercentage = 0;
 
 	function initialize(options) {
 	    Drawable.initialize(options);
 	    var track = options.get(:track);
         drawPoints = track.drawPoints;
         maxPoint = track.maxPoint;
+        initialPercentage = track.profile[0];
         var x_ = options.get(:x);
         if(x_ != null) {
             x = x_;
@@ -144,7 +146,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 	
 	private function calculateY(i,virtualdrawPoints,scale,initPoint){
 		if(i==0 && initPoint == null){
-			return y - (base * scale);
+			return y - ((virtualdrawPoints[0] + base - initialPercentage) * scale).toNumber();
 		}else if(i==0 && initPoint != null){
 			return y - ((initPoint + base) * scale).toNumber();
 		}

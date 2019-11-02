@@ -4,7 +4,6 @@ using Toybox.System;
 
 module ActivityValues {
 
-	var simulator = new Simulator.Calculator(Properties.gears(), Properties.power(), Properties.level());
 	var lastDistance = 0;
 	var lastTime = 0;
 
@@ -94,8 +93,8 @@ module ActivityValues {
     }
     
     function distance(){
-    	return meterDistance()/1000;
-    	//return meterDistance()/50;
+    	//return meterDistance()/1000;
+    	return meterDistance()/50;
     }
     
     function printDistance(distance){
@@ -200,7 +199,7 @@ module ActivityValues {
     }
     
     function calculateSimulatorValues(){
-	    return simulator.calculate(percentage());
+	    return Simulator.calculate(percentage());
     }
     
     
