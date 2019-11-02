@@ -1,6 +1,6 @@
 <strings>
     <string id="AppName">Bike Simulator</string>
-    <string id="version">V. 1.0.7.snapshot-1</string>
+    <string id="version">V. 1.0.7</string>
 
     <string id="prompt">Welcome to\nBike Indoor Simulator</string>
     <string id="pressStart">Press Start</string>
