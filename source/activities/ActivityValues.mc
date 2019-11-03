@@ -20,7 +20,7 @@ module ActivityValues {
 		var distanceLap = totalDistance - ActivityValues.lastDistance;
 		var timeLap = totalTime - ActivityValues.lastTime;
 		
-		var speedLap = distanceLap/(3600*timeLap/1000);
+		var speedLap = 3600*(distanceLap/(timeLap/1000));
 		ActivityValues.lastDistance = totalDistance;
 		ActivityValues.lastTime = totalTime;
 		return {:distanceLap => printDistance(distanceLap), 
@@ -51,7 +51,7 @@ module ActivityValues {
 		if(time == 0){
 			return printSpeed(0);
 		}else{
-			return printSpeed(distanceLap()/(3600*time));
+			return printSpeed(3600*(distanceLap()/(time/1000)));
 		}
 	}
 	
@@ -124,7 +124,7 @@ module ActivityValues {
 		}else{
     		return Lang.format( "$1$",
 	    		[
-	        		speed().format("%02d")
+	        		speed.format("%02d")
 	    		]
 			);
 		}

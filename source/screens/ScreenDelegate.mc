@@ -81,13 +81,6 @@ class ScreenDelegate extends WatchUi.BehaviorDelegate {
             view = new DataFieldsView2();
         }else {
         	view = new DataFieldsView3();
-        	/*([
-								    		[WatchUi.loadResource(Rez.Strings.time) 		, :calculateTime],
-								    		[WatchUi.loadResource(Rez.Strings.altitude)		, :calculateAltitude],
-											[WatchUi.loadResource(Rez.Strings.avgSpeed)		, :calculateAvgSpeed],
-											[WatchUi.loadResource(Rez.Strings.distance)		, :calculateDistance],
-
-										]);*/
         }
 		currentView = view;
         return view;

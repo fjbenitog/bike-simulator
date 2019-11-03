@@ -23,7 +23,6 @@ class DataFieldsView2 extends BaseView {
 }
 class DataFieldsView3 extends BaseView {
 	
-	    // Load your resources here
     	function onLayout(dc) {
     		BaseView.onLayout(dc);
     		setLayout(Rez.Layouts.DataFieldsView3(dc));

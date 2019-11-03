@@ -15,8 +15,8 @@
 			<param name="field3">:calculateCadence</param>
 			<param name="title4">@Strings.distance</param>
 			<param name="field4">:calculateDistance</param>
-			<param name="fieldTitleMargin">5</param>
-			<param name="fieldNumberMargin">5</param>
+			<param name="fieldTitleMargin">10</param>
+			<param name="fieldNumberMargin">10</param>
 			<param name="titleFont">Graphics.FONT_SYSTEM_MEDIUM</param>
 			<param name="numberFont">Graphics.FONT_NUMBER_HOT</param>
 		</drawable>
@@ -31,8 +31,8 @@
 			<param name="field3">:calculateSpeedLap</param>
 			<param name="title4">@Strings.distanceLap</param>
 			<param name="field4">:calculateDistanceLap</param>
-			<param name="fieldTitleMargin">5</param>
-			<param name="fieldNumberMargin">5</param>
+			<param name="fieldTitleMargin">10</param>
+			<param name="fieldNumberMargin">10</param>
 			<param name="titleFont">Graphics.FONT_SYSTEM_MEDIUM</param>
 			<param name="numberFont">Graphics.FONT_NUMBER_HOT</param>
 		</drawable>
@@ -47,11 +47,15 @@
 			<param name="field3">:calculateAvgSpeed</param>
 			<param name="title4">@Strings.distance</param>
 			<param name="field4">:calculateDistance</param>
-			<param name="fieldTitleMargin">5</param>
-			<param name="fieldNumberMargin">5</param>
+			<param name="fieldTitleMargin">10</param>
+			<param name="fieldNumberMargin">10</param>
 			<param name="titleFont">Graphics.FONT_SYSTEM_MEDIUM</param>
 			<param name="numberFont">Graphics.FONT_NUMBER_HOT</param>
 		</drawable>
 	</layout>
-	
+	<layout id="ProfileTrackView">
+		<drawable id="TrackProfileScreen" class="TrackProfileScreen">
+			<param name="fontField">Graphics.FONT_SYSTEM_MEDIUM</param>
+		</drawable>
+	</layout>	
 </resources>

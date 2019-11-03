@@ -19,7 +19,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 
 	function initialize(options) {
 	    Drawable.initialize(options);
-	    var track = options.get(:track);
+	    var track = DataTracks.getActiveTrack();
         drawPoints = track.drawPoints;
         maxPoint = track.maxPoint;
         initialPercentage = track.profile[0];
