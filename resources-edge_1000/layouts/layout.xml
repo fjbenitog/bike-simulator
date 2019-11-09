@@ -53,7 +53,7 @@
 			<param name="numberFont">Graphics.FONT_NUMBER_HOT</param>
 		</drawable>
 	</layout>
-		<layout id="ProfileTrackView">
+	<layout id="ProfileTrackView">
 		<drawable id="TrackProfileScreen" class="TrackProfileScreen">
 			<param name="fontField">Graphics.FONT_SYSTEM_MEDIUM</param>
 			<param name="fontNumber">Graphics.FONT_NUMBER_MEDIUM</param>

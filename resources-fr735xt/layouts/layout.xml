@@ -47,5 +47,9 @@
 			<param name="fieldNumberMargin">0</param>
 		</drawable>
 	</layout>
-	
+	<layout id="ProfileTrackView">
+		<drawable id="TrackProfileScreen" class="TrackProfileScreen">
+		<param name="margingBottom">10</param>
+		</drawable>
+	</layout>	
 </resources>

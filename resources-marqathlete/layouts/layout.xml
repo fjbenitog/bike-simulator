@@ -41,5 +41,11 @@
 			<param name="fieldNumberMargin">-5</param>
 		</drawable>
 	</layout>
-	
+	<layout id="ProfileTrackView">
+		<drawable id="TrackProfileScreen" class="TrackProfileScreen">
+			<param name="fontNumber">Graphics.FONT_SYSTEM_NUMBER_MILD</param>
+			<param name="marginField">10</param>
+			<param name="margingBottom">5</param>
+		</drawable>
+	</layout>
 </resources>

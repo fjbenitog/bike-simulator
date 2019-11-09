@@ -47,4 +47,10 @@
 			<param name="numberFont">Graphics.FONT_NUMBER_MEDIUM</param>
 		</drawable>
 	</layout>
+	<layout id="ProfileTrackView">
+		<drawable id="TrackProfileScreen" class="TrackProfileScreen">
+			<param name="marginField">5</param>
+			<param name="margingBottom">10</param>
+		</drawable>
+	</layout>
 </resources>

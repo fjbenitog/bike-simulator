@@ -83,7 +83,7 @@ class DrawableTrackProfile extends WatchUi.Drawable {
 			
     	}else{
     		dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(x + width/2, y + padding, font, distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
+			dc.drawText(x + width/2, y + padding, font, ActivityValues.calculateDistance() + "/" + distance + " Kms", Graphics.TEXT_JUSTIFY_CENTER);
     	}
     	
     	
